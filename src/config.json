@@ -1,0 +1,9 @@
+{
+    "file": {
+        "dir": "time-tracker-files",
+        "suffix": "mimja"
+    },
+    "server": {
+        "port": 3803
+    }
+}
