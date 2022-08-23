@@ -36,6 +36,7 @@
     "@types/glob": "^7.2.0",
     "@types/mocha": "^9.1.1",
     "@types/node": "16.x",
+    "@types/passport-github": "^1.1.7",
     "@types/vscode": "^1.70.0",
     "@typescript-eslint/eslint-plugin": "^5.31.0",
     "@typescript-eslint/parser": "^5.31.0",
@@ -47,9 +48,12 @@
     "typescript": "^4.7.4"
   },
   "dependencies": {
-    "axios": "^0.27.2",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
-    "open": "^8.4.0"
+    "gist-client": "^1.1.1",
+    "gists": "^0.1.2",
+    "open": "^8.4.0",
+    "passport": "^0.6.0",
+    "passport-github": "^1.1.0"
   }
 }
