@@ -1,4 +1,4 @@
-import * as vscode from 'vscode';
+import * as vscode from "vscode";
 import { normalize, resolve } from "path";
 import { existsSync, PathLike, readFileSync, writeFileSync } from "fs";
 import { file } from "./../config.json";
@@ -11,7 +11,7 @@ var timeFileName = `local-time.${file.suffix}.json`;
 
 export function getLocalStoredTime(): object {
     if (!existsSync(`${USER_PATH}${timeFileName}`)) { writeFileSync(`${USER_PATH}${timeFileName}`, "{}"); }
-    return JSON.parse(readFileSync(`${USER_PATH}${timeFileName}`, 'utf-8'));
+    return JSON.parse(readFileSync(`${USER_PATH}${timeFileName}`, "utf-8"));
 }
 
 export function setLocalStoredTime(newJson: string) {
@@ -20,7 +20,7 @@ export function setLocalStoredTime(newJson: string) {
 
 export function getLocalStoredSettings() {
     if (!existsSync(`${USER_PATH}${settingsFileName}`)) { writeFileSync(`${USER_PATH}${settingsFileName}`, "{}"); }
-    return JSON.parse(readFileSync(`${USER_PATH}${settingsFileName}`, 'utf-8'));
+    return JSON.parse(readFileSync(`${USER_PATH}${settingsFileName}`, "utf-8"));
 }
 
 export function setLocalStoredSettings(newJson: string) {
