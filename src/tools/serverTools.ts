@@ -8,6 +8,8 @@ import fetch from "cross-fetch";
 import randomStringGenerator from "randomstring";
 import { server as serverConfig } from "./../config.json";
 import open from "open";
+import { getLocalStoredSettings, setLocalStoredSettings } from "./storageTools";
+import path from "path";
 
 let randomString = randomStringGenerator.generate({
     length: 8,
@@ -19,7 +21,7 @@ const url = `https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&sco
 const app = express();
 var server: Server;
 
-app.use(express.static('./../../public'));
+app.use("/gui", express.static(path.join(__dirname, './../../public/')));
 
 app.get("/git/callback/", (req, res) => {
     if (req.query.state !== randomString) { res.destroy(); }
@@ -34,7 +36,10 @@ app.get("/git/callback/", (req, res) => {
             }
             return gitRes.json();
         }).then(json => {
-            console.log(json);
+            let settings = getLocalStoredSettings();
+            settings.gist.access_token = json.access_token;
+            setLocalStoredSettings(settings);
+
             res.send(req.query.code);
         });
 });

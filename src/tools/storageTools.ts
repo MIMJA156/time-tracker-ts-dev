@@ -2,6 +2,7 @@ import * as vscode from "vscode";
 import { normalize, resolve } from "path";
 import { existsSync, PathLike, readFileSync, writeFileSync } from "fs";
 import { file } from "./../config.json";
+import settingsJsonModel from "../models/settingsModel.json";
 
 var USER_PATH: PathLike = "";
 var EXTENSION_PATH: PathLike = "";
@@ -15,16 +16,18 @@ export function getLocalStoredTime(): object {
 }
 
 export function setLocalStoredTime(newJson: string) {
-    writeFileSync(`${USER_PATH}${timeFileName}`, newJson);
+    writeFileSync(`${USER_PATH}${timeFileName}`, JSON.stringify(newJson));
 }
 
 export function getLocalStoredSettings() {
-    if (!existsSync(`${USER_PATH}${settingsFileName}`)) { writeFileSync(`${USER_PATH}${settingsFileName}`, "{}"); }
-    return JSON.parse(readFileSync(`${USER_PATH}${settingsFileName}`, "utf-8"));
+    if (!existsSync(`${USER_PATH}${settingsFileName}`)) { writeFileSync(`${USER_PATH}${settingsFileName}`, JSON.stringify(settingsJsonModel)); }
+    let json = JSON.parse(readFileSync(`${USER_PATH}${settingsFileName}`, "utf-8"));
+    if (checkDataKeys(json, settingsJsonModel)) { }
+    return json;
 }
 
 export function setLocalStoredSettings(newJson: string) {
-    writeFileSync(`${USER_PATH}${settingsFileName}`, newJson);
+    writeFileSync(`${USER_PATH}${settingsFileName}`, JSON.stringify(newJson));
 }
 
 export function getUserPath() {
@@ -66,4 +69,8 @@ export function setStoragePaths(context: vscode.ExtensionContext) {
         USER_PATH = USER_FOLDER;
         EXTENSION_PATH = EXTENSION_FOLDER;
     }
+}
+
+function checkDataKeys(json1: Object, json2: Object) {
+    return "";
 }
