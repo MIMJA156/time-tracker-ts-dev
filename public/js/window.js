@@ -9,21 +9,23 @@ function switchWindow(page, display) {
     switch (page) {
         case 1:
             $("#menu-dynamic-holder").load("/gui/windows/options.html", () => {
-                menuContainer.style.top = offsetTop + "px";
-                menuContainer.style.left = offsetLeft + "px";
-                if (display) { menuContainer.style.display = "flex"; }
+                menuContainerNewPos(display);
             });
             break;
 
         case 2:
             $("#menu-dynamic-holder").load("/gui/windows/settings.html", () => {
-                menuContainer.style.top = offsetTop + "px";
-                menuContainer.style.left = offsetLeft + "px";
-                if (display) { menuContainer.style.display = "flex"; }
+                menuContainerNewPos(display);
             });
             break;
 
         default:
             break;
     }
+}
+
+function menuContainerNewPos(display) {
+    menuContainer.style.top = offsetTop + "px";
+    menuContainer.style.left = offsetLeft + "px";
+    if (display) { menuContainer.style.display = "flex"; }
 }
