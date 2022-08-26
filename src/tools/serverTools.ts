@@ -1,9 +1,5 @@
-// Yes I know its public. LOL
-const CLIENT_ID = "995870bf92a88cd7da39";
-const CLIENT_SECRET = "c69fdc887f9afc8e3a40aed7219b04460dbf8452";
-
 import { Server } from "http";
-import { server as serverConfig } from "./../config.json";
+import { server as serverConfig, git } from "./../config.json";
 import { getLocalStoredSettings, setLocalStoredSettings } from "./storageTools";
 import express from "express";
 import fetch from "cross-fetch";
@@ -16,7 +12,7 @@ let randomString = randomStringGenerator.generate({
     charset: 'alphabetic'
 });
 
-const url = `https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&scope=gist&state=${randomString}`;
+const url = `https://github.com/login/oauth/authorize?client_id=${git.CLIENT_ID}&scope=gist&state=${randomString}`;
 
 const app = express();
 var server: Server;
@@ -26,7 +22,7 @@ app.use("/gui", express.static(path.join(__dirname, './../../public/')));
 app.get("/git/callback/", (req, res) => {
     if (req.query.state !== randomString) { res.destroy(); return; }
     req.query.state = "";
-    fetch(`https://github.com/login/oauth/access_token?client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&code=${req.query.code}`,
+    fetch(`https://github.com/login/oauth/access_token?client_id=${git.CLIENT_ID}&client_secret=${git.CLIENT_SECRET}&code=${req.query.code}`,
         {
             method: 'post',
             headers: { accept: "application/json" }
