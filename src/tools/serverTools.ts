@@ -25,9 +25,7 @@ app.use("/gui", express.static(path.join(__dirname, './../../public/')));
 
 app.get("/git/callback/", (req, res) => {
     if (req.query.state !== randomString) { res.destroy(); return; }
-    let settings = getLocalStoredSettings();
-    if (settings.gist.access_token) { res.send("Token Already Saved."); return; }
-
+    req.query.state = "";
     fetch(`https://github.com/login/oauth/access_token?client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&code=${req.query.code}`,
         {
             method: 'post',
@@ -35,12 +33,28 @@ app.get("/git/callback/", (req, res) => {
         }).then(gitRes => {
             if (gitRes.status >= 400) { res.status(400); }
             return gitRes.json();
-        }).then(json => {
+        }).then(async json => {
+            let settings = getLocalStoredSettings();
+            let user = await getUser(json.access_token);
+
             settings.gist.access_token = json.access_token;
+            settings.gist.username = user;
+
             setLocalStoredSettings(settings);
             res.sendFile(path.join(__dirname, "./../../public/git.html"));
         });
 });
+
+export async function getUser(token: string) {
+    let promise = fetch("https://api.github.com/user", {
+        method: "GET",
+        headers: { authorization: `token ${token}`, accept: "application/json" }
+    });
+
+    const res = await promise;
+    const json = await res.json();
+    return json.login;
+}
 
 export function startServer() {
     server = app.listen(serverConfig.port);

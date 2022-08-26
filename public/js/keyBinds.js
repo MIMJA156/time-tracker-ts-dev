@@ -8,6 +8,7 @@ $('body').on('keydown', (e) => {
     }
 
     if (e.key === 'ArrowUp') {
+        console.log("a");
         if ($('#options-menu-container').css('display') === 'none') {
             $('#open-options-menu').trigger('click');
         }
