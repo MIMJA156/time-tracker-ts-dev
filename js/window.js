@@ -1,4 +1,7 @@
+let firstLoad = false;
+
 function loadWindow(windowId) {
+    firstLoad = true;
     let window = $("#dynamic-window-holder");
     switch (windowId) {
         case 1:
@@ -16,16 +19,18 @@ function loadWindow(windowId) {
 
 function toggleWindow() {
     if (dynamicWindowHolder.style.display === "flex") {
-        dynamicWindowHolder.style.display = "none";
+        closeWindow();
     } else {
-        dynamicWindowHolder.style.display = "flex";
+        openWindow();
     }
 }
 
 function closeWindow() {
+    if (!firstLoad) return;
     dynamicWindowHolder.style.display = "none";
 }
 
 function openWindow() {
+    if (!firstLoad) return;
     dynamicWindowHolder.style.display = "flex";
 }

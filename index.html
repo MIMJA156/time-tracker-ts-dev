@@ -28,7 +28,7 @@
             <canvas id="mainTimeChart"></canvas>
         </div>
         <div id="bar-bottom">
-            <button id="open-options"><img src="./svgs/gear-solid.svg" onclick="toggleWindow()"></button>
+            <button id="open-options" onclick="toggleWindow()"><img src="./svgs/gear-solid.svg"></button>
             <span id="sanity-content">Current Sanity: 100%</span>
             <img id="status-img" src="./svgs/spinner.svg" title="Fetching Data...">
         </div>
@@ -36,14 +36,15 @@
     <div id="dynamic-window-holder"></div>
 </body>
 
-<script src="./js/ready.js"></script>
-<script src="./js/window.js"></script>
+<script src="./js/events.js"></script>
+<script src="./js/api.js"></script>
 <script src="./js/graph.js"></script>
-<script>
-    var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-    var dynamicWindowHolder = document.querySelector("#dynamic-window-holder");
+<script src="./js/window.js"></script>
 
-    loadWindow(1);
-</script>
+<script src="./js/events/initialDataQueryHandler.js"></script>
+<script src="./js/events/updatedDataQueryHandler.js"></script>
+<script src="./js/events/linkedGithubHandler.js"></script>
+
+<script src="./js/ready.js"></script>
 
 </html>
