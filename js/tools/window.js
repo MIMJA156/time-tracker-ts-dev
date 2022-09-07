@@ -12,6 +12,10 @@ function loadWindow(windowId) {
             window.load('./../windows/settings/settings.html');
             break;
 
+        case 3:
+            window.load('./../windows/support-me/support-me.html');
+            break;
+
         default:
             break;
     }
