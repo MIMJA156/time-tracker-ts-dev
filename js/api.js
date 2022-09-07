@@ -1,7 +1,11 @@
+const apiHost = "http://localhost:3000";
+
 async function getInitialData() {
     let promise = new Promise((resolve, fail) => {
-        $.get("http://localhost:3000/data/first", (data, status) => {
+        $.get(apiHost + "/data/first", (data, status) => {
             resolve(data);
+        }).catch(e => {
+            fail(e);
         });
     })
 
@@ -10,8 +14,10 @@ async function getInitialData() {
 
 async function getUpdatedData() {
     let promise = new Promise((resolve, fail) => {
-        $.get("http://localhost:3000/data/updated", (data, status) => {
+        $.get(apiHost + "/data/updated", (data, status) => {
             resolve(data);
+        }).catch(e => {
+            fail(e);
         });
     })
 
