@@ -15,7 +15,13 @@ a {
 }
 
 .bmac {
-    display: flex;
-    flex-direction: row;
     background-color: yellow;
+}
+
+.paypal {
+    background-color: #0079C1;
+}
+
+.cash-app {
+    background-color: #00D632;
 }
