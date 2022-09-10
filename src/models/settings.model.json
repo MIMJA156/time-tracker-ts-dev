@@ -1,7 +1,15 @@
 {
-    "gist": {
+    "git": {
         "access_token": "",
         "username": "",
-        "id": ""
+        "gist_id": ""
+    },
+    "oldIndex": {
+        "git": [
+            "gist"
+        ],
+        "gist_id": [
+            "id"
+        ]
     }
 }

@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 import { normalize, resolve } from "path";
-import { existsSync, fstat, PathLike, readFile, readFileSync, writeFileSync } from "fs";
+import { existsSync, PathLike, readFileSync, writeFileSync } from "fs";
 import { file } from "./../config.json";
 import settingsJsonModel from "../models/settings.model.json";
 
@@ -10,7 +10,7 @@ var EXTENSION_PATH: PathLike = "";
 var settingsFileName = `settings.${file.suffix}.json`;
 var timeFileName = `local-time.${file.suffix}.json`;
 
-export function getLocalStoredTime(): object {
+export function getLocalStoredTime() {
     if (!existsSync(`${USER_PATH}${timeFileName}`)) { writeFileSync(`${USER_PATH}${timeFileName}`, "{}"); }
     return JSON.parse(readFileSync(`${USER_PATH}${timeFileName}`, "utf-8"));
 }
@@ -42,20 +42,36 @@ export function runModelMatching() {
     files.forEach(file => {
         let fileName = file.replace(USER_PATH.toString(), "").replace(".mimja.json", "");
         let acquiredData = JSON.parse(readFileSync(file, "utf-8"));
-        let settingsModel = JSON.parse(readFileSync(resolve(__dirname, `./../models/${fileName}.model.json`), "utf-8"));
-
-        let hasDifference = false;
+        let acquiredModel = JSON.parse(readFileSync(resolve(__dirname, `./../models/${fileName}.model.json`), "utf-8"));
 
         let a = (model: { [x: string]: any; }, old: { [x: string]: any; }) => {
-            Object.keys(model).forEach(key => {
+            Object.keys(model).forEach((key: string) => {
                 if (old[key]) {
                     old[key] = a(model[key], old[key]);
                 } else {
-                    hasDifference = true;
-                    switch (key) {
-                        default:
-                            old[key] = "";
-                            break;
+                    let failed = true;
+                    Object.keys(acquiredModel.oldIndex).forEach(k => {
+                        if (k === key) {
+                            acquiredModel.oldIndex[key].forEach((oldKey: string) => {
+                                if (old[oldKey]) {
+                                    let a = old[oldKey];
+                                    delete old[oldKey];
+                                    old[key] = a;
+                                    failed = false;
+                                }
+                            });
+                        }
+                    });
+
+                    if (failed) {
+                        if (key !== "oldIndex" && !old[key]) {
+                            if (model[key]) {
+                                old[key] = {};
+                                old[key] = a(model[key], old[key]);
+                            } else {
+                                old[key] = "";
+                            }
+                        }
                     }
                 }
             });
@@ -63,7 +79,7 @@ export function runModelMatching() {
             return old;
         };
 
-        writeFileSync(file, JSON.stringify(a(settingsModel, acquiredData)));
+        writeFileSync(file, JSON.stringify(a(acquiredModel, acquiredData)));
     });
 }
 
