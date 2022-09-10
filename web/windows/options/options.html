@@ -1,0 +1,33 @@
+<div class="window-header">
+    <span>Options</span>
+    <button class="window-action-button" onclick="closeWindow()"><img title="Close" src="./../svgs/close.svg"></button>
+</div>
+<div class="window-body">
+    <div class="window-cell">
+        <div class="window-cell-left">
+            <span class="option-text">Github</span>
+        </div>
+        <div class="window-cell-right">
+            <button class="option-btn option-btn-black option-btn-disabled">Link</button>
+        </div>
+    </div>
+    <div class="window-cell">
+        <div class="window-cell-left">
+            <span class="option-text">Settings</span>
+        </div>
+        <div class="window-cell-right">
+            <button class="option-btn option-btn-black" onclick="loadWindow(2)">Open</button>
+        </div>
+    </div>
+    <div class="window-cell no-border">
+        <div class="window-cell-left">
+            <span class="option-text">Support Me</span>
+        </div>
+        <div class="window-cell-right">
+            <button class="option-btn option-btn-black" onclick="loadWindow(3)">Open</button>
+        </div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="./windows/options/options.css">
+<script src="./windows/windowMove.js"></script>

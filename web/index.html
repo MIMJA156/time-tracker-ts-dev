@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Tracker</title>
+</head>
+
+<script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<link rel="stylesheet" href="./css/main.css">
+<link rel="stylesheet" href="./css/bar.css">
+<link rel="stylesheet" href="./css/bar-top-content.css">
+<link rel="stylesheet" href="./css/bar-bottom-content.css">
+<link rel="stylesheet" href="./css/window.css">
+
+<body>
+    <main>
+        <div id="bar-top">
+            <button id="date-back"><img src="./svgs/chevron-left.svg"><span>Back One Week</span></button>
+            <span id="date-content">Some Filler Content!!!</span>
+            <button id="date-forward"><span>Forward One Week</span> <img src="./svgs/chevron-right.svg"></button>
+        </div>
+        <div id="main-time-chart-container">
+            <canvas id="mainTimeChart"></canvas>
+            <span></span>
+        </div>
+        <div id="bar-bottom">
+            <button id="open-options" onclick="toggleWindow()"><img src="./svgs/gear-solid.svg"></button>
+            <span id="sanity-content">Current Sanity: 100%</span>
+            <img id="status-img" src="./svgs/spinner.svg" title="Fetching Data...">
+        </div>
+    </main>
+    <div id="dynamic-window-holder"></div>
+    <div id="notifaction-popup"></div>
+</body>
+
+<script src="./js/tools/random.js"></script>
+<script src="./js/tools/events.js"></script>
+<script src="./js/tools/api.js"></script>
+<script src="./js/tools/graph.js"></script>
+<script src="./js/tools/window.js"></script>
+
+<script src="./js/events/initialDataQueryHandler.js"></script>
+<script src="./js/events/updatedDataQueryHandler.js"></script>
+
+<script src="./js/ready.js"></script>
+
+</html>
