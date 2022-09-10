@@ -23,3 +23,7 @@
 .option-btn-black:hover {
     background-color: #1e1e24bd;
 }
+
+.option-btn-disabled {
+    text-decoration: line-through 2px;
+}
