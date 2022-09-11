@@ -22,13 +22,10 @@
     ]
   },
   "scripts": {
-    "vscode:prepublish": "npm run compile",
-    "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
-    "pretest": "npm run compile && npm run lint",
-    "lint": "eslint src --ext ts",
-    "test": "node ./out/test/runTest.js",
-    "build": "esbuild ./src/extension.js --bundle --outfile=dist/main.js --external:vscode --format=cjs --platform=node --minify"
+    "build": "npm run esbuild-base && npm run vite-build",
+    "esbuild-base": "esbuild ./src/extension.js --bundle --outfile=./out/main.js --external:vscode --format=cjs --platform=node --minify",
+    "vite-build": "tsc -p ./web.tsconfig.json && vite build ./src/web/",
+    "dev": "vite ./src/web/"
   },
   "devDependencies": {
     "@types/body-parser": "^1.19.2",
@@ -45,7 +42,8 @@
     "eslint": "^8.20.0",
     "glob": "^8.0.3",
     "mocha": "^10.0.0",
-    "typescript": "^4.7.4"
+    "typescript": "^4.7.4",
+    "vite": "^3.1.0"
   },
   "dependencies": {
     "@octokit/rest": "^19.0.4",
