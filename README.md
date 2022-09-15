@@ -1,4 +1,4 @@
-#NOTE! THIS README IS NOT VALID YET AS THE PROJECT IS STILL IN PROGRESS
+# NOTE! THIS README IS NOT VALID YET AS THE PROJECT IS STILL IN PROGRESS
 
 ![GitHub](https://img.shields.io/github/license/MIMJA156/time-tracker-ts-dev?style=plastic)
 
