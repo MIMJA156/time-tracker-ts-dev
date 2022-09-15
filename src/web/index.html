@@ -11,23 +11,111 @@
 <body>
     <main>
         <div id="bar-top">
-            <button id="date-back"><img src="./svgs/chevron-left.svg"><span>Back One Week</span></button>
+            <button id="date-back"><img src="./chevron-left.svg"><span>Back One Week</span></button>
             <span id="date-content">Some Filler Content!!!</span>
-            <button id="date-forward"><span>Forward One Week</span> <img src="./svgs/chevron-right.svg"></button>
+            <button id="date-forward"><span>Forward One Week</span> <img src="./chevron-right.svg"></button>
         </div>
         <div id="main-time-chart-container">
             <canvas id="mainTimeChart"></canvas>
             <span></span>
         </div>
         <div id="bar-bottom">
-            <button id="open-options"><img src="./svgs/gear-solid.svg"></button>
+            <button id="open-options"><img src="./gear-solid.svg"></button>
             <span id="sanity-content">Current Sanity: 100%</span>
-            <img id="status-img" src="./svgs/spinner.svg" title="Fetching Data...">
+            <img id="status-img" src="./spinner.svg" title="Fetching Data...">
         </div>
     </main>
-    <div id="dynamic-window-holder"></div>
+    <div id="dynamic-window-holder">
+        <div class="dynamic-window-template-holder" id="dynamic-window-1">
+            <div class="window-header">
+                <span>Options</span>
+                <button class="window-action-button" onclick="closeWindow()"><img title="Close"
+                        src="./close.svg"></button>
+            </div>
+            <div class="window-body">
+                <div class="window-cell">
+                    <div class="window-cell-left">
+                        <span class="window-option-text">Github</span>
+                    </div>
+                    <div class="window-cell-right">
+                        <button class="window-button window-button-black window-button-disabled">Link</button>
+                    </div>
+                </div>
+                <div class="window-cell">
+                    <div class="window-cell-left">
+                        <span class="window-option-text">Settings</span>
+                    </div>
+                    <div class="window-cell-right">
+                        <button class="window-button window-button-black" onclick="loadWindow(2)">Open</button>
+                    </div>
+                </div>
+                <div class="window-cell no-border">
+                    <div class="window-cell-left">
+                        <span class="window-option-text">Support Me</span>
+                    </div>
+                    <div class="window-cell-right">
+                        <button class="window-button window-button-black" onclick="loadWindow(3)">Open</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="dynamic-window-template-holder" id="dynamic-window-2">
+            <div class="window-header">
+                <span>Settings</span>
+                <button class="window-action-button"><img title="Back" src="./chevron-right.svg"
+                        onclick="loadWindow(1)"></button>
+                <button class="window-action-button" onclick="closeWindow()"><img title="Close"
+                        src="./close.svg"></button>
+            </div>
+            <div class="window-body">
+                <div class="window-cell">
+                    <i>No Settings Yet</i>
+                </div>
+            </div>
+        </div>
+        <div class="dynamic-window-template-holder" id="dynamic-window-3">
+            <div class="window-header">
+                <span>Support Me</span>
+                <button class="window-action-button"><img title="Back" src="./chevron-right.svg"
+                        onclick="loadWindow(1)"></button>
+                <button class="window-action-button" onclick="closeWindow()"><img title="Close"
+                        src="./close.svg"></button>
+            </div>
+            <div class="window-body">
+                <div class="window-cell">
+                    <div class="window-cell-left">
+                        <a href="https://www.buymeacoffee.com/mimja156" target="_blank">
+                            <button class="support-me-btn bmac">Buy Me A Coffee</button>
+                        </a>
+                    </div>
+                    <div class="window-cell-right"></div>
+                </div>
+                <div class="window-cell">
+                    <div class="window-cell-left">
+                        <a href="https://www.paypal.com/donate/?business=X7XDWSPAWFDMC&no_recurring=0&currency_code=USD"
+                            target="_blank">
+                            <button class="support-me-btn paypal">PayPal</button>
+                        </a>
+                    </div>
+                    <div class="window-cell-right"></div>
+                </div>
+                <div class="window-cell">
+                    <div class="window-cell-left">
+                        <a href="https://cash.app/$Mimja156" target="_blank">
+                            <button class="support-me-btn cash-app">Cash App</button>
+                        </a>
+                    </div>
+                    <div class="window-cell-right"></div>
+                </div>
+                <div class="window-cell no-border">
+                    Thank You for the Support!
+                </div>
+            </div>
+        </div>
+    </div>
     <div id="notifaction-popup"></div>
 </body>
-<script src="./src/main.ts"></script>
+
+<script type="module" src="./src/main.ts"></script>
 
 </html>
