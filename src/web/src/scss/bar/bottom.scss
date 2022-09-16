@@ -12,6 +12,13 @@
     height: 70%;
 }
 
+#open-options:hover>img {
+    animation-name: rotate;
+    animation-duration: 4s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
 #status-img {
     float: right;
     width: 35px;
@@ -27,4 +34,10 @@
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: 20px;
+}
+
+@keyframes rotate {
+    100% {
+        rotate: 360deg;
+    }
 }
