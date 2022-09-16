@@ -1,4 +1,5 @@
 @import "./button.scss";
+@import "./input.scss";
 
 #dynamic-window-holder {
     display: none;
@@ -65,15 +66,23 @@
 .window-cell-left {
     float: left;
     width: 50%;
+    text-align: left;
 }
 
 .window-cell-right {
     float: right;
     width: 50%;
+    text-align: right;
+}
+
+.window-cell-center {
+    align-self: center;
+    text-align: center;
 }
 
 .dynamic-window-template-holder {
     display: none;
+    width: 100%;
 }
 
 .window-option-text {

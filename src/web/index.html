@@ -11,9 +11,9 @@
 <body>
     <main>
         <div id="bar-top">
-            <button id="date-back"><img src="./chevron-left.svg"><span>Back One Week</span></button>
-            <span id="date-content">Some Filler Content!!!</span>
-            <button id="date-forward"><span>Forward One Week</span> <img src="./chevron-right.svg"></button>
+            <button id="current-graph-date"><span>Thu, Sep 15</span></button>
+            <span id="current-local-date">Today is Thu, Sep 15</span>
+            <button id="open-day-picker"><img src="./calendar.svg"></button>
         </div>
         <div id="main-time-chart-container">
             <canvas id="mainTimeChart"></canvas>
@@ -35,18 +35,18 @@
             <div class="window-body">
                 <div class="window-cell">
                     <div class="window-cell-left">
-                        <span class="window-option-text">Github</span>
-                    </div>
-                    <div class="window-cell-right">
-                        <button class="window-button window-button-black">Link</button>
-                    </div>
-                </div>
-                <div class="window-cell">
-                    <div class="window-cell-left">
                         <span class="window-option-text">Settings</span>
                     </div>
                     <div class="window-cell-right">
                         <button class="window-button window-button-black" onclick="loadWindow(2)">Open</button>
+                    </div>
+                </div>
+                <div class="window-cell">
+                    <div class="window-cell-left">
+                        <span class="window-option-text">Github</span>
+                    </div>
+                    <div class="window-cell-right">
+                        <button class="window-button window-button-black" onclick="loadWindow(4)">Open</button>
                     </div>
                 </div>
                 <div class="window-cell no-border">
@@ -83,35 +83,77 @@
             </div>
             <div class="window-body">
                 <div class="window-cell">
-                    <div class="window-cell-left">
+                    <div class="window-cell-center">
                         <a href="https://www.buymeacoffee.com/mimja156" target="_blank">
-                            <button class="support-me-btn bmac">Buy Me A Coffee</button>
+                            <button class="window-button window-button-buy-me-a-coffee">Buy Me A Coffee</button>
                         </a>
                     </div>
-                    <div class="window-cell-right"></div>
                 </div>
                 <div class="window-cell">
-                    <div class="window-cell-left">
+                    <div class="window-cell-center">
                         <a href="https://www.paypal.com/donate/?business=X7XDWSPAWFDMC&no_recurring=0&currency_code=USD"
                             target="_blank">
-                            <button class="support-me-btn paypal">PayPal</button>
+                            <button class="window-button window-button-paypal">PayPal</button>
                         </a>
                     </div>
-                    <div class="window-cell-right"></div>
                 </div>
                 <div class="window-cell">
-                    <div class="window-cell-left">
+                    <div class="window-cell-center">
                         <a href="https://cash.app/$Mimja156" target="_blank">
-                            <button class="support-me-btn cash-app">Cash App</button>
+                            <button class="window-button window-button-cash-app">Cash App</button>
                         </a>
                     </div>
-                    <div class="window-cell-right"></div>
                 </div>
                 <div class="window-cell no-border">
                     Thank You for the Support!
                 </div>
             </div>
         </div>
+        <div class="dynamic-window-template-holder" id="dynamic-window-4">
+            <div class="window-header">
+                <span>Github</span>
+                <button class="window-action-button"><img title="Back" src="./chevron-right.svg"
+                        onclick="loadWindow(1)"></button>
+                <button class="window-action-button" onclick="closeWindow()"><img title="Close"
+                        src="./close.svg"></button>
+            </div>
+            <div class="window-body">
+                <div class="window-cell">
+                    <div class="window-cell-center">
+                        <span>
+                            There is currently <b>No</b> Github account linked!
+                            <br>
+                            <a href="#">Link a Github Account?</a>
+                        </span>
+                    </div>
+                </div>
+                <div class="window-cell">
+                    <div class="window-cell-left">
+                        <span class="window-option-text">Account Name</span>
+                    </div>
+                    <div class="window-cell-right">
+                        <span class="window-option-text">null</span>
+                    </div>
+                </div>
+                <div class="window-cell">
+                    <div class="window-cell-left">
+                        <span class="window-option-text">Gist ID</span>
+                    </div>
+                    <div class="window-cell-right">
+                        <input type="text" class="window-text-input" value="null">
+                    </div>
+                </div>
+                <div class="window-cell">
+                    <div class="window-cell-left">
+                        <span class="window-option-text">Unlink Account</span>
+                    </div>
+                    <div class="window-cell-right">
+                        <button class="window-button window-button-red window-button-disabled">Continue</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     </div>
     <div id="notifaction-popup"></div>
 </body>

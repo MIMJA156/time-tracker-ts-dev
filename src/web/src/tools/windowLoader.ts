@@ -1,5 +1,4 @@
 import $ from "jquery";
-import { defineNewWindowHeader } from "../ts/windows/movement";
 let firstLoad = false;
 let previousHolder: JQuery<HTMLElement>;
 
@@ -14,7 +13,7 @@ export function loadWindow(windowId: number) {
 }
 
 export function toggleWindow() {
-    if ($("#dynamic-window-holder").css("display") === "block") {
+    if ($("#dynamic-window-holder").css("display") === "flex") {
         closeWindow();
     } else {
         openWindow();
@@ -28,5 +27,5 @@ export function closeWindow() {
 
 export function openWindow() {
     if (!firstLoad) { return; }
-    $("#dynamic-window-holder").css("display", "block");
+    $("#dynamic-window-holder").css("display", "flex");
 }

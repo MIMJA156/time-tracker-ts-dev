@@ -20,12 +20,24 @@
     }
 }
 
-.window-button-disabled {
-    text-decoration: line-through 2px;
+.window-button-red {
+    background-color: #F32013;
+    color: white;
 }
 
-.window-button-bmay {}
+.window-button-disabled {
+    text-decoration: line-through 2px;
+    filter: brightness(0.5);
+}
 
-.window-button-paypal {}
+.window-button-buy-me-a-coffee {
+    background-color: #FD0;
+}
 
-.window-button-cash-app {}
+.window-button-paypal {
+    background-color: #0096ec;
+}
+
+.window-button-cash-app {
+    background-color: #00D632;
+}

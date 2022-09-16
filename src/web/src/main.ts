@@ -3,6 +3,7 @@ import { closeWindow, loadWindow } from "./tools/windowLoader";
 
 import "./ts/windows/options";
 import "./ts/windows/movement";
+import "./ts/windows/settings";
 
 // @ts-ignore
 window.loadWindow = loadWindow;
