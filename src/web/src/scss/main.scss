@@ -1,10 +1,20 @@
-@import "./bar/main.scss";
-@import "./chart/time.scss";
-@import "./window/main.scss";
-@import "./calender/main.scss";
+@import "./main-window/bar.scss";
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans&display=swap');
 
 body {
     margin: 0;
     padding: 0;
-    overflow: hidden;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+}
+
+.click {
+    &-allowed {
+        cursor: pointer;
+    }
+
+    &-disabled {
+        cursor: not-allowed;
+    }
 }

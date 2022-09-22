@@ -1,17 +1,19 @@
+import Alwan from "alwan";
+import "alwan/dist/css/alwan.min.css";
+
 import "./scss/main.scss";
-import "@fortawesome/fontawesome-free";
 
-import { closeWindow, loadWindow } from "./tools/windowLoader";
+console.log("Hello World!");
 
-import "./ts/windows/options";
-import "./ts/windows/movement";
-import "./ts/windows/settings";
 
-import "./ts/calender/scripts";
-
-// @ts-ignore
-window.loadWindow = loadWindow;
-// @ts-ignore
-window.closeWindow = closeWindow;
-
-loadWindow(1);
+/*
+const alwan = new Alwan('#reference', {
+    popover: true,
+    position: "right",
+    inputs: {
+        rgb: false,
+        hex: false,
+        hsl: false,
+    }
+});
+*/

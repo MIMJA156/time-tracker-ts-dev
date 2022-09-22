@@ -5,158 +5,22 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Time Tracker</title>
+    <title>Time Tracker GUI</title>
 </head>
 
 <body>
     <main>
-        <div id="bar-top">
-            <button id="current-graph-date"><span>Thu, Sep 15</span></button>
-            <span id="current-local-date">Today is Thu, Sep 15</span>
-            <button id="open-day-picker"><img src="./calendar.svg"></button>
+        <div class="main-window-bar-top">
+            <div class="left"><span class="selected click-allowed">Sel. Thur, Sep 15</span></div>
+            <div class="center"><span class="click-allowed">Today. Thur, Sep 18</span></div>
+            <div class="right"><img class="right click-allowed" src="./calender.svg"></div>
         </div>
-        <div id="main-time-chart-container">
-            <canvas id="mainTimeChart"></canvas>
-            <span></span>
-        </div>
-        <div id="bar-bottom">
-            <button id="open-options"><img src="./gear-solid.svg"></button>
-            <span id="sanity-content">Current Sanity: 100%</span>
-            <img id="status-img" src="./spinner.svg" title="Fetching Data...">
+        <div class="main-window-bar-bottom">
+            <div class="left"><img class="left click-allowed spin" src="./gear.svg"></div>
+            <div class="center"><span class="click-allowed">Sanity: 100%</span></div>
+            <div class="right"><img class="right click-allowed" src="./check.svg"></div>
         </div>
     </main>
-    <div id="dynamic-window-holder">
-        <div class="dynamic-window-template-holder" id="dynamic-window-1">
-            <div class="window-header">
-                <span>Options</span>
-                <button class="window-action-button" onclick="closeWindow()"><img title="Close"
-                        src="./close.svg"></button>
-            </div>
-            <div class="window-body">
-                <div class="window-cell">
-                    <div class="window-cell-left">
-                        <span class="window-option-text">Settings</span>
-                    </div>
-                    <div class="window-cell-right">
-                        <button class="window-button window-button-black" onclick="loadWindow(2)">Open</button>
-                    </div>
-                </div>
-                <div class="window-cell">
-                    <div class="window-cell-left">
-                        <span class="window-option-text">Github</span>
-                    </div>
-                    <div class="window-cell-right">
-                        <button class="window-button window-button-black" onclick="loadWindow(4)">Open</button>
-                    </div>
-                </div>
-                <div class="window-cell no-border">
-                    <div class="window-cell-left">
-                        <span class="window-option-text">Support Me</span>
-                    </div>
-                    <div class="window-cell-right">
-                        <button class="window-button window-button-black" onclick="loadWindow(3)">Open</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="dynamic-window-template-holder" id="dynamic-window-2">
-            <div class="window-header">
-                <span>Settings</span>
-                <button class="window-action-button"><img title="Back" src="./chevron-right.svg"
-                        onclick="loadWindow(1)"></button>
-                <button class="window-action-button" onclick="closeWindow()"><img title="Close"
-                        src="./close.svg"></button>
-            </div>
-            <div class="window-body">
-                <div class="window-cell">
-                    <i>No Settings Yet</i>
-                </div>
-            </div>
-        </div>
-        <div class="dynamic-window-template-holder" id="dynamic-window-3">
-            <div class="window-header">
-                <span>Support Me</span>
-                <button class="window-action-button"><img title="Back" src="./chevron-right.svg"
-                        onclick="loadWindow(1)"></button>
-                <button class="window-action-button" onclick="closeWindow()"><img title="Close"
-                        src="./close.svg"></button>
-            </div>
-            <div class="window-body">
-                <div class="window-cell">
-                    <div class="window-cell-center">
-                        <a href="https://www.buymeacoffee.com/mimja156" target="_blank">
-                            <button class="window-button window-button-buy-me-a-coffee">Buy Me A Coffee</button>
-                        </a>
-                    </div>
-                </div>
-                <div class="window-cell">
-                    <div class="window-cell-center">
-                        <a href="https://www.paypal.com/donate/?business=X7XDWSPAWFDMC&no_recurring=0&currency_code=USD"
-                            target="_blank">
-                            <button class="window-button window-button-paypal">PayPal</button>
-                        </a>
-                    </div>
-                </div>
-                <div class="window-cell">
-                    <div class="window-cell-center">
-                        <a href="https://cash.app/$Mimja156" target="_blank">
-                            <button class="window-button window-button-cash-app">Cash App</button>
-                        </a>
-                    </div>
-                </div>
-                <div class="window-cell no-border">
-                    Thank You for the Support!
-                </div>
-            </div>
-        </div>
-        <div class="dynamic-window-template-holder" id="dynamic-window-4">
-            <div class="window-header">
-                <span>Github</span>
-                <button class="window-action-button"><img title="Back" src="./chevron-right.svg"
-                        onclick="loadWindow(1)"></button>
-                <button class="window-action-button" onclick="closeWindow()"><img title="Close"
-                        src="./close.svg"></button>
-            </div>
-            <div class="window-body">
-                <div class="window-cell">
-                    <div class="window-cell-center">
-                        <span>
-                            There is currently <b>No</b> Github account linked!
-                            <br>
-                            <a href="#">Link a Github Account?</a>
-                        </span>
-                    </div>
-                </div>
-                <div class="window-cell">
-                    <div class="window-cell-left">
-                        <span class="window-option-text">Account Name</span>
-                    </div>
-                    <div class="window-cell-right">
-                        <span class="window-option-text">null</span>
-                    </div>
-                </div>
-                <div class="window-cell">
-                    <div class="window-cell-left">
-                        <span class="window-option-text">Gist ID</span>
-                    </div>
-                    <div class="window-cell-right">
-                        <input type="text" class="window-text-input" value="null">
-                    </div>
-                </div>
-                <div class="window-cell">
-                    <div class="window-cell-left">
-                        <span class="window-option-text">Unlink Account</span>
-                    </div>
-                    <div class="window-cell-right">
-                        <button class="window-button window-button-red window-button-disabled">Continue</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    </div>
-    <div id="notifaction-popup"></div>
-    <div id="calendar-container"></div>
 </body>
 
 <script type="module" src="./src/main.ts"></script>
