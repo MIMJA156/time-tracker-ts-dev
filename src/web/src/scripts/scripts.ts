@@ -1,7 +1,7 @@
 import $ from "jquery";
 import { makeDraggable } from "./tools/draggable";
 
-import "./modules/calender";
+import "./modules/calendar";
 
 let draggableElements = $(".draggable");
 if (draggableElements) {
