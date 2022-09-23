@@ -1,0 +1,36 @@
+.selection-calender {
+    width: 400px;
+    height: 460px;
+    border: $small-header-border solid black;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #ECECEC;
+
+    div.weeks-holder {
+        width: 100%;
+        height: calc(100% - (($small-header-height + $small-header-border) * 2));
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        div {
+            height: 40px;
+            width: 80%;
+            border: $small-header-border solid black;
+            margin-top: 6px;
+            margin-bottom: 6px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            cursor: pointer;
+        }
+
+        div:nth-child(1) {
+            margin-top: 15px;
+        }
+    }
+}

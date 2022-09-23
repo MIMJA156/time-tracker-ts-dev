@@ -1,0 +1,72 @@
+@import "./vars";
+@import "./main-window/bar.scss";
+@import "./main-window/calender.scss";
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans&display=swap');
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+}
+
+.click {
+    &-allowed {
+        cursor: pointer;
+    }
+
+    &-disabled {
+        cursor: not-allowed;
+    }
+}
+
+.small-header {
+    height: $small-header-height;
+    width: 100%;
+    border-bottom: $small-header-border solid black;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    font-size: 22px;
+
+    &.draggable {
+        cursor: move;
+    }
+
+    &:nth-child(2) {
+        grid-template-columns: 30% 40% 30%;
+    }
+
+    div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        button {
+            width: $small-header-height;
+            height: $small-header-height;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: transparent;
+            border: none;
+
+            img {
+                height: calc($small-header-height / 2);
+            }
+        }
+
+        span {
+            padding-left: 10px;
+        }
+    }
+
+    div.right {
+        justify-content: flex-end;
+    }
+
+    div.left {
+        justify-content: flex-start;
+    }
+}
