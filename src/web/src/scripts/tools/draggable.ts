@@ -1,7 +1,11 @@
+import $ from "jquery";
+
 export function makeDraggable(headerElement: HTMLElement, bodyElement: HTMLElement) {
     let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
 
     headerElement.addEventListener("mousedown", (ev) => {
+        let targetJ = $(ev.target!);
+        if (targetJ.prop("nodeName") === "IMG" || targetJ.prop("nodeName") === "BUTTON") { return; }
         document.addEventListener("mousemove", update);
 
         ev.preventDefault();

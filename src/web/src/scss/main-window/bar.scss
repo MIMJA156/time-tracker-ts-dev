@@ -3,7 +3,7 @@
     position: fixed;
     width: 100%;
     height: $bar-height;
-    background-color: rgb(235, 235, 235);
+    background-color: $bar-background;
     display: grid;
     grid-template-columns: 25% 50% 25%;
 

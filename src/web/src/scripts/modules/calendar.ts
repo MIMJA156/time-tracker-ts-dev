@@ -1,9 +1,10 @@
 import $ from "jquery";
-const dayIndex = {
+import { openCell } from "./calenderDayView";
+export const dayIndex = {
     full: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
 };
 
-const monthIndex = {
+export const monthIndex = {
     full: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
     short: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
 };
@@ -16,8 +17,9 @@ let calenderOffset = 0;
 
 updateWindow(getDateValues());
 
-export function moveCalender(direction: number) {
+export function moveCalender(direction: number, reset = false) {
     calenderOffset += direction;
+    if (reset) { calenderOffset = 0; }
     updateWindow(getDateValues(calenderOffset));
 }
 
@@ -27,13 +29,34 @@ function updateWindow(values: { month: any; year: any; weeks: any; }) {
     cellHolder.html("");
 
     for (let i = 0; i < values.weeks.length; i++) {
+        let id = `calender-item-${i + 1}`;
         const cell = `
-            <div>
+            <div id="${id}" first-day="${values.weeks[i].first.day}" last-day="${values.weeks[i].last.day}" first-month="${values.weeks[i].first.month}" last-month="${values.weeks[i].last.month}" days-contained='${JSON.stringify(values.weeks[i].days)}'>
                 <span>${monthIndex.short[values.weeks[i].first.month]} ${values.weeks[i].first.day} - ${monthIndex.short[values.weeks[i].last.month]} ${values.weeks[i].last.day}</span>
             </div>
         `;
 
         cellHolder.append(cell);
+        $("#" + id).on("click", (e) => {
+            let firstDay = parseInt(e.delegateTarget.getAttribute("first-day")!),
+                firstMonth = parseInt(e.delegateTarget.getAttribute("first-month")!),
+                lastDay = parseInt(e.delegateTarget.getAttribute("last-day")!),
+                lastMonth = parseInt(e.delegateTarget.getAttribute("last-month")!),
+                daysContained = JSON.parse(e.delegateTarget.getAttribute("days-contained")!);
+
+            console.log(firstDay, firstMonth + 1, lastDay, lastMonth + 1);
+            openCell({
+                first: {
+                    day: firstDay,
+                    month: firstMonth
+                },
+                last: {
+                    day: lastDay,
+                    month: lastMonth
+                },
+                days: daysContained
+            });
+        });
     }
 }
 
@@ -76,9 +99,16 @@ function getDateValues(offset = 0) {
     let weeks: object[] = [];
 
     for (let i = 0; i < days.length / 7; i++) {
+        let daysContained: object[] = [];
+
+        for (let j = 7; j > 0; j--) {
+            daysContained.push(days[j + (7 * i - 1)]);
+        }
+
         weeks[i] = {
-            first: days[(7 * ((i + 1) - 1))],
-            last: days[(7 * (i + 1) - 1)]
+            first: days[(7 * i)],
+            last: days[(7 * (i + 1) - 1)],
+            days: daysContained.reverse()
         };
     }
 

@@ -12,7 +12,8 @@
     <main>
         <div class="main-window-bar-top">
             <div class="left"><span class="selected click-allowed">Sel. Thur, Sep 15</span></div>
-            <div class="center"><span class="click-allowed">Today. Thur, Sep 18</span></div>
+            <div class="center"><span class="click-allowed" onclick="moveCalender(0, true)">Today. Thur, Sep 18</span>
+            </div>
             <div class="right"><img class="right click-allowed" src="./calendar.svg"></div>
         </div>
         <div class="main-window-bar-bottom">
@@ -22,36 +23,59 @@
         </div>
     </main>
     <div class="selection-calendar">
-        <div class="small-header draggable">
-            <div class="left">
-                <span>Selection Calendar</span>
+        <div class="id-1 active">
+            <div class="small-header two draggable">
+                <div class="left">
+                    <span>Selection Calendar</span>
+                </div>
+                <div class="right">
+                    <button>
+                        <img src="./close.svg">
+                    </button>
+                </div>
             </div>
-            <div class="right">
-                <button>
-                    <img src="./close.svg">
-                </button>
+            <div class="small-header three">
+                <div class="left">
+                    <button onclick="moveCalender(-1)">
+                        <img src="./chevron-left.svg">
+                    </button>
+                </div>
+                <div class="center">
+                    <span id="date-month"></span>
+                    <span id="date-year"></span>
+                </div>
+                <div class="right">
+                    <button onclick="moveCalender(1)">
+                        <img src="./chevron-right.svg">
+                    </button>
+                </div>
+            </div>
+            <div class="weeks-holder" id="weeks-holder">
+                <div>
+                    <span>Loading Weeks...</span>
+                </div>
             </div>
         </div>
-        <div class="small-header">
-            <div class="left">
-                <button onclick="moveCalender(-1)">
-                    <img src="./chevron-left.svg">
-                </button>
+        <div class="id-2">
+            <div class="small-header two draggable">
+                <div class="left">
+                    <span>Day View</span>
+                </div>
+                <div class="right">
+                    <button onclick="openWindowFromId(`selection-calendar`, 1)">
+                        <img src="./chevron-left.svg">
+                    </button>
+                    <button>
+                        <img src="./close.svg">
+                    </button>
+                </div>
             </div>
-            <div class="center">
-                <span id="date-month"></span>
-                <span id="date-year"></span>
+            <div class="small-header one">
+                <div class="center">
+                    <span id="day-week"></span>
+                </div>
             </div>
-            <div class="right">
-                <button onclick="moveCalender(1)">
-                    <img src="./chevron-right.svg">
-                </button>
-            </div>
-        </div>
-        <div class="weeks-holder" id="weeks-holder">
-            <div>
-                <span>Loading Weeks...</span>
-            </div>
+            <div class="days-holder" id="days-holder"></div>
         </div>
     </div>
 </body>
