@@ -34,38 +34,23 @@
         </div>
         <div class="small-header">
             <div class="left">
-                <button>
+                <button onclick="moveCalender(-1)">
                     <img src="./chevron-left.svg">
                 </button>
             </div>
             <div class="center">
-                <span>February</span>
-                <span>2022</span>
+                <span id="date-month"></span>
+                <span id="date-year"></span>
             </div>
             <div class="right">
-                <button>
+                <button onclick="moveCalender(1)">
                     <img src="./chevron-right.svg">
                 </button>
             </div>
         </div>
-        <div class="weeks-holder">
+        <div class="weeks-holder" id="weeks-holder">
             <div>
-                <span>Week of the 1st</span>
-            </div>
-            <div>
-                <span>Week of the 2nd</span>
-            </div>
-            <div>
-                <span>Week of the 3rd</span>
-            </div>
-            <div>
-                <span>Week of the 4th</span>
-            </div>
-            <div>
-                <span>Week of the 5th</span>
-            </div>
-            <div>
-                <span>Week of the 6th</span>
+                <span>Loading Weeks...</span>
             </div>
         </div>
     </div>

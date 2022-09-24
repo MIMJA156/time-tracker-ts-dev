@@ -1,7 +1,7 @@
 import $ from "jquery";
 import { makeDraggable } from "./tools/draggable";
 
-import "./modules/calendar";
+import { moveCalender } from "./modules/calendar";
 
 let draggableElements = $(".draggable");
 if (draggableElements) {
@@ -9,3 +9,6 @@ if (draggableElements) {
         makeDraggable(element, element.parentElement!);
     }
 }
+
+// @ts-ignore
+window.moveCalender = moveCalender;
