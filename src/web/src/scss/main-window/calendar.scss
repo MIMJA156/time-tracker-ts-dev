@@ -14,25 +14,6 @@
         flex-direction: column;
         align-items: center;
 
-        div {
-            height: 40px;
-            width: 80%;
-            border: $small-header-border solid black;
-            margin-top: 6px;
-            margin-bottom: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-            cursor: pointer;
-            transition: .4s;
-            background-color: $bar-background;
-
-            &:hover {
-                filter: brightness(0.8);
-            }
-        }
-
         div:nth-child(1) {
             margin-top: 15px;
         }
@@ -65,8 +46,48 @@
             &.selected {
                 background-color: $matt-black;
                 color: white;
-                border: 2px dashed grey;
+                border: 2px dashed #E0EEEE;
             }
+        }
+    }
+
+    div.weeks-cell {
+        height: 40px;
+        width: 80%;
+        border: $small-header-border solid black;
+        margin-top: 6px;
+        margin-bottom: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        transition: .4s;
+        background-color: $bar-background;
+
+        &.hover {
+            cursor: pointer;
+        }
+
+        &.hover:hover {
+            filter: brightness(0.8);
+        }
+
+        &.no-margin {
+            margin: 0;
+        }
+    }
+
+    div.week-view-title {
+        margin-top: 10px;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+
+        >span {
+            font-size: 16px;
+            width: 324px;
         }
     }
 

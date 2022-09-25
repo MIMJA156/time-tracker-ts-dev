@@ -31,7 +31,7 @@ function updateWindow(values: { month: any; year: any; weeks: any; }) {
     for (let i = 0; i < values.weeks.length; i++) {
         let id = `calender-item-${i + 1}`;
         const cell = `
-            <div id="${id}">
+            <div id="${id}" class="weeks-cell hover">
                 <span>${monthIndex.short[values.weeks[i].first.month]} ${values.weeks[i].first.day} - ${monthIndex.short[values.weeks[i].last.month]} ${values.weeks[i].last.day}</span>
             </div>
         `;
