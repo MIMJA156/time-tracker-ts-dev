@@ -31,30 +31,23 @@ function updateWindow(values: { month: any; year: any; weeks: any; }) {
     for (let i = 0; i < values.weeks.length; i++) {
         let id = `calender-item-${i + 1}`;
         const cell = `
-            <div id="${id}" first-day="${values.weeks[i].first.day}" last-day="${values.weeks[i].last.day}" first-month="${values.weeks[i].first.month}" last-month="${values.weeks[i].last.month}" days-contained='${JSON.stringify(values.weeks[i].days)}'>
+            <div id="${id}">
                 <span>${monthIndex.short[values.weeks[i].first.month]} ${values.weeks[i].first.day} - ${monthIndex.short[values.weeks[i].last.month]} ${values.weeks[i].last.day}</span>
             </div>
         `;
 
         cellHolder.append(cell);
-        $("#" + id).on("click", (e) => {
-            let firstDay = parseInt(e.delegateTarget.getAttribute("first-day")!),
-                firstMonth = parseInt(e.delegateTarget.getAttribute("first-month")!),
-                lastDay = parseInt(e.delegateTarget.getAttribute("last-day")!),
-                lastMonth = parseInt(e.delegateTarget.getAttribute("last-month")!),
-                daysContained = JSON.parse(e.delegateTarget.getAttribute("days-contained")!);
-
-            console.log(firstDay, firstMonth + 1, lastDay, lastMonth + 1);
+        $("#" + id).on("click", () => {
             openCell({
                 first: {
-                    day: firstDay,
-                    month: firstMonth
+                    day: values.weeks[i].first.day,
+                    month: values.weeks[i].first.month
                 },
                 last: {
-                    day: lastDay,
-                    month: lastMonth
+                    day: values.weeks[i].last.day,
+                    month: values.weeks[i].last.month
                 },
-                days: daysContained
+                days: values.weeks[i].days
             });
         });
     }
@@ -99,16 +92,10 @@ function getDateValues(offset = 0) {
     let weeks: object[] = [];
 
     for (let i = 0; i < days.length / 7; i++) {
-        let daysContained: object[] = [];
-
-        for (let j = 7; j > 0; j--) {
-            daysContained.push(days[j + (7 * i - 1)]);
-        }
-
         weeks[i] = {
             first: days[(7 * i)],
             last: days[(7 * (i + 1) - 1)],
-            days: daysContained.reverse()
+            days: days.slice((i * 7), (i * 7 + 7))
         };
     }
 

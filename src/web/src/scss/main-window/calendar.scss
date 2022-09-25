@@ -29,7 +29,7 @@
             background-color: $bar-background;
 
             &:hover {
-                filter: brightness(0.9);
+                filter: brightness(0.8);
             }
         }
 
@@ -59,7 +59,13 @@
             background-color: $bar-background;
 
             &:hover {
-                filter: brightness(0.9);
+                filter: brightness(0.8);
+            }
+
+            &.selected {
+                background-color: $matt-black;
+                color: white;
+                border: 2px dashed grey;
             }
         }
     }
