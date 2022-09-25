@@ -1,5 +1,5 @@
 import $ from "jquery";
-import { openWindowFromId } from "../tools/toggle";
+import { openWindowPageFromId } from "../tools/toggle";
 import { monthIndex } from "./calendar";
 
 export function openCell(values: TimeValuesInterface) {
@@ -43,7 +43,11 @@ export function openCell(values: TimeValuesInterface) {
         updateDayView(0, values);
     });
 
-    openWindowFromId("selection-calendar", 2);
+    openWindowPageFromId("selection-calendar", 2);
+
+    setTimeout(() => {
+        $("#calender-item-title").click();
+    }, 100);
 }
 
 function updateDayView(updateTo: number, values: TimeValuesInterface) {

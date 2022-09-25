@@ -18,6 +18,7 @@ let calenderOffset = 0;
 updateWindow(getDateValues());
 
 export function moveCalender(direction: number, reset = false) {
+    if (!$(".selection-calendar").hasClass("active")) { return; };
     calenderOffset += direction;
     if (reset) { calenderOffset = 0; }
     updateWindow(getDateValues(calenderOffset));

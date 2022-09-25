@@ -4,7 +4,7 @@ import $ from "jquery";
 import { makeDraggable } from "./tools/draggable";
 
 import { moveCalender } from "./modules/calendar";
-import { openWindowFromId } from "./tools/toggle";
+import { openWindowPageFromId, openWindowFromClass, closeWindowFromClass, toggleWindowFromClass } from "./tools/toggle";
 
 let draggableElements = $(".draggable");
 if (draggableElements) {
@@ -16,4 +16,10 @@ if (draggableElements) {
 // @ts-ignore
 window.moveCalender = moveCalender;
 //@ts-ignore
-window.openWindowFromId = openWindowFromId;
+window.openWindowPageFromId = openWindowPageFromId;
+//@ts-ignore
+window.openWindowFromClass = openWindowFromClass;
+//@ts-ignore
+window.closeWindowFromClass = closeWindowFromClass;
+//@ts-ignore
+window.toggleWindowFromClass = toggleWindowFromClass;

@@ -13,9 +13,10 @@
         <div class="main-window-bar-top">
             <div class="left"><span class="selected click-allowed">Sel. Thur, Sep 15</span></div>
             <div class="center"><span class="click-allowed" onclick="moveCalender(0, true); 
-                    openWindowFromId(`selection-calendar`, 1)">Today. Thur, Sep 18</span>
+                    openWindowPageFromId(`selection-calendar`, 1)">Today. Thur, Sep 18</span>
             </div>
-            <div class="right"><img class="right click-allowed" src="./calendar.svg"></div>
+            <div class="right"><img class="right click-allowed" src="./calendar.svg"
+                    onclick="toggleWindowFromClass(`selection-calendar`)"></div>
         </div>
         <div class="main-window-bar-bottom">
             <div class="left"><img class="left click-allowed spin" src="./gear.svg"></div>
@@ -30,7 +31,7 @@
                     <span>Selection Calendar</span>
                 </div>
                 <div class="right">
-                    <button>
+                    <button onclick="closeWindowFromClass(`selection-calendar`)">
                         <img src="./close.svg">
                     </button>
                 </div>
@@ -63,10 +64,10 @@
                     <span>Day View</span>
                 </div>
                 <div class="right">
-                    <button onclick="openWindowFromId(`selection-calendar`, 1)">
+                    <button onclick="openWindowPageFromId(`selection-calendar`, 1)">
                         <img src="./chevron-left.svg">
                     </button>
-                    <button>
+                    <button onclick="closeWindowFromClass(`selection-calendar`)">
                         <img src="./close.svg">
                     </button>
                 </div>
