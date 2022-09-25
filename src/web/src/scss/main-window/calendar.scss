@@ -63,17 +63,20 @@
         font-size: 22px;
         transition: .4s;
         background-color: $bar-background;
+        cursor: pointer;
 
-        &.hover {
-            cursor: pointer;
-        }
-
-        &.hover:hover {
+        &:hover {
             filter: brightness(0.8);
         }
 
         &.no-margin {
             margin: 0;
+        }
+
+        &.selected {
+            background-color: $matt-black;
+            color: white;
+            border: 2px dashed #E0EEEE;
         }
     }
 
