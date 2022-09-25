@@ -44,10 +44,10 @@ export function runModelMatching() {
         let acquiredData = JSON.parse(readFileSync(file, "utf-8"));
         let acquiredModel = JSON.parse(readFileSync(resolve(__dirname, `./../models/${fileName}.model.json`), "utf-8"));
 
-        let a = (model: { [x: string]: any; }, old: { [x: string]: any; }) => {
+        let innerModelMatching = (model: { [x: string]: any; }, old: { [x: string]: any; }) => {
             Object.keys(model).forEach((key: string) => {
                 if (old[key]) {
-                    old[key] = a(model[key], old[key]);
+                    old[key] = innerModelMatching(model[key], old[key]);
                 } else {
                     let failed = true;
                     Object.keys(acquiredModel.oldIndex).forEach(k => {
@@ -67,7 +67,7 @@ export function runModelMatching() {
                         if (key !== "oldIndex" && !old[key]) {
                             if (model[key]) {
                                 old[key] = {};
-                                old[key] = a(model[key], old[key]);
+                                old[key] = innerModelMatching(model[key], old[key]);
                             } else {
                                 old[key] = "";
                             }
@@ -79,7 +79,7 @@ export function runModelMatching() {
             return old;
         };
 
-        writeFileSync(file, JSON.stringify(a(acquiredModel, acquiredData)));
+        writeFileSync(file, JSON.stringify(innerModelMatching(acquiredModel, acquiredData)));
     });
 }
 
