@@ -1,8 +1,9 @@
 import $ from "jquery";
 import { makeDraggable } from "./tools/draggable";
+import { openWindowPageFromId, openWindowFromClass, closeWindowFromClass, toggleWindowFromClass } from "./tools/toggle";
 
 import { moveCalender } from "./modules/calendar";
-import { openWindowPageFromId, openWindowFromClass, closeWindowFromClass, toggleWindowFromClass } from "./tools/toggle";
+import "./modules/bars";
 
 let draggableElements = $(".draggable");
 if (draggableElements) {

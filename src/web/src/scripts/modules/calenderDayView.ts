@@ -1,8 +1,9 @@
-import $ from "jquery";
+import $, { data } from "jquery";
 import { openWindowPageFromId } from "../tools/toggle";
-import { monthIndex } from "./calendar";
+import { DateWeekInterface } from "./calendar";
+import { monthIndex } from "./../vars";
 
-export function openCell(values: TimeValuesInterface) {
+export function openCell(values: DateWeekInterface) {
     $("#days-holder").html("");
     $("#week-view-title").html("");
 
@@ -27,12 +28,17 @@ export function openCell(values: TimeValuesInterface) {
         });
     }
 
+    let overLappingWeek = values.first.year !== values.last.year ? true : false;
+    let dateString = overLappingWeek ? `Year(s) ` : `Year `;
+    dateString += overLappingWeek ? `${values.first.year}/${values.last.year}` : `${values.first.year}`;
     let cell = `
-        <span>Selected</span>
+        <div class="small-info-bar"><span class="left">Selected</span><span class="right">${dateString}</span></div>
         <div class="weeks-cell no-margin" id="calender-item-title">
-            <span>${monthIndex.short[values.first.month]} ${values.first.day} - ${monthIndex.short[values.last.month]} ${values.last.day}</span>
+            <span>${monthIndex.short[values.first.month - 1]} ${values.first.day} - ${monthIndex.short[values.last.month - 1]} ${values.last.day}</span>
         </div>
     `;
+
+    console.log(values.first.month);
 
     $("#week-view-title").append(cell);
     $("#calender-item-title").on("click", () => {
@@ -50,21 +56,10 @@ export function openCell(values: TimeValuesInterface) {
     }, 100);
 }
 
-function updateDayView(updateTo: number, values: TimeValuesInterface) {
+function updateDayView(updateTo: number, values: DateWeekInterface) {
     if (updateTo === 0) {
         console.log(values);
     } else {
         console.log(values.days[updateTo - 1]);
     }
-}
-interface TimeValuesInterface {
-    first: DayMonthYearInterface
-    last: DayMonthYearInterface
-    days: DayMonthYearInterface[]
-}
-
-interface DayMonthYearInterface {
-    day: number,
-    month: number,
-    year: number
 }

@@ -1,13 +1,7 @@
 import $ from "jquery";
 import { openCell } from "./calenderDayView";
-export const dayIndex = {
-    full: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-};
 
-export const monthIndex = {
-    full: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-    short: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
-};
+import { monthIndex } from "./../vars";
 
 let cellHolder = $("#weeks-holder");
 let monthSpan = $("#date-month");
@@ -24,8 +18,8 @@ export function moveCalender(direction: number, reset = false) {
     updateWindow(getDateValues(calenderOffset));
 }
 
-function updateWindow(values: { month: any; year: any; weeks: any; }) {
-    monthSpan.text(monthIndex.full[values.month]);
+function updateWindow(values: DateValuesInterface) {
+    monthSpan.text(monthIndex.full[values.month - 1]);
     yearSpan.text(values.year);
     cellHolder.html("");
 
@@ -33,77 +27,85 @@ function updateWindow(values: { month: any; year: any; weeks: any; }) {
         let id = `calender-item-${i + 1}`;
         const cell = `
             <div id="${id}" class="weeks-cell hover">
-                <span>${monthIndex.short[values.weeks[i].first.month]} ${values.weeks[i].first.day} - ${monthIndex.short[values.weeks[i].last.month]} ${values.weeks[i].last.day}</span>
+                <span>${monthIndex.short[values.weeks[i].first.month - 1]} ${values.weeks[i].first.day} - ${monthIndex.short[values.weeks[i].last.month - 1]} ${values.weeks[i].last.day}</span>
             </div>
         `;
 
         cellHolder.append(cell);
         $("#" + id).on("click", () => {
-            openCell({
-                first: {
-                    day: values.weeks[i].first.day,
-                    month: values.weeks[i].first.month,
-                    year: values.weeks[i].first.year
-                },
-                last: {
-                    day: values.weeks[i].last.day,
-                    month: values.weeks[i].last.month,
-                    year: values.weeks[i].last.year
-                },
-                days: values.weeks[i].days
-            });
+            openCell(values.weeks[i]);
         });
     }
 }
 
-function getDateValues(offset = 0) {
-    const currentDate = new Date();
-    currentDate.setDate(1);
-    currentDate.setMonth(currentDate.getMonth() + offset);
+function getDateValues(offset = 0): DateValuesInterface {
+    const initialDate = new Date();
+    initialDate.setDate(1);
+    initialDate.setMonth(initialDate.getMonth() + offset);
 
-    const currentMonth = currentDate.getMonth();
-    const currentYear = currentDate.getFullYear();
+    let currentDate = new Date(initialDate.getFullYear(), initialDate.getMonth() + 1, 0);
+    let pastDate = new Date(initialDate.getFullYear(), initialDate.getMonth(), 0);
+    let futureDate = new Date(initialDate.getFullYear(), initialDate.getMonth() + 2, 0);
 
-    const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
-    const lastDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 0);
+    let currentMonth = currentDate.getMonth() + 1;
+    let pastMonth = pastDate.getMonth() + 1;
+    let futureMonth = futureDate.getMonth() + 1;
 
-    const lastDayIndex = 7 - firstDay.getDay() - 1;
+    let lastDayCount = (7 - currentDate.getDay()) - 1;
 
-    let days: object[] = [];
+    let calenderDays: DateDayInterface[] = [];
 
-    for (let i = currentDate.getDay(); i > 0; i--) {
-        days.push({
-            day: lastDay.getDate() - i + 1,
-            month: currentDate.getMonth() - 1 === -1 ? 11 : currentDate.getMonth() - 1,
-            year: currentDate.getFullYear() - 1
+    for (let i = initialDate.getDay(); i > 0; i--) {
+        calenderDays.push({
+            day: (pastDate.getDate() - i) + 1,
+            month: pastMonth,
+            year: pastDate.getFullYear()
         });
     }
 
-    for (let i = 1; i <= firstDay.getDate(); i++) {
-        days.push({
+    for (let i = 1; i <= currentDate.getDate(); i++) {
+        calenderDays.push({
             day: i,
-            month: currentDate.getMonth(),
+            month: currentMonth,
             year: currentDate.getFullYear()
         });
     }
 
-    for (let i = 1; i <= lastDayIndex; i++) {
-        days.push({
+    for (let i = 1; i <= lastDayCount; i++) {
+        calenderDays.push({
             day: i,
-            month: currentDate.getMonth() + 1 === 12 ? 0 : currentDate.getMonth() + 1,
-            year: currentDate.getFullYear() + 1
+            month: futureMonth,
+            year: futureDate.getFullYear()
         });
     }
 
-    let weeks: object[] = [];
+    let weeks: DateWeekInterface[] = [];
 
-    for (let i = 0; i < days.length / 7; i++) {
+    for (let i = 0; i < calenderDays.length / 7; i++) {
         weeks[i] = {
-            first: days[(7 * i)],
-            last: days[(7 * (i + 1) - 1)],
-            days: days.slice((i * 7), (i * 7 + 7))
+            first: calenderDays[(7 * i)],
+            last: calenderDays[(7 * (i + 1) - 1)],
+            days: calenderDays.slice((i * 7), (i * 7 + 7))
         };
     }
 
-    return { month: currentMonth, year: currentYear, weeks };
+    return { month: currentMonth, year: currentDate.getFullYear(), weeks };
+}
+
+export interface DateValuesInterface {
+    month: number,
+    year: number,
+    weeks: DateWeekInterface[]
+}
+
+export interface DateWeekInterface {
+    first: DateDayInterface,
+    last: DateDayInterface,
+    days: DateDayInterface[]
+}
+
+export interface DateDayInterface {
+    day: number,
+    month: number,
+    year: number
 }
