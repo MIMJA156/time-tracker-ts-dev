@@ -42,11 +42,13 @@ function updateWindow(values: { month: any; year: any; weeks: any; }) {
             openCell({
                 first: {
                     day: values.weeks[i].first.day,
-                    month: values.weeks[i].first.month
+                    month: values.weeks[i].first.month,
+                    year: values.weeks[i].first.year
                 },
                 last: {
                     day: values.weeks[i].last.day,
-                    month: values.weeks[i].last.month
+                    month: values.weeks[i].last.month,
+                    year: values.weeks[i].last.year
                 },
                 days: values.weeks[i].days
             });
@@ -72,21 +74,24 @@ function getDateValues(offset = 0) {
     for (let i = currentDate.getDay(); i > 0; i--) {
         days.push({
             day: lastDay.getDate() - i + 1,
-            month: currentDate.getMonth() - 1 === -1 ? 11 : currentDate.getMonth() - 1
+            month: currentDate.getMonth() - 1 === -1 ? 11 : currentDate.getMonth() - 1,
+            year: currentDate.getFullYear() - 1
         });
     }
 
     for (let i = 1; i <= firstDay.getDate(); i++) {
         days.push({
             day: i,
-            month: currentDate.getMonth()
+            month: currentDate.getMonth(),
+            year: currentDate.getFullYear()
         });
     }
 
     for (let i = 1; i <= lastDayIndex; i++) {
         days.push({
             day: i,
-            month: currentDate.getMonth() + 1 === 12 ? 0 : currentDate.getMonth() + 1
+            month: currentDate.getMonth() + 1 === 12 ? 0 : currentDate.getMonth() + 1,
+            year: currentDate.getFullYear() + 1
         });
     }
 

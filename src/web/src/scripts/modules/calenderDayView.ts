@@ -46,7 +46,7 @@ export function openCell(values: TimeValuesInterface) {
     openWindowPageFromId("selection-calendar", 2);
 
     setTimeout(() => {
-        $("#calender-item-title").click();
+        $("#calender-item-title").trigger("click");
     }, 100);
 }
 
@@ -58,16 +58,13 @@ function updateDayView(updateTo: number, values: TimeValuesInterface) {
     }
 }
 interface TimeValuesInterface {
-    first: {
-        day: number,
-        month: number
-    },
-    last: {
-        day: number,
-        month: number
-    },
-    days: {
-        day: number,
-        month: number
-    }[]
+    first: DayMonthYearInterface
+    last: DayMonthYearInterface
+    days: DayMonthYearInterface[]
+}
+
+interface DayMonthYearInterface {
+    day: number,
+    month: number,
+    year: number
 }
