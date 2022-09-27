@@ -1,5 +1,3 @@
-import "./style/smallHeader";
-
 import $ from "jquery";
 import { makeDraggable } from "./tools/draggable";
 
