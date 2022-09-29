@@ -29,7 +29,7 @@ To use this feature you need to link your github account account and allow gist 
 #### Web GUI
 
 To open the Web GUI click on the time badge or run the VSCode command ``Time Tracker: Open Web GUI``
-This will open a new tab in the browser and display the GUI
+This will open a new tab in the browser and display the GUI.
 
 #### Basic Settings
 
