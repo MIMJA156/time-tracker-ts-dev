@@ -4,6 +4,7 @@ import { openWindowPageFromId, openWindowFromClass, closeWindowFromClass, toggle
 
 import { moveCalender } from "./modules/calendar";
 import "./modules/bars";
+import "./modules/options";
 
 let draggableElements = $(".draggable");
 if (draggableElements) {

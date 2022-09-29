@@ -3,6 +3,24 @@ import { openCell } from "./calenderDayView";
 
 import { monthIndex } from "./../vars";
 
+export interface DateValuesInterface {
+    month: number,
+    year: number,
+    weeks: DateWeekInterface[]
+}
+
+export interface DateWeekInterface {
+    first: DateDayInterface,
+    last: DateDayInterface,
+    days: DateDayInterface[]
+}
+
+export interface DateDayInterface {
+    day: number,
+    month: number,
+    year: number
+}
+
 let cellHolder = $("#weeks-holder");
 let monthSpan = $("#date-month");
 let yearSpan = $("#date-year");
@@ -90,22 +108,4 @@ function getDateValues(offset = 0): DateValuesInterface {
     }
 
     return { month: currentMonth, year: currentDate.getFullYear(), weeks };
-}
-
-export interface DateValuesInterface {
-    month: number,
-    year: number,
-    weeks: DateWeekInterface[]
-}
-
-export interface DateWeekInterface {
-    first: DateDayInterface,
-    last: DateDayInterface,
-    days: DateDayInterface[]
-}
-
-export interface DateDayInterface {
-    day: number,
-    month: number,
-    year: number
 }

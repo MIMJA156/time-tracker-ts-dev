@@ -19,16 +19,16 @@
                     onclick="toggleWindowFromClass(`selection-calendar`)"></div>
         </div>
         <div class="main-window-bar-bottom">
-            <div class="left"><img class="left click-allowed spin" src="./gear.svg"></div>
+            <div class="left"><img class="left click-allowed" src="./gear.svg"></div>
             <div class="center"><span>Sanity: 100%</span></div>
             <div class="right"><img class="right click-allowed" src="./check.svg"></div>
         </div>
     </main>
     <div class="selection-calendar">
         <div class="id-1 active">
-            <div class="small-header two draggable">
+            <div class="small-header two-sections draggable">
                 <div class="left">
-                    <span>Selection Calendar</span>
+                    <span>Time Calendar</span>
                 </div>
                 <div class="right">
                     <button onclick="closeWindowFromClass(`selection-calendar`)">
@@ -36,7 +36,7 @@
                     </button>
                 </div>
             </div>
-            <div class="small-header three">
+            <div class="small-header three-sections">
                 <div class="left">
                     <button onclick="moveCalender(-1)">
                         <img src="./chevron-left.svg">
@@ -44,6 +44,7 @@
                 </div>
                 <div class="center">
                     <span id="date-month"></span>
+                    <div class="spacer"></div>
                     <span id="date-year"></span>
                 </div>
                 <div class="right">
@@ -59,7 +60,7 @@
             </div>
         </div>
         <div class="id-2">
-            <div class="small-header two draggable">
+            <div class="small-header two-sections draggable">
                 <div class="left">
                     <span>Day View</span>
                 </div>
@@ -75,6 +76,22 @@
             <div class="week-view-title" id="week-view-title"></div>
             <div class="days-holder" id="days-holder"></div>
         </div>
+    </div>
+    <div class="options-menu">
+        <div class="id-1">
+            <div class="small-header two-sections draggable">
+                <div class="left">
+                    <span>Options</span>
+                </div>
+                <div class="right">
+                    <button>
+                        <img src="./close.svg">
+                    </button>
+                </div>
+            </div>
+            <div class="options-cell-container" id="options-cell-container"></div>
+        </div>
+    </div>
     </div>
 </body>
 

@@ -1,6 +1,7 @@
 @import "./vars";
 @import "./main-window/bar.scss";
 @import "./main-window/calendar.scss";
+@import "./main-window/options.scss";
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans&display=swap');
 
 body {
@@ -32,24 +33,49 @@ body {
         cursor: move;
     }
 
-    &.three {
+    &.three-sections {
         grid-template-columns: 30% 40% 30%;
     }
 
-    &.two {
+    &.two-sections {
         grid-template-columns: 50% 50%;
     }
 
-    &.one {
+    &.one-sections {
         grid-template-columns: 100%;
     }
 
-    div {
+    >div {
         display: flex;
         align-items: center;
         justify-content: center;
 
-        button {
+        >span {
+            text-indent: 15px;
+        }
+
+        &.right {
+            justify-content: flex-end;
+        }
+
+        &.left {
+            justify-content: flex-start;
+        }
+
+        &.center {
+            >span {
+                padding-left: 0;
+                text-indent: 0;
+            }
+
+            >div.spacer {
+                width: 10px;
+                min-width: 10px;
+                background-color: black;
+            }
+        }
+
+        >button {
             width: $small-header-height;
             height: $small-header-height;
             cursor: pointer;
@@ -59,21 +85,9 @@ body {
             background-color: transparent;
             border: none;
 
-            img {
+            >img {
                 height: calc($small-header-height / 2);
             }
         }
-
-        span {
-            padding-left: 10px;
-        }
-    }
-
-    div.right {
-        justify-content: flex-end;
-    }
-
-    div.left {
-        justify-content: flex-start;
     }
 }

@@ -1,0 +1,58 @@
+.options-menu {
+    width: 450px;
+    height: 350px;
+    border: $small-header-border solid black;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: $bar-background;
+
+    .options-cell-container {
+        overflow-y: scroll;
+        height: 298px;
+
+        >div.options-cell {
+            height: $small-header-height;
+            width: 100%;
+            display: grid;
+            font-size: 18px;
+            grid-template-columns: 50% 50%;
+            border-bottom: $small-header-border dotted black;
+            background-color: $bar-background;
+            cursor: pointer;
+            transition: .4s;
+
+            >&:hover {
+                filter: brightness(0.8);
+            }
+
+            >&.no-border {
+                border: none;
+            }
+
+            >div {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                &.right {
+                    justify-content: flex-end;
+                }
+
+                &.left {
+                    justify-content: flex-start;
+                }
+
+                >img {
+                    padding-right: calc((($small-header-height - 25px) / 2) - ($small-header-height / 2.2) / 4);
+                    height: calc($small-header-height / 2.2);
+                }
+
+                >span {
+                    text-indent: 10px;
+                }
+            }
+        }
+    }
+}
