@@ -1,7 +1,15 @@
 import $ from "jquery";
 
+let lastClicked: HTMLElement | null = null;
+
 export function makeDraggable(headerElement: HTMLElement, bodyElement: HTMLElement) {
     let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+
+    bodyElement.addEventListener("mousedown", () => {
+        lastClicked?.classList.remove("focused");
+        bodyElement.classList.add("focused");
+        lastClicked = bodyElement;
+    });
 
     headerElement.addEventListener("mousedown", (ev) => {
         let targetJ = $(ev.target!);
