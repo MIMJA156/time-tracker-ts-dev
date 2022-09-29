@@ -19,7 +19,8 @@
                     onclick="toggleWindowFromClass(`selection-calendar`)"></div>
         </div>
         <div class="main-window-bar-bottom">
-            <div class="left"><img class="left click-allowed" src="./gear.svg"></div>
+            <div class="left"><img class="left click-allowed" src="./gear.svg"
+                    onclick="toggleWindowFromClass(`options-menu`)"></div>
             <div class="center"><span>Sanity: 100%</span></div>
             <div class="right"><img class="right click-allowed" src="./check.svg"></div>
         </div>
@@ -78,18 +79,63 @@
         </div>
     </div>
     <div class="options-menu">
-        <div class="id-1">
+        <div class="id-1 active">
             <div class="small-header two-sections draggable">
                 <div class="left">
                     <span>Options</span>
                 </div>
                 <div class="right">
-                    <button>
+                    <button onclick="closeWindowFromClass(`options-menu`)">
                         <img src="./close.svg">
                     </button>
                 </div>
             </div>
             <div class="options-cell-container" id="options-cell-container"></div>
+        </div>
+        <div class="id-2">
+            <div class="small-header two-sections draggable">
+                <div class="left">
+                    <span>General Settings</span>
+                </div>
+                <div class="right">
+                    <button onclick="openWindowPageFromId(`options-menu`, 1)">
+                        <img src="./chevron-left.svg">
+                    </button>
+                    <button onclick="closeWindowFromClass(`options-menu`)">
+                        <img src="./close.svg">
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="id-3">
+            <div class="small-header two-sections draggable">
+                <div class="left">
+                    <span>Github Account</span>
+                </div>
+                <div class="right">
+                    <button onclick="openWindowPageFromId(`options-menu`, 1)">
+                        <img src="./chevron-left.svg">
+                    </button>
+                    <button onclick="closeWindowFromClass(`options-menu`)">
+                        <img src="./close.svg">
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="id-4">
+            <div class="small-header two-sections draggable">
+                <div class="left">
+                    <span>Support Me</span>
+                </div>
+                <div class="right">
+                    <button onclick="openWindowPageFromId(`options-menu`, 1)">
+                        <img src="./chevron-left.svg">
+                    </button>
+                    <button onclick="closeWindowFromClass(`options-menu`)">
+                        <img src="./close.svg">
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
     </div>

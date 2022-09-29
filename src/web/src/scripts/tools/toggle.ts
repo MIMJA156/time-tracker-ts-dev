@@ -1,4 +1,5 @@
 import $ from "jquery";
+import { toggleFocusedByClass, toggleFocusedByElement } from "./setFocused";
 
 export function openWindowPageFromId(windowParentClass: string, wantedWindow: number) {
     $("." + windowParentClass).children().each((i) => {
@@ -12,6 +13,7 @@ export function openWindowPageFromId(windowParentClass: string, wantedWindow: nu
 }
 
 export function openWindowFromClass(windowClass: string) {
+    toggleFocusedByClass(windowClass);
     $("." + windowClass).addClass("active");
 }
 
@@ -20,6 +22,7 @@ export function closeWindowFromClass(windowClass: string) {
 }
 
 export function toggleWindowFromClass(windowClass: string) {
+    toggleFocusedByClass(windowClass);
     if ($("." + windowClass).hasClass("active")) {
         closeWindowFromClass(windowClass);
     } else {

@@ -9,6 +9,18 @@
     transform: translate(-50%, -50%);
     background-color: $bar-background;
 
+    &>div.active {
+        display: block;
+    }
+
+    &>div {
+        display: none;
+    }
+
+    &.active {
+        display: block;
+    }
+
     div.weeks-holder {
         width: 100%;
         display: flex;
@@ -101,17 +113,5 @@
                 float: right;
             }
         }
-    }
-
-    &>div.active {
-        display: block;
-    }
-
-    &>div {
-        display: none;
-    }
-
-    &.active {
-        display: block;
     }
 }

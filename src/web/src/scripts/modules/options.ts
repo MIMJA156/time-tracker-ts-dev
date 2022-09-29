@@ -1,21 +1,29 @@
 import $ from "jquery";
 
-const settingsPages = [
+let settingsPages = [
     {
-        title: "General Settings"
+        title: "General Settings",
+        click: 2
     },
     {
-        title: "Github Account"
+        title: "Github Account",
+        click: 3
     },
     {
         title: "Support Me",
-        last: true
+        click: 4
     }
 ];
 
-settingsPages.forEach((window) => {
-    let cell = `
-        <div class="options-cell ${window.last ? "no-border" : ""}">
+updateSettings(settingsPages);
+
+function updateSettings(settings: { title: string; click: number; }[]) {
+    $("#options-cell-container").html("");
+    let pos = 0;
+    settings.forEach((window) => {
+        pos++;
+        let cell = `
+        <div class="options-cell ${pos >= settings.length ? "no-border" : ""}" onClick="openWindowPageFromId(\`options-menu\`, ${window.click})">
             <div class="left">
                 <span>${window.title}</span>
             </div>
@@ -25,5 +33,6 @@ settingsPages.forEach((window) => {
         </div>
     `;
 
-    $("#options-cell-container").append(cell);
-});
+        $("#options-cell-container").append(cell);
+    });
+}

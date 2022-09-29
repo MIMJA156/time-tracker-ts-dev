@@ -1,4 +1,5 @@
 .options-menu {
+    display: none;
     width: 450px;
     height: 350px;
     border: $small-header-border solid black;
@@ -7,6 +8,18 @@
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: $bar-background;
+
+    &.active {
+        display: block;
+    }
+
+    &>div.active {
+        display: block;
+    }
+
+    &>div {
+        display: none;
+    }
 
     .options-cell-container {
         overflow-y: scroll;
