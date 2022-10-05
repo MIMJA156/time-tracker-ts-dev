@@ -1,5 +1,5 @@
 import $ from "jquery";
-import { toggleFocusedByClass, toggleFocusedByElement } from "./setFocused";
+import { toggleFocusedByClass } from "./setFocused";
 
 export function openWindowPageFromId(windowParentClass: string, wantedWindow: number) {
     $("." + windowParentClass).children().each((i) => {

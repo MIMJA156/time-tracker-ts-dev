@@ -1,4 +1,4 @@
-import $, { data } from "jquery";
+import $ from "jquery";
 import { openWindowPageFromId } from "../tools/toggle";
 import { DateWeekInterface } from "./calendar";
 import { monthIndex } from "./../vars";
@@ -29,10 +29,8 @@ export function openCell(values: DateWeekInterface) {
     }
 
     let overLappingWeek = values.first.year !== values.last.year ? true : false;
-    let dateString = overLappingWeek ? `Year(s) ` : `Year `;
-    dateString += overLappingWeek ? `${values.first.year}/${values.last.year}` : `${values.first.year}`;
     let cell = `
-        <div class="small-info-bar"><span class="left">Selected</span><span class="right">${dateString}</span></div>
+        <div class="small-info-bar"><span class="left">Selected</span><span class="right">${overLappingWeek ? `Years ${values.first.year}/${values.last.year}` : `Year ${values.first.year}`}</span></div>
         <div class="weeks-cell no-margin" id="calender-item-title">
             <span>${monthIndex.short[values.first.month - 1]} ${values.first.day} - ${monthIndex.short[values.last.month - 1]} ${values.last.day}</span>
         </div>

@@ -1,4 +1,4 @@
-import Alwan from "alwan";
+// import Alwan from "alwan";
 import "alwan/dist/css/alwan.min.css";
 
 import "./scss/styles.scss";
