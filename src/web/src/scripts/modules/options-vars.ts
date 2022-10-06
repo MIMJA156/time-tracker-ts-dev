@@ -35,3 +35,32 @@ export const supportMeCells = [
         class: "venmo-link"
     }
 ];
+
+export const generalSettingsCells: GeneralSettingsCellsInterface[] = [
+    {
+        title: "Graph Type",
+        input: {
+            type: "select",
+            options: [
+                { display: "Line", key: "line" },
+                { display: "Bar", key: "bar" }
+            ]
+        }
+    },
+    {
+        title: "Graph Colors",
+        input: { type: "cell", click: 4 }
+    }
+];
+
+export interface GeneralSettingsCellsInterface {
+    title: string,
+    input: {
+        type: string,
+        click?: number,
+        options?: {
+            display: string,
+            key: string
+        }[]
+    }
+};
