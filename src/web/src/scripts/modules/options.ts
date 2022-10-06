@@ -28,23 +28,26 @@ function updateOptionsPage(settings: { title: string; click: number; }[]) {
 function updateSupportMePage(cells: { title: string; url: string; class: string; }[]) {
     let container = $("#support-me-cell-container");
     container.html("");
+
     let count = 0;
     let last = "";
+    let buttonsPerCell = cells.length;
+
     cells.forEach((cell) => {
         count++;
         let button = `
             <a href="${cell.url}" class="${cell.class}" target="_blank">${cell.title}</a>
         `;
+        last += button;
 
-        if (count >= 2) {
+        if (count >= buttonsPerCell) {
             count = 0;
             let item = `
-            <div class="support-me-cell">${last}${button}</div>
+            <div class="support-me-cell">${last}</div>
             `;
+            last = "";
 
             container.append(item);
         }
-
-        last = button;
     });
 }
