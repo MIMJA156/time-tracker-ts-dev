@@ -1,29 +1,17 @@
 import $ from "jquery";
+import { optionCells, supportMeCells } from "./options-vars";
 
-let settingsPages = [
-    {
-        title: "General Settings",
-        click: 2
-    },
-    {
-        title: "Github Account",
-        click: 3
-    },
-    {
-        title: "Support Me",
-        click: 4
-    }
-];
+updateOptionsPage(optionCells);
+updateSupportMePage(supportMeCells);
 
-updateSettings(settingsPages);
-
-function updateSettings(settings: { title: string; click: number; }[]) {
-    $("#options-cell-container").html("");
+function updateOptionsPage(settings: { title: string; click: number; }[]) {
+    let container = $("#options-cell-container");
+    container.html("");
     let pos = 0;
     settings.forEach((window) => {
         pos++;
         let cell = `
-        <div class="options-cell ${pos >= settings.length ? "no-border" : ""}" onClick="openWindowPageFromId(\`options-menu\`, ${window.click})">
+        <div class="options-cell ${pos >= settings.length ? "ending" : ""}" onClick="openWindowPageFromId(\`options-menu\`, ${window.click})">
             <div class="left">
                 <span>${window.title}</span>
             </div>
@@ -31,8 +19,32 @@ function updateSettings(settings: { title: string; click: number; }[]) {
                 <img src="./chevron-right.svg">
             </div>
         </div>
-    `;
+        `;
 
-        $("#options-cell-container").append(cell);
+        container.append(cell);
+    });
+}
+
+function updateSupportMePage(cells: { title: string; url: string; class: string; }[]) {
+    let container = $("#support-me-cell-container");
+    container.html("");
+    let count = 0;
+    let last = "";
+    cells.forEach((cell) => {
+        count++;
+        let button = `
+            <a href="${cell.url}" class="${cell.class}" target="_blank">${cell.title}</a>
+        `;
+
+        if (count >= 2) {
+            count = 0;
+            let item = `
+            <div class="support-me-cell">${last}${button}</div>
+            `;
+
+            container.append(item);
+        }
+
+        last = button;
     });
 }

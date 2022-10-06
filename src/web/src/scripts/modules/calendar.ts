@@ -1,5 +1,5 @@
 import $ from "jquery";
-import { openCell } from "./calenderDayView";
+import { openCalenderCell } from "./calenderDayView";
 
 import { monthIndex } from "./../vars";
 
@@ -51,7 +51,7 @@ function updateWindow(values: DateValuesInterface) {
 
         cellHolder.append(cell);
         $("#" + id).on("click", () => {
-            openCell(values.weeks[i]);
+            openCalenderCell(values.weeks[i]);
         });
     }
 }

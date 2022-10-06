@@ -3,7 +3,7 @@ import { openWindowPageFromId } from "../tools/toggle";
 import { DateWeekInterface } from "./calendar";
 import { monthIndex } from "./../vars";
 
-export function openCell(values: DateWeekInterface) {
+export function openCalenderCell(values: DateWeekInterface) {
     $("#days-holder").html("");
     $("#week-view-title").html("");
 

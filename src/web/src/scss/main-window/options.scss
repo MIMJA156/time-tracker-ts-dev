@@ -23,7 +23,7 @@
 
     .options-cell-container {
         overflow-y: scroll;
-        height: 298px;
+        height: calc(350px - $small-header-height - $small-header-border);
 
         >div.options-cell {
             height: $small-header-height;
@@ -40,8 +40,8 @@
                 filter: brightness(0.8);
             }
 
-            >&.no-border {
-                border: none;
+            >&.ending {
+                content: "This class has no purpose lol";
             }
 
             >div {
@@ -65,6 +65,49 @@
                 >span {
                     text-indent: 10px;
                 }
+            }
+        }
+    }
+
+    .support-me-cell-container {
+        text-align: center;
+        height: calc(350px - $small-header-height - $small-header-border);
+
+        >div.support-me-cell {
+            width: 100%;
+            height: $small-header-height;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+
+            @mixin baseLinkStyles($text, $background) {
+                padding-top: 5px;
+                padding-bottom: 5px;
+                padding-left: 10px;
+                padding-right: 10px;
+                border-radius: 5px;
+                font-size: 18px;
+                outline: none;
+                text-decoration: none;
+                font-weight: 600;
+                background-color: $background;
+                color: $text;
+            }
+
+            >a.buy-me-a-coffee-link {
+                @include baseLinkStyles(black, #FFDC01);
+            }
+
+            >a.pay-pal-link {
+                @include baseLinkStyles(white, #001D65);
+            }
+
+            >a.cash-app-link {
+                @include baseLinkStyles(#FEFFFE, #01D64E);
+            }
+
+            >a.venmo-link {
+                @include baseLinkStyles(white, #0174DF);
             }
         }
     }
