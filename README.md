@@ -6,10 +6,10 @@ This VSCode extension tracks the amount of time you spend coding.
 
 ## Progress
 
-##### Not Done
+#### Not Done
 
- This extenstion is still in devolpment so it is not current available to install!
- If you are looking for a Time Tracking extentions take a look at the [V1](https://github.com/MIMJA156/time-tracker) of this extension!
+This extension is still in development so it is not currently available to install!
+If you are looking for a time tracking extension take a look at the [Original Version](https://github.com/MIMJA156/time-tracker) of this extension!
 
 ## Installation
 
