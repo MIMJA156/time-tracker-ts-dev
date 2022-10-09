@@ -74,15 +74,16 @@ function updateGeneralSettingsPage(settings: GeneralSettingsCellsInterface[]) {
     };
 
     settings.forEach((setting) => {
+        let cellClickable = false;
         let input = `<img src="./chevron-right.svg">`;
-        if (setting.input.type.toLowerCase() === "select") { input = getSelector(setting.input.options!); }
+        if (setting.input.type.toLowerCase() === "select") { input = getSelector(setting.input.options!); cellClickable = true; }
 
         let cell = `
-            <div class="general-settings-cell">
+            <div class="general-settings-cell ${cellClickable ? 'no-click' : ''}">
                 <div class="left">
                     <span>${setting.title}</span>
-                </div>
-                <div class="right">
+            </div>
+            <div class="right">
                     ${input}
                 </div>
             </div>

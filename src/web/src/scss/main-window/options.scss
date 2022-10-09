@@ -31,6 +31,11 @@
             text-indent: 10px;
         }
     }
+
+
+    &.no-click {
+        cursor: default;
+    }
 }
 
 .options-menu {
@@ -129,6 +134,23 @@
             cursor: pointer;
 
             @include CellCellOptions();
+        }
+    }
+
+    select {
+        padding: 4px 6px;
+        color: #333;
+        background-color: $bar-background;
+        border: $small-header-border solid black;
+        cursor: pointer;
+        border-radius: 5px;
+        font-size: 18px;
+        outline: none;
+        transition: all 0.4s;
+        min-width: 100px;
+
+        &:hover {
+            filter: brightness(0.8);
         }
     }
 }

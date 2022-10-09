@@ -43,7 +43,8 @@ export const generalSettingsCells: GeneralSettingsCellsInterface[] = [
             type: "select",
             options: [
                 { display: "Line", key: "line" },
-                { display: "Bar", key: "bar" }
+                { display: "Bar", key: "bar" },
+                { display: "Pie Chart", key: "pie-chart" }
             ]
         }
     },
