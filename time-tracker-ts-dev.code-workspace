@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "../time-tracker-ts-dev"
+		},
+		{
+			"path": "../time-tracker-ts-dev/src"
+		},
+		{
+			"path": "../time-tracker-ts-dev/src/web"
+		}
+	],
+	"settings": {
+		"typescript.tsc.autoDetect": "off"
+	}
+}
