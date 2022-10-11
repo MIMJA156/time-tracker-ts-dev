@@ -1,6 +1,7 @@
 import $ from "jquery";
 import { makeDraggable } from "./tools/draggable";
 import { openWindowPageFromId, openWindowFromClass, closeWindowFromClass, toggleWindowFromClass } from "./tools/toggle";
+import { btnPopup, popup } from "./tools/popup";
 
 import { moveCalender } from "./modules/calendar";
 import "./modules/bars";
@@ -23,3 +24,7 @@ window.openWindowFromClass = openWindowFromClass;
 window.closeWindowFromClass = closeWindowFromClass;
 //@ts-ignore
 window.toggleWindowFromClass = toggleWindowFromClass;
+//@ts-ignore
+window.popup = popup;
+//@ts-ignore
+window.btnPopup = btnPopup;

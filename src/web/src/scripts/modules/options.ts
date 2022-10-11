@@ -121,7 +121,7 @@ function updateGithubAccountPage(cells: GithubAccountCellsInterface) {
             let editType = "";
 
             if (element.input.edit === "popup") {
-                editType = `popUp({type:'${element.input.type}', edit:'${element.input.popEdit}'});`;
+                editType = `popup({type:'${element.input.type}', edit:'${element.input.popEdit}'});`;
             }
 
             input = `<input type="text" onClick="${editType}" ${element.input.edit === "popup" ? "readonly" : ""} value="${setValuesInString(element.input.text!)}">`;

@@ -33,6 +33,7 @@ body {
     width: 100%;
     height: 100%;
     background-color: $see-through-matt-black;
+    z-index: 55;
 
     &.show {
         display: block;
@@ -41,4 +42,8 @@ body {
     &.hide {
         display: none;
     }
+}
+
+.hidden {
+    display: none;
 }
