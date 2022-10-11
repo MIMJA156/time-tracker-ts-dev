@@ -3,6 +3,7 @@
 @import "./main-window/calendar.scss";
 @import "./main-window/options.scss";
 @import "./smallHeader.scss";
+@import "./main-window/popup.scss";
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans&display=swap');
 
 body {
@@ -24,5 +25,20 @@ body {
 
     &-disabled {
         cursor: not-allowed;
+    }
+}
+
+.blackout {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: $see-through-matt-black;
+
+    &.show {
+        display: block;
+    }
+
+    &.hide {
+        display: none;
     }
 }

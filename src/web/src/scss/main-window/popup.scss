@@ -1,0 +1,39 @@
+.popup {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    min-height: 100px;
+    border-radius: 5px;
+    z-index: 10;
+
+    background-color: grey;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    font-size: 22px;
+
+    input[type="text"] {
+        height: 25px;
+        width: 260px;
+        outline: none;
+        font-size: 18px;
+    }
+
+    input[type="button"] {
+        width: 100px;
+        height: 30px;
+        border-radius: 5px;
+        outline: none;
+        border: none;
+        cursor: pointer;
+        font-size: 18px;
+    }
+
+    div.hide {
+        display: none;
+    }
+}
