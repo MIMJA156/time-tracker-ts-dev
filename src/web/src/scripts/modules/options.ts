@@ -1,9 +1,20 @@
 import $ from "jquery";
-import { optionCells, supportMeCells, generalSettingsCells, GeneralSettingsCellsInterface } from "./options-vars";
+import { Func } from "mocha";
+import { setValuesInString } from "../tools/interpolate";
+import {
+    optionCells,
+    supportMeCells,
+    generalSettingsCells,
+    GeneralSettingsCellsInterface,
+    githubAccountCells,
+    GithubAccountCellsInterface,
+    GithubAccountCellsItemInterface
+} from "./options-vars";
 
 updateOptionsPage(optionCells);
 updateSupportMePage(supportMeCells);
 updateGeneralSettingsPage(generalSettingsCells);
+updateGithubAccountPage(githubAccountCells);
 
 function updateOptionsPage(settings: { title: string; click: number; }[]) {
     let container = $("#options-cell-container");
@@ -82,8 +93,8 @@ function updateGeneralSettingsPage(settings: GeneralSettingsCellsInterface[]) {
             <div class="general-settings-cell ${cellClickable ? 'no-click' : ''}">
                 <div class="left">
                     <span>${setting.title}</span>
-            </div>
-            <div class="right">
+                </div>
+                <div class="right">
                     ${input}
                 </div>
             </div>
@@ -93,6 +104,57 @@ function updateGeneralSettingsPage(settings: GeneralSettingsCellsInterface[]) {
     });
 }
 
-function updateGithubAccountPage() {
+function updateGithubAccountPage(cells: GithubAccountCellsInterface) {
+    let container = $("#github-account-cell-container");
+    container.html("");
 
+    let getButton = (onClick?: Func, title?: string) => {
+        return `<input type="button" onClick="${onClick}()">${title}</input>`;
+    };
+
+    let handleInputs = (element: GithubAccountCellsItemInterface) => {
+        let input = "";
+
+        if (element.input?.type === "button") {
+            input = `<input type="button" onClick="${element.input.action}" value="${setValuesInString(element.input.title!)}">`;
+        } else if (element.input?.type === "text") {
+            let editType = "";
+
+            if (element.input.edit === "popup") {
+                editType = `popUp({type:'${element.input.type}', edit:'${element.input.popEdit}'});`;
+            }
+
+            input = `<input type="text" onClick="${editType}" ${element.input.edit === "popup" ? "readonly" : ""} value="${setValuesInString(element.input.text!)}">`;
+        } else if (element.alt) {
+            input = `<span>${element.alt}</span>`;
+        }
+
+        return input;
+    };
+
+    cells.loggedOut.forEach(element => {
+        let cell = `
+            <div class="github-account-cell">
+                <div class="left">
+                    <span>${element.title}</span>
+                </div>
+                <div class="right">${handleInputs(element)}</div>
+            </div>
+        `;
+
+        container.append(cell);
+    });
+
+    cells.loggedIn.forEach(element => {
+        let cell = `
+            <div class="github-account-cell">
+                <div class="left">
+                    <span>${element.title}</span>
+                </div>
+                <div class="right">${handleInputs(element)}</div>
+            </div>
+        `;
+
+        container.append(cell);
+    });
 }

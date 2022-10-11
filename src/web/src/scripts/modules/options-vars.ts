@@ -1,3 +1,5 @@
+import { Func } from "mocha";
+
 export const optionCells = [
     {
         title: "General Settings",
@@ -50,9 +52,48 @@ export const generalSettingsCells: GeneralSettingsCellsInterface[] = [
     },
     {
         title: "Graph Colors",
-        input: { type: "cell", click: 4 }
+        input: {
+            type: "cell",
+            click: 4
+        }
     }
 ];
+
+export const githubAccountCells: GithubAccountCellsInterface = {
+    loggedIn: [
+        {
+            title: "Account Name",
+            alt: "{GITHUB_NAME}"
+        },
+        {
+            title: "Github Gist",
+            input: {
+                type: "text",
+                edit: "popup",
+                popEdit: "gist",
+                text: "{STORAGE_GIST}"
+            }
+        },
+        {
+            title: "Unlink Account",
+            input: {
+                title: "Unlink",
+                type: "button",
+                action: "accountUtils({unlink:true});"
+            }
+        }
+    ],
+    loggedOut: [
+        {
+            title: "Link Github",
+            input: {
+                title: "Link",
+                type: "button",
+                action: "accountUtils({link:true});"
+            }
+        }
+    ]
+};
 
 export interface GeneralSettingsCellsInterface {
     title: string,
@@ -65,3 +106,21 @@ export interface GeneralSettingsCellsInterface {
         }[]
     }
 };
+
+export interface GithubAccountCellsInterface {
+    loggedIn: GithubAccountCellsItemInterface[],
+    loggedOut: GithubAccountCellsItemInterface[]
+}
+
+export interface GithubAccountCellsItemInterface {
+    title: string,
+    input?: {
+        type: string,
+        title?: string,
+        edit?: string,
+        text?: string,
+        action?: string,
+        popEdit?: string
+    },
+    alt?: string
+}
