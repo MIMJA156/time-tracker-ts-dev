@@ -1,0 +1,13 @@
+{
+    "file": {
+        "dir": "time-tracker-files",
+        "suffix": "mimja"
+    },
+    "server": {
+        "port": 3803
+    },
+    "git": {
+        "CLIENT_ID": "995870bf92a88cd7da39",
+        "CLIENT_SECRET": "c69fdc887f9afc8e3a40aed7219b04460dbf8452"
+    }
+}
