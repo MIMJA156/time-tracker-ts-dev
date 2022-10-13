@@ -2,7 +2,7 @@ import express from 'express';
 import { IncomingMessage, Server as httpServer, ServerResponse } from 'http';
 import path from "path";
 import { Server, WebSocket, WebSocketServer } from "ws";
-import { GitEndpoints } from '../tools/endpoints';
+import { GitEndpoints } from './endpoints/GitEndpoints';
 import { StorageUtils } from './StorageUtils';
 
 export class ExpressServer {
