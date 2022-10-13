@@ -2,6 +2,12 @@
 	"folders": [
 		{
 			"path": "../time-tracker-ts-dev"
+		},
+		{
+			"path": "src/web"
+		},
+		{
+			"path": "src/extension"
 		}
 	],
 	"settings": {
