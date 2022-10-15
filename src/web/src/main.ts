@@ -11,6 +11,7 @@ $("#login").on("click", () => {
 
 $("#logout").on("click", () => {
     ws.send(JSON.stringify({
+        to: "server",
         action: "git.remove"
     }));
 });

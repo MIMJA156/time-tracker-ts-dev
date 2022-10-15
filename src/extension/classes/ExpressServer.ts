@@ -36,7 +36,7 @@ export class ExpressServer {
         app.use(express.json());
         app.use("/gui", express.static(path.resolve(__dirname, "web")));
 
-        app.get("/git/callback", (req, res) => this.gitEndpoints.callBack(req, res));
+        app.get("/git/callback", (req, res) => this.gitEndpoints.callback(req, res));
 
         return app;
     }

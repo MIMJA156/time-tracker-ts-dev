@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import { StorageUtils } from "../../classes/StorageUtils";
 import randomString from "randomstring";
 import axios from "axios";
-import { Server, WebSocket } from "ws";
+import { WebSocket } from "ws";
 
 export class GitEndpoints {
     private storageUtils: StorageUtils;
@@ -14,7 +14,7 @@ export class GitEndpoints {
         this.storageUtils = storageUtils;
     }
 
-    public callBack(req: Request, res: Response) {
+    public callback(req: Request, res: Response) {
         if (req.query.state !== this.state) {
             this.state = randomString.generate({
                 length: 12
@@ -65,10 +65,16 @@ export class GitEndpoints {
             this.storageUtils.setLocalStoredSettings(settings);
 
             socket.send(JSON.stringify({
-                action: "git.remove"
+                to: "client",
+                action: "git.remove",
+                status: 1
             }));
         } else {
-            return;
+            socket.send(JSON.stringify({
+                to: "client",
+                action: "git.remove",
+                status: -1
+            }));
         }
     }
 
