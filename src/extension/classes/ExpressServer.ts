@@ -6,7 +6,7 @@ import { GitEndpoints } from './endpoints/GitEndpoints';
 import { StorageUtils } from './StorageUtils';
 
 export class ExpressServer {
-    private _port: number;
+    private readonly _port: number;
 
     private app: express.Application;
     private wsServer: Server<WebSocket>;
@@ -24,6 +24,8 @@ export class ExpressServer {
         this.wsServer = this.initWsServer(new WebSocketServer({ noServer: true }));
 
         this.gitEndpoints = new GitEndpoints(this.storageUtils);
+
+        this.server = new httpServer<typeof IncomingMessage, typeof ServerResponse>();
     }
 
     public get port(): number {
@@ -44,18 +46,17 @@ export class ExpressServer {
             console.log("Gained a client.");
 
             socket.on('message', message => {
-                let object = JSON.parse(message.toString());
-                if (object.type === "git") {
-                    if (object.invoke === "auth") {
-                        this.gitEndpoints.auth(socket, wsServer);
-                    }
-                }
+                let json = JSON.parse(message.toString());
+                let params = json.invoke.split(".");
+
+                console.log(params);
             });
 
             socket.on("close", () => {
                 console.log("Lost a client.");
             });
         });
+
         return wsServer;
     }
 

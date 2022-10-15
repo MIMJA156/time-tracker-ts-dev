@@ -22,21 +22,21 @@ export class StorageUtils {
         return this._user_path;
     }
 
-    public get local_stored_time(): Object {
+    public getLocalStoredTime(): Object {
         if (!existsSync(`${this._user_path}${this.timeFileName}`)) { writeFileSync(`${this._user_path}${this.timeFileName}`, "{}"); }
         return JSON.parse(readFileSync(`${this._user_path}${this.timeFileName}`, "utf-8"));
     }
 
-    public set local_stored_time(newValue) {
+    public setLocalStoredTime(newValue: Object) {
         writeFileSync(`${this._user_path}${this.timeFileName}`, JSON.stringify(newValue), "utf-8");
     }
 
-    public get local_stored_settings(): settingsJson {
+    public getLocalStoredSettings(): settingsInterface {
         if (!existsSync(`${this._user_path}${this.settingsFileName}`)) { writeFileSync(`${this._user_path}${this.settingsFileName}`, "{}"); }
         return JSON.parse(readFileSync(`${this._user_path}${this.settingsFileName}`, "utf-8"));
     }
 
-    public set local_stored_settings(newValue) {
+    public setLocalStoredSettings(newValue: Object) {
         writeFileSync(`${this._user_path}${this.settingsFileName}`, JSON.stringify(newValue), "utf-8");
     }
 
@@ -62,7 +62,7 @@ export class StorageUtils {
     }
 }
 
-interface settingsJson {
+interface settingsInterface {
     gist: {
         access_token: string
     }
