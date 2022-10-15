@@ -23,7 +23,7 @@ export class ExpressServer {
         this.app = this.initApp(express());
         this.wsServer = this.initWsServer(new WebSocketServer({ noServer: true }));
 
-        this.gitEndpoints = new GitEndpoints(this.storageUtils);
+        this.gitEndpoints = new GitEndpoints(this.storageUtils, this.wsServer);
 
         this.server = new httpServer<typeof IncomingMessage, typeof ServerResponse>();
     }
@@ -34,9 +34,9 @@ export class ExpressServer {
 
     private initApp(app: express.Application) {
         app.use(express.json());
-        app.use("/gui", express.static(path.resolve(__dirname, "web")));
+        app.use("/", express.static(path.resolve(__dirname, "web")));
 
-        app.get("/git/callback", (req, res) => this.gitEndpoints.callback(req, res));
+        app.get("/github/callback", (req, res) => this.gitEndpoints.callback(req, res));
 
         return app;
     }
@@ -45,11 +45,23 @@ export class ExpressServer {
         wsServer.on('connection', socket => {
             console.log("Gained a client.");
 
+            socket.send(JSON.stringify({
+                to: "client",
+                action: "system.init",
+                package: {
+                    githubAccountAdded: this.storageUtils.getLocalStoredSettings().gist.access_token ? true : false
+                }
+            }));
+
             socket.on('message', message => {
                 let json = JSON.parse(message.toString());
-                let params = json.invoke.split(".");
+                let actionArray = json.action.split(".");
 
-                console.log(params);
+                if (json.to === "server") {
+                    if (actionArray[0] === "github") {
+                        this.gitEndpoints[actionArray[1]](socket);
+                    }
+                }
             });
 
             socket.on("close", () => {

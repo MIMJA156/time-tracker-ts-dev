@@ -1,29 +1,29 @@
-import { git } from "../../config.json";
+import { github } from "../../config.json";
 import { Request, Response } from "express";
-import { StorageUtils } from "../../classes/StorageUtils";
+import { StorageUtils } from "../StorageUtils";
 import randomString from "randomstring";
 import axios from "axios";
-import { WebSocket } from "ws";
+import { Server, WebSocket } from "ws";
 
 export class GitEndpoints {
     private storageUtils: StorageUtils;
 
     private state: string;
+    private wsServer: Server<WebSocket>;
 
-    constructor(storageUtils: StorageUtils) {
+    constructor(storageUtils: StorageUtils, wsServer: Server<WebSocket>) {
         this.storageUtils = storageUtils;
+        this.wsServer = wsServer;
     }
 
     public callback(req: Request, res: Response) {
         if (req.query.state !== this.state) {
-            this.state = randomString.generate({
-                length: 12
-            });
-            res.send("Invalid Request");
+            this.state = randomString.generate({ length: 12 });
+            res.destroy();
             return;
         }
 
-        axios.post(`${git.hosts.access_token}?client_id=${git.client_id}&client_secret=${git.client_secret}&code=${req.query.code}`)
+        axios.post(`${github.hosts.access_token}?client_id=${github.client_id}&client_secret=${github.client_secret}&code=${req.query.code}`)
             .then(response => {
                 let data = this.getValuesFromData(response.data);
 
@@ -36,12 +36,23 @@ export class GitEndpoints {
                 settings.gist.access_token = data["access_token"];
                 this.storageUtils.setLocalStoredSettings(settings);
 
-                res.send("Success! You can now close this page!");
+                this.sendToEveryone({
+                    to: "client",
+                    action: "github.callback",
+                    status: 1
+                });
+
+                res.send(`<script type="text/javascript">window.close();</script>`);
             });
     }
 
     public auth(socket: WebSocket) {
         if (this.storageUtils.getLocalStoredSettings().gist.access_token) {
+            socket.send(JSON.stringify({
+                to: "client",
+                action: "github.auth",
+                status: -1
+            }));
             return;
         }
 
@@ -49,30 +60,31 @@ export class GitEndpoints {
             length: 12
         });
 
-        let gitLinkAccount = `${git.hosts.authorize}?client_id=${git.client_id}&state=${this.state}&scope=gist`;
+        let gitLinkAccount = `${github.hosts.authorize}?client_id=${github.client_id}&state=${this.state}&scope=gist`;
 
         socket.send(JSON.stringify({
+            to: "client",
+            action: "github.auth",
+            status: 1,
             gitAuthLink: gitLinkAccount
         }));
     }
 
     public remove(socket: WebSocket) {
-        console.log("removing");
-
         if (this.storageUtils.getLocalStoredSettings().gist.access_token) {
             let settings = this.storageUtils.getLocalStoredSettings();
             settings.gist.access_token = "";
             this.storageUtils.setLocalStoredSettings(settings);
 
-            socket.send(JSON.stringify({
+            this.sendToEveryone({
                 to: "client",
-                action: "git.remove",
+                action: "github.remove",
                 status: 1
-            }));
+            })
         } else {
             socket.send(JSON.stringify({
                 to: "client",
-                action: "git.remove",
+                action: "github.remove",
                 status: -1
             }));
         }
@@ -88,5 +100,11 @@ export class GitEndpoints {
         }
 
         return final;
+    }
+
+    private sendToEveryone(data: object) {
+        this.wsServer.clients.forEach((client) => {
+            client.send(JSON.stringify(data));
+        });
     }
 }
