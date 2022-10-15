@@ -1,16 +1,21 @@
 import $ from "jquery";
 import "./scss/main.scss";
 
+console.log("Hello World!");
+
 const ws = new WebSocket("ws://localhost:3803/");
 
-$("#login").on("click", () => {
+const loginButton = $("#login");
+const logoutButton = $("#logout");
+
+loginButton.on("click", () => {
     ws.send(JSON.stringify({
         to: "server",
         action: "github.auth"
     }));
 });
 
-$("#logout").on("click", () => {
+logoutButton.on("click", () => {
     ws.send(JSON.stringify({
         to: "server",
         action: "github.remove"
@@ -44,18 +49,15 @@ ws.onmessage = function (e) {
     }
 };
 
-console.log("Hello World!");
-
-
 function update(dataPackage: systemInitDataPackage) {
     console.log(dataPackage.githubAccountAdded);
 
-    if (dataPackage.githubAccountAdded === true) {
-        $("#login").prop('disabled', true);
-        $("#logout").prop('disabled', false);
-    } if (dataPackage.githubAccountAdded === false) {
-        $("#login").prop('disabled', false);
-        $("#logout").prop('disabled', true);
+    if (dataPackage.githubAccountAdded) {
+        loginButton.prop('disabled', true);
+        logoutButton.prop('disabled', false);
+    } if (!dataPackage.githubAccountAdded) {
+        loginButton.prop('disabled', false);
+        logoutButton.prop('disabled', true);
     }
 }
 

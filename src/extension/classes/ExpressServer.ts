@@ -49,7 +49,7 @@ export class ExpressServer {
                 to: "client",
                 action: "system.init",
                 package: {
-                    githubAccountAdded: this.storageUtils.getLocalStoredSettings().gist.access_token ? true : false
+                    githubAccountAdded: !!this.storageUtils.getLocalStoredSettings().gist.access_token
                 }
             }));
 
