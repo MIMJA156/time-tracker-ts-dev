@@ -22,7 +22,7 @@ logoutButton.on("click", () => {
     }));
 });
 
-ws.onmessage = function (e) {
+ws.onmessage = (e) => {
     let data = JSON.parse(e.data);
     let actionArgs = data.action.split(".");
 
@@ -50,8 +50,6 @@ ws.onmessage = function (e) {
 };
 
 function update(dataPackage: systemInitDataPackage) {
-    console.log(dataPackage.githubAccountAdded);
-
     if (dataPackage.githubAccountAdded) {
         loginButton.prop('disabled', true);
         logoutButton.prop('disabled', false);
