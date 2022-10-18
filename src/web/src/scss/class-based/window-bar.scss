@@ -1,0 +1,63 @@
+.window-bar {
+    height: 50px;
+    width: 100%;
+    background-color: #ececec;
+    position: fixed;
+    display: grid;
+    grid-template-columns: 25% 50% 25%;
+
+    div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        span.selected {
+            font-size: 16px;
+            height: 35px;
+            width: max-content;
+            padding-left: 15px;
+            padding-right: 15px;
+            margin-left: 10px;
+            border: 2px solid black;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        img {
+            height: 30px;
+
+            &.left {
+                margin-left: 10px;
+            }
+
+            &.right {
+                margin-right: 10px;
+            }
+        }
+
+        &.center {
+            font-size: 20px;
+        }
+
+        &.right {
+            justify-content: flex-end;
+        }
+
+        &.left {
+            justify-content: flex-start;
+        }
+    }
+
+    &.top {
+        border-bottom: 2px solid black;
+        top: 0;
+    }
+
+    &.bottom {
+        border-top: 2px solid black;
+        bottom: 0;
+    }
+}

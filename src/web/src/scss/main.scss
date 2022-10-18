@@ -1,4 +1,10 @@
-button {
-    font-size: 50px;
+@import "./class-based/window-bar.scss";
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.click-allowed {
     cursor: pointer;
 }
