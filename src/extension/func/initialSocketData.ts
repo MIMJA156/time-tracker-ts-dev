@@ -1,6 +1,6 @@
 import { StorageUtils } from "../classes/StorageUtils";
 
-export default (storageUtils: StorageUtils) => {
+export default (storageUtils: StorageUtils): String => {
     return JSON.stringify({
         to: "client",
         action: "system.init",
