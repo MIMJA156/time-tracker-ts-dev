@@ -2,6 +2,7 @@ import express from 'express';
 import { IncomingMessage, Server as httpServer, ServerResponse } from 'http';
 import path from "path";
 import { Server, WebSocket, WebSocketServer } from "ws";
+import initialSocketData from '../func/initialSocketData';
 import { GitEndpoints } from './endpoints/GitEndpoints';
 import { StorageUtils } from './StorageUtils';
 
@@ -45,13 +46,7 @@ export class ExpressServer {
         wsServer.on('connection', socket => {
             console.log("Gained a client.");
 
-            socket.send(JSON.stringify({
-                to: "client",
-                action: "system.init",
-                package: {
-                    githubAccountAdded: !!this.storageUtils.getLocalStoredSettings().gist.access_token
-                }
-            }));
+            socket.send(initialSocketData(this.storageUtils));
 
             socket.on('message', message => {
                 let json = JSON.parse(message.toString());

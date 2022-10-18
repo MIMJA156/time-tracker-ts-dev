@@ -1,20 +1,12 @@
 import { github } from "../../config.json";
 import { Request, Response } from "express";
-import { StorageUtils } from "../StorageUtils";
 import randomString from "randomstring";
 import axios from "axios";
-import { Server, WebSocket } from "ws";
+import { WebSocket } from "ws";
+import { Endpoint } from "./Endpoint";
 
-export class GitEndpoints {
-    private storageUtils: StorageUtils;
-
+export class GitEndpoints extends Endpoint {
     private state: string;
-    private wsServer: Server<WebSocket>;
-
-    constructor(storageUtils: StorageUtils, wsServer: Server<WebSocket>) {
-        this.storageUtils = storageUtils;
-        this.wsServer = wsServer;
-    }
 
     public callback(req: Request, res: Response) {
         if (req.query.state !== this.state) {
@@ -88,23 +80,5 @@ export class GitEndpoints {
                 status: -1
             }));
         }
-    }
-
-    private getValuesFromData(data: string): Object {
-        let final = {};
-        let splitData = data.split("&");
-
-        for (data of splitData) {
-            let newSplitData = data.split("=");
-            final[newSplitData[0]] = newSplitData[1];
-        }
-
-        return final;
-    }
-
-    private sendToEveryone(data: object) {
-        this.wsServer.clients.forEach((client) => {
-            client.send(JSON.stringify(data));
-        });
     }
 }
