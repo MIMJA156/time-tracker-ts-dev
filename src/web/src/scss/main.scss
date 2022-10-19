@@ -1,10 +1,15 @@
+@import "./../../../../node_modules/@fortawesome/fontawesome-free/css/all.css";
+
 @import "./classes/window-bar.scss";
 
 @import "./classes/alert.scss";
 
+@import "./vars";
+
 body {
     margin: 0;
-    padding: 0;
+    background-color: $window-background-color;
+    color: $font-color;
 }
 
 .click-allowed {

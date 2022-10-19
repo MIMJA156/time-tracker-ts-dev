@@ -1,7 +1,9 @@
+@import "./../vars";
+
 .window-bar {
     height: 50px;
     width: 100%;
-    background-color: #ececec;
+    background-color: $nav-bars-background-color;
     position: fixed;
     display: grid;
     grid-template-columns: 25% 50% 25%;
@@ -26,8 +28,8 @@
             overflow-x: hidden;
         }
 
-        img {
-            height: 30px;
+        i {
+            font-size: 30px;
 
             &.left {
                 margin-left: 10px;
