@@ -14,7 +14,8 @@
 		"typescript.tsc.autoDetect": "off",
 		"cSpell.words": [
 			"esbuild",
-			"outfile"
+			"outfile",
+			"Plex"
 		]
 	}
 }
