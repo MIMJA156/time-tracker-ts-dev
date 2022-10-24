@@ -1,4 +1,4 @@
-@import "./../vars";
+@import "./vars";
 
 .window-bar {
     height: 50px;
@@ -31,7 +31,7 @@
         }
 
         i {
-            font-size: 25px;
+            font-size: $icon-font-size;
 
             &.left {
                 margin-left: 10px;

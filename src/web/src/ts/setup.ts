@@ -1,5 +1,6 @@
 import $ from "jquery";
 import moment from "moment";
+import registerMoveableWindows from "./scripts/register-moveable-windows";
 
 export default () => {
     let todaySpan = $("#todays-date-span");
@@ -14,4 +15,6 @@ export default () => {
     setInterval(() => {
         setDateSpans();
     }, 1000);
+
+    registerMoveableWindows();
 } 
