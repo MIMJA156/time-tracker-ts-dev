@@ -1,4 +1,6 @@
-.moveable-window {
+@import "./windows/calendar.scss";
+
+div.moveable-window {
     position: absolute;
     width: 450px;
     height: 350px;
@@ -7,6 +9,10 @@
     &[data-type="calendar"] {
         width: 400px;
         height: 460px;
+
+        >div.body {
+            @include calender-body();
+        }
     }
 
     background-color: $nav-bars-background-color;

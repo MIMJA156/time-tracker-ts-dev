@@ -1,0 +1,27 @@
+@mixin calender-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    >div.cell {
+        height: 40px;
+        width: 90%;
+        border: 2px solid black;
+        background-color: $nav-bars-background-color;
+        font-size: 22px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 6px;
+        margin-bottom: 6px;
+
+        transition: filter .3s;
+        cursor: pointer;
+
+        &:hover {
+            filter: brightness(0.8);
+        }
+    }
+}
