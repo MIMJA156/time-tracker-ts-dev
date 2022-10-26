@@ -2,8 +2,6 @@
 
 div.moveable-window {
     position: absolute;
-    width: 450px;
-    height: 350px;
     z-index: 5;
 
     &[data-type="calendar"] {
