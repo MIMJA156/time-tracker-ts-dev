@@ -16,8 +16,16 @@ export default () => {
         setDateSpans();
     }, 1000);
 
-    register({
-        parent: $(".moveable-window"),
-        child: $(".header")
-    });
+    for (const element of $(".moveable-window")) {
+        for (const child of $(element.children)) {
+            for (const childOfChild of $(child.children)) {
+                if (childOfChild.classList.contains("header")) {
+                    register({
+                        parent: $(element),
+                        child: $(childOfChild) as JQuery<HTMLElement>
+                    });
+                }
+            }
+        }
+    }
 } 

@@ -8,7 +8,7 @@ export default ({ parent, child }: { parent: JQuery<HTMLElement>, child: JQuery<
 
     htmlChild.addEventListener("mousedown", (ev) => {
         let targetJ = $(ev.target!);
-        if (targetJ.prop("nodeName") === "IMG" || targetJ.prop("nodeName") === "BUTTON") { return; }
+        if (targetJ.prop("nodeName") === "I" || targetJ.prop("nodeName") === "BUTTON") { return; }
         document.addEventListener("mousemove", update);
 
         ev.preventDefault();
