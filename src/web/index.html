@@ -28,30 +28,49 @@
         </div>
     </main>
     <div class="moveable-window" data-type="calendar">
-        <div class="header">
-            <div class="left"><span>Week Calendar</span></div>
-            <div class="right">
-                <i class="fa-solid fa-chevron-left"></i>
-                <i class="fa-solid fa-compress"></i>
-                <!-- <i class="fa-sharp fa-solid fa-window-minimize"></i> -->
+        <div data-index="0">
+            <div class="header">
+                <div class="left"><span>Week Calendar</span></div>
+                <div class="right"><i class="fa-solid fa-compress"></i></div>
+            </div>
+            <div class="sub-header">
+                <div class="left"><i class="fa-solid fa-chevron-left"></i></div>
+                <div class="center">
+                    <span>Oct</span>
+                    <div class="spacer"></div>
+                    <span>2022</span>
+                </div>
+                <div class="right"><i class="fa-solid fa-chevron-right"></i></div>
+            </div>
+            <div class="body">
+                <div class="cell-week"></div>
+                <div class="cell-week"></div>
+                <div class="cell-week"></div>
+                <div class="cell-week"></div>
+                <div class="cell-week"></div>
+                <div class="cell-week"></div>
             </div>
         </div>
-        <div class="sub-header">
-            <div class="left"><i class="fa-solid fa-chevron-left"></i></div>
-            <div class="center">
-                <span>Oct</span>
-                <div class="spacer"></div>
-                <span>2022</span>
+        <div data-index="1" class="hide">
+            <div class="header">
+                <div class="left"><span>Day Viewer</span></div>
+                <div class="right">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    <i class="fa-solid fa-compress"></i>
+                </div>
             </div>
-            <div class="right"><i class="fa-solid fa-chevron-right"></i></div>
-        </div>
-        <div class="body">
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
+            <div class="body no-flex">
+                <div class="cell-week"></div>
+                <div class="cell-day">
+                    <div class="day"></div>
+                    <div class="day"></div>
+                    <div class="day"></div>
+                    <div class="day"></div>
+                    <div class="day"></div>
+                    <div class="day"></div>
+                    <div class="day"></div>
+                </div>
+            </div>
         </div>
     </div>
 </body>

@@ -4,105 +4,115 @@ div.moveable-window {
     position: absolute;
     z-index: 5;
 
-    &[data-type="calendar"] {
-        width: 400px;
-        height: 460px;
-
-        >div.body {
-            @include calender-body();
-        }
-    }
-
     background-color: $nav-bars-background-color;
     border: 2px solid black;
+    border-radius: 8px;
 
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
 
-    display: table;
+    &[data-type="calendar"] {
+        width: 400px;
+        height: 460px;
 
-    >div.header {
-        cursor: move;
-
-        width: 100%;
-        height: $moveable-window-header-height;
-        border-bottom: 2px solid black;
-        display: grid;
-        grid-template-columns: 60% 40%;
-        font-size: 22px;
-
-        i {
-            font-size: $icon-font-size;
-            margin-right: 10px;
-
-            cursor: pointer;
-        }
-
-        >div.left,
-        >div.right {
-            width: 100%;
-            display: flex;
-            align-items: center;
-
-
-            >span {
-                text-indent: 15px;
-            }
-        }
-
-        >div.left {
-            justify-content: flex-start;
-        }
-
-        >div.right {
-            justify-content: flex-end;
+        >div>div.body {
+            @include calender-body();
         }
     }
 
-    >div.sub-header {
+    >div {
+        display: flex;
+        flex-flow: column;
         width: 100%;
-        height: $moveable-window-header-height;
-        border-bottom: 2px solid black;
-        display: grid;
-        grid-template-columns: 25% 50% 25%;
-        font-size: 22px;
+        height: 100%;
 
-        i {
-            font-size: $icon-font-size;
-            margin-right: 15px;
-            margin-left: 15px;
-
-            cursor: pointer;
+        &.hide {
+            display: none;
         }
 
-        >div.left,
-        >div.right,
-        >div.center {
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+        >div.header {
+            cursor: move;
 
-        >div.center {
-            >div.spacer {
-                width: 10px;
-                min-width: 10px;
-                background-color: black;
+            flex: 0 1 $moveable-window-header-height;
+            border-bottom: 2px solid black;
+
+            display: grid;
+            grid-template-columns: 60% 40%;
+            font-size: 22px;
+
+            i {
+                font-size: $icon-font-size;
+                margin-right: 10px;
+
+                cursor: pointer;
+            }
+
+            >div.left,
+            >div.right {
+                width: 100%;
+                display: flex;
+                align-items: center;
+
+
+                >span {
+                    text-indent: 15px;
+                }
+            }
+
+            >div.left {
+                justify-content: flex-start;
+            }
+
+            >div.right {
+                justify-content: flex-end;
             }
         }
 
-        >div.left {
-            justify-content: flex-start;
+        >div.sub-header {
+            flex: 0 1 $moveable-window-header-height;
+            border-bottom: 2px solid black;
+
+            display: grid;
+            grid-template-columns: 25% 50% 25%;
+            font-size: 22px;
+
+            i {
+                font-size: $icon-font-size;
+                margin-right: 15px;
+                margin-left: 15px;
+
+                cursor: pointer;
+            }
+
+            >div.left,
+            >div.right,
+            >div.center {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            >div.center {
+                >div.spacer {
+                    width: 10px;
+                    min-width: 10px;
+                    background-color: black;
+                }
+            }
+
+            >div.left {
+                justify-content: flex-start;
+            }
+
+            >div.right {
+                justify-content: flex-end;
+            }
         }
 
-        >div.right {
-            justify-content: flex-end;
+        >div.body {
+            flex: 1 1 auto;
         }
-    }
-
-    >div.body {
-        height: calc(100% - ($moveable-window-header-height * 2 + 4px));
     }
 }
