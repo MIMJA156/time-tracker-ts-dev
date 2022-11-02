@@ -6,6 +6,10 @@ This VS Code extension tracks the amount of time you spend coding.
 
 ## Progress
 
+```
+Note: I am still in highschool so this project may take awhile! I am trying to make everything as professinal and high quality as I can!
+```
+
 #### Not Done
 
 This extension is still in development so it is not currently available to install!
