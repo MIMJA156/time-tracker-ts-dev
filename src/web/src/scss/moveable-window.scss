@@ -6,7 +6,7 @@ div.moveable-window {
 
     background-color: $nav-bars-background-color;
     border: 2px solid black;
-    border-radius: 8px;
+    border-radius: 3px;
 
     top: 50%;
     left: 50%;
@@ -81,6 +81,10 @@ div.moveable-window {
                 font-size: $icon-font-size;
                 margin-right: 15px;
                 margin-left: 15px;
+
+                &.disabled {
+                    color: grey;
+                }
 
                 cursor: pointer;
             }
