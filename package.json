@@ -1,39 +1,39 @@
 {
-  "name": "time-tracker-ts-dev",
-  "description": "Simply tracks your time coding!",
-  "version": "1.0.0",
-  "activationEvents": [
-    "onStartupFinished"
-  ],
-  "engines": {
-    "vscode": "^1.63.0"
-  },
-  "main": "./out/main.js",
-  "scripts": {
-    "build": "npm run esbuild-base -- --minify && npm run vite-base",
-    "web-dev": "vite ./src/web/",
-    "esbuild-base": "esbuild ./src/extension/extension.js --bundle --outfile=./out/main.js --external:vscode --format=cjs --platform=node",
-    "vite-base": "tsc && vite build ./src/web/"
-  },
-  "devDependencies": {
-    "@types/express": "^4.17.14",
-    "@types/express-ws": "^3.0.1",
-    "@types/jquery": "^3.5.14",
-    "@types/node": "^18.8.4",
-    "@types/randomstring": "^1.1.8",
-    "@types/vscode": "^1.72.0",
-    "esbuild": "^0.15.10",
-    "vite": "^3.1.7"
-  },
-  "dependencies": {
-    "@fortawesome/fontawesome-free": "^6.2.0",
-    "@octokit/rest": "^19.0.4",
-    "axios": "^1.1.2",
-    "express": "^4.18.2",
-    "jquery": "^3.6.1",
-    "moment": "^2.29.4",
-    "open": "^8.4.0",
-    "randomstring": "^1.2.2",
-    "ws": "^8.9.0"
-  }
+	"name": "time-tracker-ts-dev",
+	"description": "Simply tracks your time coding!",
+	"version": "1.0.0",
+	"activationEvents": [
+		"onStartupFinished"
+	],
+	"engines": {
+		"vscode": "^1.63.0"
+	},
+	"main": "./out/main.js",
+	"scripts": {
+		"build": "npm run esbuild-base -- --minify && npm run vite-base",
+		"web-dev": "vite ./src/web/",
+		"esbuild-base": "esbuild ./src/extension/extension.js --bundle --outfile=./out/main.js --external:vscode --format=cjs --platform=node",
+		"vite-base": "tsc && vite build ./src/web/"
+	},
+	"devDependencies": {
+		"@types/express": "^4.17.14",
+		"@types/express-ws": "^3.0.1",
+		"@types/jquery": "^3.5.14",
+		"@types/node": "^18.8.4",
+		"@types/randomstring": "^1.1.8",
+		"@types/vscode": "^1.72.0",
+		"esbuild": "^0.15.10",
+		"vite": "^3.1.7"
+	},
+	"dependencies": {
+		"@fortawesome/fontawesome-free": "^6.2.0",
+		"@octokit/rest": "^19.0.4",
+		"axios": "^1.1.2",
+		"express": "^4.18.2",
+		"jquery": "^3.6.1",
+		"moment": "^2.29.4",
+		"open": "^8.4.0",
+		"randomstring": "^1.2.2",
+		"ws": "^8.9.0"
+	}
 }
