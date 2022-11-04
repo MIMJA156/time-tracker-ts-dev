@@ -1,6 +1,6 @@
-import "./scss/main.scss";
+import './scss/main.scss';
 
-import setup from "./ts/setup";
+import setup from './ts/setup';
 setup();
 
-console.log("Hello World!");
+console.log('Hello World!');

@@ -1,75 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Time Tracker GUI</title>
+	</head>
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Time Tracker GUI</title>
-</head>
+	<body>
+		<main>
+			<div class="window-bar top">
+				<div class="left">
+					<span class="selected click-allowed" id="selected-date-span">Null :(</span>
+				</div>
+				<div class="center">
+					<span class="click-allowed" id="todays-date-span">Null :(</span>
+				</div>
+				<div class="right">
+					<i class="fa-solid fa-calendar-week right click-allowed"></i>
+				</div>
+			</div>
+			<div class="window-bar bottom">
+				<div class="left">
+					<i class="fa-solid fa-gear left click-allowed"></i>
+				</div>
+				<div class="center">
+					<span>Sanity: 100%</span>
+				</div>
+				<div class="right"><i class="fa-solid fa-check right"></i></div>
+			</div>
+		</main>
+		<div class="moveable-window" data-type="calendar">
+			<div data-index="0">
+				<div class="header">
+					<div class="left"><span>Week Calendar</span></div>
+					<div class="right"><i class="fa-solid fa-compress"></i></div>
+				</div>
+				<div class="sub-header">
+					<div class="left">
+						<i class="fa-solid fa-chevron-left" onclick="calendarTools.increment(-1)" id="increment-calendar-down"></i>
+					</div>
+					<div class="center">
+						<span>Oct</span>
+						<div class="spacer"></div>
+						<span>2022</span>
+					</div>
+					<div class="right">
+						<i class="fa-solid fa-chevron-right" onclick="calendarTools.increment(1)" id="increment-calendar-up"></i>
+					</div>
+				</div>
+				<div class="body" id="week-cell-holder"></div>
+			</div>
+			<div data-index="1" class="hide">
+				<div class="header">
+					<div class="left"><span>Day Viewer</span></div>
+					<div class="right">
+						<i class="fa-solid fa-chevron-left"></i>
+						<i class="fa-solid fa-compress"></i>
+					</div>
+				</div>
+				<div class="body no-flex">
+					<div class="cell-week"></div>
+					<div class="cell-day">
+						<div class="day"></div>
+						<div class="day"></div>
+						<div class="day"></div>
+						<div class="day"></div>
+						<div class="day"></div>
+						<div class="day"></div>
+						<div class="day"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
 
-<body>
-    <main>
-        <div class="window-bar top">
-            <div class="left">
-                <span class="selected click-allowed" id="selected-date-span">Null :(</span>
-            </div>
-            <div class="center">
-                <span class="click-allowed" id="todays-date-span">Null :(</span>
-            </div>
-            <div class="right"><i class="fa-solid fa-calendar-week right click-allowed"></i></div>
-        </div>
-        <div class="window-bar bottom">
-            <div class="left"><i class="fa-solid fa-gear left click-allowed"></i></div>
-            <div class="center">
-                <span>Sanity: 100%</span>
-            </div>
-            <div class="right"><i class="fa-solid fa-check right"></i></div>
-        </div>
-    </main>
-    <div class="moveable-window" data-type="calendar">
-        <div data-index="0">
-            <div class="header">
-                <div class="left"><span>Week Calendar</span></div>
-                <div class="right"><i class="fa-solid fa-compress"></i></div>
-            </div>
-            <div class="sub-header">
-                <div class="left"><i class="fa-solid fa-chevron-left" onclick="calendarTools.increment(-1)"
-                        id="increment-calendar-down"></i></div>
-                <div class="center">
-                    <span>Oct</span>
-                    <div class="spacer"></div>
-                    <span>2022</span>
-                </div>
-                <div class="right"><i class="fa-solid fa-chevron-right" onclick="calendarTools.increment(1)"
-                        id="increment-calendar-up"></i></div>
-            </div>
-            <div class="body" id="week-cell-holder"></div>
-        </div>
-        <div data-index="1" class="hide">
-            <div class="header">
-                <div class="left"><span>Day Viewer</span></div>
-                <div class="right">
-                    <i class="fa-solid fa-chevron-left"></i>
-                    <i class="fa-solid fa-compress"></i>
-                </div>
-            </div>
-            <div class="body no-flex">
-                <div class="cell-week"></div>
-                <div class="cell-day">
-                    <div class="day"></div>
-                    <div class="day"></div>
-                    <div class="day"></div>
-                    <div class="day"></div>
-                    <div class="day"></div>
-                    <div class="day"></div>
-                    <div class="day"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-</body>
-
-<script type="module" src="./src/main.ts"></script>
-
+	<script type="module" src="./src/main.ts"></script>
 </html>
