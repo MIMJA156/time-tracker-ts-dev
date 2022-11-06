@@ -6,7 +6,7 @@ import { cycle } from './windows/calendar';
 
 export const timeLimitations = {
 	start: new Date('1/1/2022'),
-	end: new Date('12/1/2022'),
+	end: new Date('12/31/2022'),
 };
 
 export default () => {
@@ -38,5 +38,5 @@ export default () => {
 		}
 	}
 
-	cycle(timeLimitations);
+	cycle();
 };
