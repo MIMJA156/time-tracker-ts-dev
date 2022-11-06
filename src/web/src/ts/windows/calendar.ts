@@ -20,7 +20,7 @@ export function cycle(monthOffset = 0) {
 
 	cellHolder.html('');
 	dateValues.weeks.forEach((week) => {
-		cellHolder.append(`<div class="cell-week">${moment(new Date(dateValues.days[week[0]])).format('MMM Do')} - ${moment(dateValues.days[week[1]]).format('MMM Do')}</div>`);
+		cellHolder.append(`<div class="cell-week">${moment(new Date(dateValues.days[week[0]])).format('MMM Do')} - ${moment(new Date(dateValues.days[week[1]])).format('MMM Do')}</div>`);
 	});
 }
 
@@ -42,52 +42,45 @@ function getDateValues({ end, start }: { end: Date; start: Date }, monthOffset =
 	};
 
 	for (let i = today.getDay(); i > 0; i--) {
-		let allowNext = !limitReached.backwards;
-
-		if (lastMonth.getFullYear() === start.getFullYear() && lastMonth.getMonth() === start.getMonth() && start.getDate() >= lastMonth.getDate() - i + 1) {
-			limitReached.backwards = true;
-			allowNext = false;
-		} else {
-			allowNext = true;
-		}
-
-		if (allowNext) {
-			days.push(`${lastMonth.getMonth() + 1}/${lastMonth.getDate() - i + 1}/${lastMonth.getFullYear()}`);
-		}
+		days.push(`${lastMonth.getMonth() + 1}/${lastMonth.getDate() - i + 1}/${lastMonth.getFullYear()}`);
 	}
 
 	for (let i = 1; i <= currentMonth.getDate(); i++) {
-		if (currentMonth.getFullYear() === end.getFullYear() && currentMonth.getMonth() === end.getMonth() && end.getDate() <= i) {
-			limitReached.forwards = true;
-		}
-
-		let allowNext = !limitReached.backwards;
-		if (lastMonth.getFullYear() === start.getFullYear() && lastMonth.getMonth() === start.getMonth() && start.getDate() <= lastMonth.getDate()) {
-			limitReached.backwards = true;
-			allowNext = false;
-		} else {
-			allowNext = true;
-		}
-
-		if (limitReached.forwards) {
-			break;
-		}
-
-		if (allowNext) {
-			days.push(`${currentMonth.getMonth() + 1}/${i}/${currentMonth.getFullYear()}`);
-		}
+		days.push(`${currentMonth.getMonth() + 1}/${i}/${currentMonth.getFullYear()}`);
 	}
 
 	for (let i = 1; i <= 7 - currentMonth.getDay() - 1; i++) {
-		if (nextMonth.getFullYear() === end.getFullYear() && nextMonth.getMonth() === end.getMonth() && end.getDate() < i) {
-			limitReached.forwards = true;
-		}
-
-		if (limitReached.forwards) {
-			break;
-		}
-
 		days.push(`${nextMonth.getMonth() + 1}/${i}/${nextMonth.getFullYear()}`);
+	}
+
+	let dayCountForwards = 1;
+	let dayCountBackwards = 1;
+	days.forEach((day) => {
+		if (new Date(day).getTime() >= end.getTime()) {
+			limitReached.forwards = true;
+		} else {
+			dayCountForwards++;
+		}
+
+		if (new Date(day).getTime() <= start.getTime()) {
+			limitReached.backwards = true;
+		} else {
+			dayCountBackwards++;
+		}
+	});
+
+	if (limitReached.forwards) {
+		let daysOver = days.length - dayCountForwards;
+		if (daysOver >= 7) {
+			days.splice(days.length - 7 * parseInt(`${daysOver / 7}`.split('.')[0]), days.length);
+		}
+	}
+
+	if (limitReached.backwards) {
+		let daysOver = days.length - dayCountBackwards;
+		if (daysOver >= 7) {
+			days = days.slice(7 * parseInt(`${daysOver / 7}`.split('.')[0]));
+		}
 	}
 
 	for (let i = 0; i < days.length; i++) {
