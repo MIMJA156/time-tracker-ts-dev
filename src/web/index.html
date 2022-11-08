@@ -17,7 +17,7 @@
 					<span class="click-allowed" id="todays-date-span">Null :(</span>
 				</div>
 				<div class="right">
-					<i class="fa-solid fa-calendar-week right click-allowed"></i>
+					<i class="fa-solid fa-calendar-week right click-allowed" onclick="moveableWindowTools.toggle('weeks-moveable-window')"></i>
 				</div>
 			</div>
 			<div class="window-bar bottom">
@@ -31,11 +31,11 @@
 			</div>
 		</main>
 
-		<div class="moveable-window" data-type="calendar">
+		<div class="moveable-window" data-type="calendar" id="weeks-moveable-window">
 			<div data-index="0">
 				<div class="header">
 					<div class="left"><span>Week Calendar</span></div>
-					<div class="right"><i class="fa-solid fa-compress"></i></div>
+					<div class="right"><i class="fa-solid fa-compress" onclick="moveableWindowTools.hide('weeks-moveable-window')"></i></div>
 				</div>
 				<div class="sub-header">
 					<div class="left">
