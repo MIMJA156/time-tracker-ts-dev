@@ -14,7 +14,6 @@ export class ExpressServer {
 	private server: httpServer<typeof IncomingMessage, typeof ServerResponse>;
 
 	private storageUtils: StorageUtils;
-
 	private gitEndpoints: GitEndpoints;
 
 	constructor(port: number, providedStorageUtils: StorageUtils) {
@@ -50,7 +49,7 @@ export class ExpressServer {
 
 			socket.on('message', (message) => {
 				let json = JSON.parse(message.toString());
-				let actionArray = json.action.split('.');
+				let actionArray = json.invoke.split('.');
 
 				if (json.to === 'server') {
 					if (actionArray[0] === 'github') {

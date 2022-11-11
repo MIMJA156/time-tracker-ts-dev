@@ -3,7 +3,7 @@
     "tasks": [
         {
             "type": "npm",
-            "script": "esbuild-base",
+            "script": "api-dev",
             "group": {
                 "kind": "build",
                 "isDefault": true

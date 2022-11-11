@@ -12,6 +12,7 @@
 	"scripts": {
 		"build": "npm run esbuild-base -- --minify && npm run vite-base",
 		"web-dev": "vite ./src/web/",
+		"api-dev": "npm run esbuild-base",
 		"esbuild-base": "esbuild ./src/extension/extension.js --bundle --outfile=./out/main.js --external:vscode --format=cjs --platform=node",
 		"vite-base": "tsc && vite build ./src/web/"
 	},

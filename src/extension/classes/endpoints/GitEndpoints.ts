@@ -38,6 +38,7 @@ export class GitEndpoints extends Endpoint {
 	}
 
 	public auth(socket: WebSocket) {
+		console.log(socket);
 		if (this.storageUtils.getLocalStoredSettings().gist.access_token) {
 			socket.send(
 				JSON.stringify({
