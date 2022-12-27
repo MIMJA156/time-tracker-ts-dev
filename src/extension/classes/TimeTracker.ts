@@ -1,65 +1,74 @@
 import { StorageUtils } from './StorageUtils';
 
 export class TimeTracker {
+	private counter: NodeJS.Timer;
 	private time: number = 0;
 	private sinceStart: Date = new Date();
-	private saveInterval: number;
+	private badgeUpdateRate: number;
+	private savedValues: Object;
 	private storageUtils: StorageUtils;
 
-	private savedValues: Object;
-
-	constructor({ saveInterval, idleTimeout, storageUtils }) {
-		this.saveInterval = saveInterval;
+	constructor({ badgeUpdateRate, storageUtils }) {
+		this.badgeUpdateRate = badgeUpdateRate;
 		this.storageUtils = storageUtils;
 
-		this.loadTime();
+		this.savedValues = this.verifyTime(this.loadTime());
 	}
 
 	start() {
-		setInterval(() => {
-			let rightNow = new Date();
-
-			console.log(rightNow.getDate(), this.sinceStart.getDate());
-
-			if (rightNow.getDate() !== this.sinceStart.getDate() || rightNow.getMonth() !== this.sinceStart.getMonth()) {
-				this.sinceStart = rightNow;
-			}
-
-			let oldTime = this.savedValues['time'][rightNow.getFullYear()][rightNow.getMonth() + 1][rightNow.getDate()]['total'] !== undefined ? this.savedValues['time'][rightNow.getFullYear()][rightNow.getMonth() + 1][rightNow.getDate()]['total'] : 0;
-
-			this.time = rightNow.getTime() - this.sinceStart.getTime() + oldTime;
-			this.saveTime();
-		}, this.saveInterval);
+		this.counter = setInterval(() => {
+			this.time = this.calculateTime();
+			console.log(this.time);
+		}, this.badgeUpdateRate);
 	}
 
-	saveTime() {
-		let alreadyStored = this.storageUtils.getLocalStoredTime();
+	stop() {
+		this.saveTime();
+		clearInterval(this.counter);
+	}
+
+	private calculateTime() {
+		let rightNow = new Date();
+		if (rightNow.getDate() !== this.sinceStart.getDate() || rightNow.getMonth() !== this.sinceStart.getMonth()) {
+			this.sinceStart = rightNow;
+		}
+		let oldTime = this.savedValues['time'][rightNow.getFullYear()][rightNow.getMonth() + 1][rightNow.getDate()]['total'] !== undefined ? this.savedValues['time'][rightNow.getFullYear()][rightNow.getMonth() + 1][rightNow.getDate()]['total'] : 0;
+		return rightNow.getTime() - this.sinceStart.getTime() + oldTime;
+	}
+
+	private verifyTime(data: Object) {
 		let rightNow = new Date();
 
-		if (!alreadyStored['time']) {
-			alreadyStored['time'] = {};
+		if (!data['time']) {
+			data['time'] = {};
 		}
 
-		if (!alreadyStored['time'][rightNow.getFullYear()]) {
-			alreadyStored['time'][rightNow.getFullYear()] = {};
+		if (!data['time'][rightNow.getFullYear()]) {
+			data['time'][rightNow.getFullYear()] = {};
 		}
 
-		if (!alreadyStored['time'][rightNow.getFullYear()][rightNow.getMonth() + 1]) {
-			alreadyStored['time'][rightNow.getFullYear()][rightNow.getMonth() + 1] = {};
+		if (!data['time'][rightNow.getFullYear()][rightNow.getMonth() + 1]) {
+			data['time'][rightNow.getFullYear()][rightNow.getMonth() + 1] = {};
 		}
 
-		alreadyStored['time'][rightNow.getFullYear()][rightNow.getMonth() + 1][rightNow.getDate()] = {
+		data['time'][rightNow.getFullYear()][rightNow.getMonth() + 1][rightNow.getDate()] = {
 			total: this.time,
 		};
 
-		this.storageUtils.setLocalStoredTime(alreadyStored);
+		return data;
 	}
 
-	loadTime() {
+	private saveTime() {
+		this.storageUtils.setLocalStoredTime(this.savedValues);
+	}
+
+	private loadTime() {
 		let alreadyStored = this.storageUtils.getLocalStoredTime();
 
 		if (alreadyStored['time']) {
-			this.savedValues = alreadyStored;
+			return alreadyStored;
+		} else {
+			return {};
 		}
 	}
 }
