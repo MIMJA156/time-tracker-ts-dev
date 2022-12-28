@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
-import { BadgeUtils } from './classes/BadgeUtils';
-import { StorageUtils } from './classes/StorageUtils';
+import { BadgeUtils } from './classes/Utilities/BadgeUtils';
+import { StorageUtils } from './classes/Utilities/StorageUtils';
 import { TimeTracker } from './classes/TimeTracker';
 import { seconds } from './func/timeConverters';
 

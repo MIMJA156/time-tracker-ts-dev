@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import { seconds } from '../func/timeConverters';
-import { Badge, BadgeUtils } from './BadgeUtils';
-import { StorageUtils } from './StorageUtils';
+import { Badge, BadgeUtils } from './Utilities//BadgeUtils';
+import { StorageUtils } from './Utilities/StorageUtils';
 
 export class TimeTracker {
 	private storageUtilities: StorageUtils;
