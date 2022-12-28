@@ -13,3 +13,13 @@ export function minutes(value: number) {
 export function seconds(value: number) {
 	return value * 1000;
 }
+
+export function translateMilliseconds(value: number) {
+	let hours = 0;
+	let minutes = 0;
+	let seconds = 0;
+
+	seconds = value / 1000;
+
+	return { hours, minutes, seconds };
+}

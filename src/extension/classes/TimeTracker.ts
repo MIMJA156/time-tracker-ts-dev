@@ -1,29 +1,38 @@
+import { translateMilliseconds } from '../func/timeConverters';
+import { BadgeUtils } from './BadgeUtils';
 import { StorageUtils } from './StorageUtils';
 
 export class TimeTracker {
+	public time: number = 0;
 	private counter: NodeJS.Timer;
-	private time: number = 0;
 	private sinceStart: Date = new Date();
-	private badgeUpdateRate: number;
+	private sampleRate: number;
 	private savedValues: Object;
 	private storageUtils: StorageUtils;
+	private badgeUtils: BadgeUtils;
 
-	constructor({ badgeUpdateRate, storageUtils }) {
-		this.badgeUpdateRate = badgeUpdateRate;
+	constructor({ sampleRate, storageUtils, badgeUtils }) {
+		this.sampleRate = sampleRate;
 		this.storageUtils = storageUtils;
+		this.badgeUtils = badgeUtils;
 
 		this.savedValues = this.verifyTime(this.loadTime());
+	}
+
+	saveTime() {
+		let rightNow = new Date();
+		this.savedValues['time'][rightNow.getFullYear()][rightNow.getMonth() + 1][rightNow.getDate()]['total'] = this.calculateTime();
+		this.storageUtils.setLocalStoredTime(this.savedValues);
 	}
 
 	start() {
 		this.counter = setInterval(() => {
 			this.time = this.calculateTime();
-			console.log(this.time);
-		}, this.badgeUpdateRate);
+			this.badgeUtils.text(translateMilliseconds(this.time).seconds);
+		}, this.sampleRate);
 	}
 
 	stop() {
-		this.saveTime();
 		clearInterval(this.counter);
 	}
 
@@ -51,15 +60,13 @@ export class TimeTracker {
 			data['time'][rightNow.getFullYear()][rightNow.getMonth() + 1] = {};
 		}
 
-		data['time'][rightNow.getFullYear()][rightNow.getMonth() + 1][rightNow.getDate()] = {
-			total: this.time,
-		};
+		if (!data['time'][rightNow.getFullYear()][rightNow.getMonth() + 1][rightNow.getDate()]) {
+			data['time'][rightNow.getFullYear()][rightNow.getMonth() + 1][rightNow.getDate()] = {
+				total: this.time,
+			};
+		}
 
 		return data;
-	}
-
-	private saveTime() {
-		this.storageUtils.setLocalStoredTime(this.savedValues);
 	}
 
 	private loadTime() {
