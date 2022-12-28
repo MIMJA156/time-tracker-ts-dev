@@ -14,12 +14,17 @@ export function seconds(value: number) {
 	return value * 1000;
 }
 
-export function translateMilliseconds(value: number) {
-	let hours = 0;
-	let minutes = 0;
-	let seconds = 0;
+//Millisecond Related
+export function MillisecondsToDays(value: number) {
+	return value / 1000 / 60 / 60 / 24;
+}
 
-	seconds = value / 1000;
-
-	return { hours, minutes, seconds };
+export function MillisecondsToHours(value: number) {
+	return value / 1000 / 60 / 60;
+}
+export function MillisecondsToMinutes(value: number) {
+	return value / 1000 / 60;
+}
+export function MillisecondsToSeconds(value: number) {
+	return value / 1000;
 }
