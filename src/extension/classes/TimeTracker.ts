@@ -1,3 +1,6 @@
+import * as vscode from 'vscode';
+import { seconds } from '../func/timeConverters';
+import { Badge, BadgeUtils } from './BadgeUtils';
 import { StorageUtils } from './StorageUtils';
 
 export class TimeTracker {
@@ -5,20 +8,39 @@ export class TimeTracker {
 	private sampleRate: number;
 	private timeObject: object;
 	private sessionStart: number = new Date().getTime();
+	private timeAlreadySpent: number;
 
 	private loop: string | number | NodeJS.Timer | undefined;
+	private badge: Badge;
 
-	constructor({ sampleRate, storageUtils }: { sampleRate: number; storageUtils: StorageUtils }) {
+	constructor({ sampleRate, storageUtils, badgeUtils }: { sampleRate: number; storageUtils: StorageUtils; badgeUtils: BadgeUtils }) {
+		let dateAtCreation = new Date();
+
 		this.storageUtilities = storageUtils;
 		this.sampleRate = sampleRate;
 
 		this.timeObject = this.sanitizeTimeObject(this.storageUtilities.getLocalStoredTime());
+		this.timeAlreadySpent = this.timeObject['time'][dateAtCreation.getFullYear()][dateAtCreation.getMonth() + 1][dateAtCreation.getDate()].total;
+
+		let newBadge = badgeUtils.createBadge({
+			alignment: vscode.StatusBarAlignment.Right,
+			priority: Infinity,
+			text: '0',
+			icon: 'debug-breakpoint-log-unverified',
+			tooltip: `Time Spent Coding on ${`${dateAtCreation.getMonth() + 1}/${dateAtCreation.getDate()}/${dateAtCreation.getFullYear()}`}`,
+			command: null,
+		});
+
+		this.badge = newBadge;
 	}
 
 	public start() {
 		this.loop = setInterval(() => {
-			let current = new Date();
-			this.timeObject['time'][current.getFullYear()][current.getMonth() + 1][current.getDate()] = this.calculateTimeSpent(this.sessionStart, this.timeObject);
+			let currentDate = new Date();
+			let timeSpent = this.calculateTimeSpent(this.sessionStart, this.timeAlreadySpent);
+
+			this.timeObject['time'][currentDate.getFullYear()][currentDate.getMonth() + 1][currentDate.getDate()].total = timeSpent;
+			this.badge.text = `${timeSpent}`;
 		}, this.sampleRate);
 	}
 
@@ -27,8 +49,8 @@ export class TimeTracker {
 	}
 
 	public save() {
-		let current = new Date();
-		this.timeObject['time'][current.getFullYear()][current.getMonth() + 1][current.getDate()] = this.calculateTimeSpent(this.sessionStart, this.timeObject);
+		let currentDate = new Date();
+		this.timeObject['time'][currentDate.getFullYear()][currentDate.getMonth() + 1][currentDate.getDate()].total = this.calculateTimeSpent(this.sessionStart, this.timeAlreadySpent);
 		this.storageUtilities.setLocalStoredTime(this.timeObject);
 	}
 
@@ -56,9 +78,9 @@ export class TimeTracker {
 		return givenTimeObject;
 	}
 
-	private calculateTimeSpent(sessionStart: number, timeObject: object) {
+	private calculateTimeSpent(sessionStart: number, timeAlreadySpent: number) {
 		let current = new Date();
-		let result = current.getTime() - sessionStart + timeObject['time'][current.getFullYear()][current.getMonth() + 1][current.getDate()];
+		let result = current.getTime() - sessionStart + timeAlreadySpent;
 		return result;
 	}
 }
