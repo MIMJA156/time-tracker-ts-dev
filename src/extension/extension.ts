@@ -13,15 +13,14 @@ export function activate(context: vscode.ExtensionContext) {
 	const badgeUtils = new BadgeUtils(context);
 
 	timeTracker = new TimeTracker({
-		sampleRate: seconds(5),
-		storageUtils,
+		sampleRate: seconds(1),
 		badgeUtils,
+		storageUtils,
 	});
 
 	timeTracker.start();
 }
 
 export function deactivate() {
-	timeTracker.save();
 	timeTracker.stop();
 }

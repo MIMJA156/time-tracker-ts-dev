@@ -1,86 +1,94 @@
 import * as vscode from 'vscode';
-import { seconds } from '../func/timeConverters';
-import { Badge, BadgeUtils } from './Utilities//BadgeUtils';
+import { BadgeUtils } from './Utilities/BadgeUtils';
 import { StorageUtils } from './Utilities/StorageUtils';
+import { MillisecondsToSeconds, SecondsToHoursMinutesSeconds } from './../func/timeConverters';
 
 export class TimeTracker {
-	private storageUtilities: StorageUtils;
-	private sampleRate: number;
-	private timeObject: object;
-	private sessionStart: number = new Date().getTime();
-	private timeAlreadySpent: number;
+	timeInterval: NodeJS.Timer;
 
-	private loop: string | number | NodeJS.Timer | undefined;
-	private badge: Badge;
+	totalTime: number;
+	preExistingTimeData: object;
+	sampleRate: number;
+	displayBadge: import('./Utilities/BadgeUtils').Badge;
+
+	storageUtils: StorageUtils;
 
 	constructor({ sampleRate, storageUtils, badgeUtils }: { sampleRate: number; storageUtils: StorageUtils; badgeUtils: BadgeUtils }) {
-		let dateAtCreation = new Date();
+		let savedInformation = this.sanitize(storageUtils.getLocalStoredTime());
 
-		this.storageUtilities = storageUtils;
+		let currentDate = new Date();
+		this.totalTime = savedInformation['time'][currentDate.getUTCFullYear()][currentDate.getUTCMonth() + 1][currentDate.getUTCDate()].total;
+
+		this.preExistingTimeData = savedInformation;
 		this.sampleRate = sampleRate;
+		this.displayBadge = badgeUtils.createBadge(
+			{
+				icon: 'timeline-view-icon',
+				text: 'Starting Time Loop...',
+				tooltip: `Time Spent Coding Today!`,
+				alignment: vscode.StatusBarAlignment.Right,
+				priority: 10,
+				command: null,
+			},
+			true,
+		);
 
-		this.timeObject = this.sanitizeTimeObject(this.storageUtilities.getLocalStoredTime());
-		this.timeAlreadySpent = this.timeObject['time'][dateAtCreation.getFullYear()][dateAtCreation.getMonth() + 1][dateAtCreation.getDate()].total;
-
-		let newBadge = badgeUtils.createBadge({
-			alignment: vscode.StatusBarAlignment.Right,
-			priority: Infinity,
-			text: '0',
-			icon: 'debug-breakpoint-log-unverified',
-			tooltip: `Time Spent Coding on ${`${dateAtCreation.getMonth() + 1}/${dateAtCreation.getDate()}/${dateAtCreation.getFullYear()}`}`,
-			command: null,
-		});
-
-		this.badge = newBadge;
+		this.storageUtils = storageUtils;
 	}
 
 	public start() {
-		this.loop = setInterval(() => {
-			let currentDate = new Date();
-			let timeSpent = this.calculateTimeSpent(this.sessionStart, this.timeAlreadySpent);
+		let today = new Date();
+		let todayDay = today.getUTCDay();
 
-			this.timeObject['time'][currentDate.getFullYear()][currentDate.getMonth() + 1][currentDate.getDate()].total = timeSpent;
-			this.badge.text = `${timeSpent}`;
+		this.timeInterval = setInterval(() => {
+			let maybeTodayDay = new Date().getUTCDay();
+
+			if (maybeTodayDay !== todayDay) {
+				console.log('New Day!');
+
+				this.preExistingTimeData['time'][today.getUTCFullYear()][today.getUTCMonth() + 1][today.getUTCDate()].total = this.totalTime;
+				this.preExistingTimeData = this.sanitize(this.preExistingTimeData);
+
+				this.totalTime = 0;
+			}
+
+			this.totalTime += MillisecondsToSeconds(this.sampleRate);
+
+			let humanReadableTimes = SecondsToHoursMinutesSeconds(this.totalTime);
+			this.displayBadge.text = `${humanReadableTimes.hours} hr : ${humanReadableTimes.minutes} min : ${humanReadableTimes.seconds} sec`;
 		}, this.sampleRate);
 	}
 
 	public stop() {
-		clearInterval(this.loop);
+		clearInterval(this.timeInterval);
+
+		let currentDate = new Date();
+		this.preExistingTimeData['time'][currentDate.getUTCFullYear()][currentDate.getUTCMonth() + 1][currentDate.getUTCDate()].total = this.totalTime;
+
+		this.storageUtils.setLocalStoredTime(this.preExistingTimeData);
 	}
 
-	public save() {
-		let currentDate = new Date();
-		this.timeObject['time'][currentDate.getFullYear()][currentDate.getMonth() + 1][currentDate.getDate()].total = this.calculateTimeSpent(this.sessionStart, this.timeAlreadySpent);
-		this.storageUtilities.setLocalStoredTime(this.timeObject);
-	}
-
-	private sanitizeTimeObject(givenTimeObject: object) {
+	private sanitize(timeValues: object) {
 		let currentDate = new Date();
 
-		if (!givenTimeObject['time']) {
-			givenTimeObject['time'] = {};
+		if (!timeValues['time']) {
+			timeValues['time'] = {};
 		}
 
-		if (!givenTimeObject['time'][currentDate.getFullYear()]) {
-			givenTimeObject['time'][currentDate.getFullYear()] = {};
+		if (!timeValues['time'][currentDate.getUTCFullYear()]) {
+			timeValues['time'][currentDate.getUTCFullYear()] = {};
 		}
 
-		if (!givenTimeObject['time'][currentDate.getFullYear()][currentDate.getMonth() + 1]) {
-			givenTimeObject['time'][currentDate.getFullYear()][currentDate.getMonth() + 1] = {};
+		if (!timeValues['time'][currentDate.getUTCFullYear()][currentDate.getUTCMonth() + 1]) {
+			timeValues['time'][currentDate.getUTCFullYear()][currentDate.getUTCMonth() + 1] = {};
 		}
 
-		if (!givenTimeObject['time'][currentDate.getFullYear()][currentDate.getMonth() + 1][currentDate.getDate()]) {
-			givenTimeObject['time'][currentDate.getFullYear()][currentDate.getMonth() + 1][currentDate.getDate()] = {
+		if (!timeValues['time'][currentDate.getUTCFullYear()][currentDate.getUTCMonth() + 1][currentDate.getUTCDate()]) {
+			timeValues['time'][currentDate.getUTCFullYear()][currentDate.getUTCMonth() + 1][currentDate.getUTCDate()] = {
 				total: 0,
 			};
 		}
 
-		return givenTimeObject;
-	}
-
-	private calculateTimeSpent(sessionStart: number, timeAlreadySpent: number) {
-		let current = new Date();
-		let result = current.getTime() - sessionStart + timeAlreadySpent;
-		return result;
+		return timeValues;
 	}
 }

@@ -7,10 +7,13 @@ export class BadgeUtils {
 		this.context = context;
 	}
 
-	public createBadge(data: { alignment: vscode.StatusBarAlignment; priority: number; text: string; tooltip: string; icon: string; command: string | null }) {
+	public createBadge(data: { alignment: vscode.StatusBarAlignment; priority: number; text: string; tooltip: string; icon: string; command: string | null }, show: boolean = false) {
 		let newBadge = new Badge(data);
 		this.context.subscriptions.push(newBadge.badge);
-		newBadge.show(true);
+
+		if (show) {
+			newBadge.show(true);
+		}
 
 		return newBadge;
 	}
