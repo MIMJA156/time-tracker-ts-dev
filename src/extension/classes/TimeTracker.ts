@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import { BadgeUtils } from './Utilities/BadgeUtils';
 import { StorageUtils } from './Utilities/StorageUtils';
-import { MillisecondsToSeconds, SecondsToHoursMinutesSeconds } from './../func/timeConverters';
+import { MillisecondsToSeconds, SecondsToHoursMinutesSeconds, seconds, minutes } from './../func/timeConverters';
 
 export class TimeTracker {
 	timeInterval: NodeJS.Timer;
@@ -17,7 +17,7 @@ export class TimeTracker {
 		let savedInformation = this.sanitize(storageUtils.getLocalStoredTime());
 
 		let currentDate = new Date();
-		this.totalTime = savedInformation['time'][currentDate.getUTCFullYear()][currentDate.getUTCMonth() + 1][currentDate.getUTCDate()].total;
+		this.totalTime = savedInformation['time'][currentDate.getFullYear()][currentDate.getMonth() + 1][currentDate.getDate()].total;
 
 		this.preExistingTimeData = savedInformation;
 		this.sampleRate = sampleRate;
@@ -38,21 +38,28 @@ export class TimeTracker {
 
 	public start() {
 		let today = new Date();
-		let todayDay = today.getUTCDay();
+		let todayDay = today.getDay();
 
 		this.timeInterval = setInterval(() => {
-			let maybeTodayDay = new Date().getUTCDay();
+			let maybeTodayDay = new Date().getDay();
 
 			if (maybeTodayDay !== todayDay) {
 				console.log('New Day!');
 
-				this.preExistingTimeData['time'][today.getUTCFullYear()][today.getUTCMonth() + 1][today.getUTCDate()].total = this.totalTime;
-				this.preExistingTimeData = this.sanitize(this.preExistingTimeData);
+				this.preExistingTimeData['time'][today.getFullYear()][today.getMonth() + 1][today.getDate()].total = this.totalTime;
+				this.save();
 
 				this.totalTime = 0;
+				today = new Date();
+				todayDay = today.getDay();
 			}
 
 			this.totalTime += MillisecondsToSeconds(this.sampleRate);
+
+			if (this.totalTime % MillisecondsToSeconds(minutes(1)) === 0) {
+				this.preExistingTimeData['time'][today.getFullYear()][today.getMonth() + 1][today.getDate()].total = this.totalTime;
+				this.save();
+			}
 
 			let humanReadableTimes = SecondsToHoursMinutesSeconds(this.totalTime);
 			this.displayBadge.text = `${humanReadableTimes.hours} hr : ${humanReadableTimes.minutes} min : ${humanReadableTimes.seconds} sec`;
@@ -61,10 +68,14 @@ export class TimeTracker {
 
 	public stop() {
 		clearInterval(this.timeInterval);
-
 		let currentDate = new Date();
-		this.preExistingTimeData['time'][currentDate.getUTCFullYear()][currentDate.getUTCMonth() + 1][currentDate.getUTCDate()].total = this.totalTime;
+		this.preExistingTimeData['time'][currentDate.getFullYear()][currentDate.getMonth() + 1][currentDate.getDate()].total = this.totalTime;
 
+		this.save();
+	}
+
+	private save() {
+		this.preExistingTimeData = this.sanitize(this.preExistingTimeData);
 		this.storageUtils.setLocalStoredTime(this.preExistingTimeData);
 	}
 
@@ -75,17 +86,18 @@ export class TimeTracker {
 			timeValues['time'] = {};
 		}
 
-		if (!timeValues['time'][currentDate.getUTCFullYear()]) {
-			timeValues['time'][currentDate.getUTCFullYear()] = {};
+		if (!timeValues['time'][currentDate.getFullYear()]) {
+			timeValues['time'][currentDate.getFullYear()] = {};
 		}
 
-		if (!timeValues['time'][currentDate.getUTCFullYear()][currentDate.getUTCMonth() + 1]) {
-			timeValues['time'][currentDate.getUTCFullYear()][currentDate.getUTCMonth() + 1] = {};
+		if (!timeValues['time'][currentDate.getFullYear()][currentDate.getMonth() + 1]) {
+			timeValues['time'][currentDate.getFullYear()][currentDate.getMonth() + 1] = {};
 		}
 
-		if (!timeValues['time'][currentDate.getUTCFullYear()][currentDate.getUTCMonth() + 1][currentDate.getUTCDate()]) {
-			timeValues['time'][currentDate.getUTCFullYear()][currentDate.getUTCMonth() + 1][currentDate.getUTCDate()] = {
+		if (!timeValues['time'][currentDate.getFullYear()][currentDate.getMonth() + 1][currentDate.getDate()]) {
+			timeValues['time'][currentDate.getFullYear()][currentDate.getMonth() + 1][currentDate.getDate()] = {
 				total: 0,
+				timeZone: [currentDate.getTimezoneOffset()],
 			};
 		}
 
