@@ -27,33 +27,6 @@ export default () => {
 				$('#' + id).addClass('hide');
 			}
 		}
-
-		// hide() {
-		// 	let eventTarget = $(event?.target as HTMLElement);
-
-		// 	let window: JQuery<HTMLElement> = $();
-		// 	let running = true;
-		// 	let depth = 0;
-
-		// 	while (running) {
-		// 		depth++;
-		// 		let possibleWindow = eventTarget;
-
-		// 		for (let i = 0; i < depth; i++) {
-		// 			let parent = possibleWindow.parent();
-
-		// 			if (parent.hasClass('moveable-window')) {
-		// 				window = parent;
-		// 				running = false;
-		// 				break;
-		// 			} else {
-		// 				possibleWindow = parent;
-		// 			}
-		// 		}
-		// 	}
-
-		// 	window.addClass('hide');
-		// }
 	}
 
 	class calendarTools {

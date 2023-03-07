@@ -1,81 +1,110 @@
-import { translateMilliseconds } from '../func/timeConverters';
-import { BadgeUtils } from './BadgeUtils';
-import { StorageUtils } from './StorageUtils';
+import * as vscode from 'vscode';
+import { BadgeUtils } from './Utilities/BadgeUtils';
+import { StorageUtils } from './Utilities/StorageUtils';
+import { MillisecondsToSeconds, SecondsToHoursMinutesSeconds, minutes } from './../func/timeConverters';
 
 export class TimeTracker {
-	public time: number = 0;
-	private counter: NodeJS.Timer;
-	private sinceStart: Date = new Date();
-	private sampleRate: number;
-	private savedValues: Object;
-	private storageUtils: StorageUtils;
-	private badgeUtils: BadgeUtils;
+	timeInterval: NodeJS.Timer;
 
-	constructor({ sampleRate, storageUtils, badgeUtils }) {
+	totalTime: number;
+	preExistingTimeData: object;
+	sampleRate: number;
+	displayBadge: import('./Utilities/BadgeUtils').Badge;
+
+	storageUtils: StorageUtils;
+
+	constructor({ sampleRate, storageUtils, badgeUtils }: { sampleRate: number; storageUtils: StorageUtils; badgeUtils: BadgeUtils }) {
+		let savedInformation = this.sanitize(storageUtils.getLocalStoredTime());
+
+		let currentDate = new Date();
+		this.totalTime = savedInformation['time'][currentDate.getFullYear()][currentDate.getMonth() + 1][currentDate.getDate()].total;
+
+		this.preExistingTimeData = savedInformation;
 		this.sampleRate = sampleRate;
+		this.displayBadge = badgeUtils.createBadge(
+			{
+				icon: 'timeline-view-icon',
+				text: 'Starting Time Loop...',
+				tooltip: `Time Spent Coding Today!`,
+				alignment: vscode.StatusBarAlignment.Right,
+				priority: 10,
+				command: null,
+			},
+			true,
+		);
+
+		badgeUtils.linkCommandToBadge(this.displayBadge, 'time-tracker', () => {
+			console.log('web button clicked');
+		});
+
 		this.storageUtils = storageUtils;
-		this.badgeUtils = badgeUtils;
-
-		this.savedValues = this.verifyTime(this.loadTime());
 	}
 
-	saveTime() {
-		let rightNow = new Date();
-		this.savedValues['time'][rightNow.getFullYear()][rightNow.getMonth() + 1][rightNow.getDate()]['total'] = this.calculateTime();
-		this.storageUtils.setLocalStoredTime(this.savedValues);
-	}
+	public start() {
+		let today = new Date();
+		let todayDay = today.getDay();
 
-	start() {
-		this.counter = setInterval(() => {
-			this.time = this.calculateTime();
-			this.badgeUtils.text(translateMilliseconds(this.time).seconds);
+		this.timeInterval = setInterval(() => {
+			let maybeTodayDay = new Date().getDay();
+
+			if (maybeTodayDay !== todayDay) {
+				console.log('New Day!');
+
+				this.preExistingTimeData['time'][today.getFullYear()][today.getMonth() + 1][today.getDate()].total = this.totalTime;
+				this.save();
+
+				this.totalTime = 0;
+				today = new Date();
+				todayDay = today.getDay();
+			}
+
+			this.totalTime += MillisecondsToSeconds(this.sampleRate);
+
+			if (this.totalTime % MillisecondsToSeconds(minutes(1)) === 0) {
+				this.preExistingTimeData['time'][today.getFullYear()][today.getMonth() + 1][today.getDate()].total = this.totalTime;
+				this.save();
+			}
+
+			let humanReadableTimes = SecondsToHoursMinutesSeconds(this.totalTime);
+			this.displayBadge.text = `${humanReadableTimes.hours} hr : ${humanReadableTimes.minutes} min : ${humanReadableTimes.seconds} sec`;
 		}, this.sampleRate);
 	}
 
-	stop() {
-		clearInterval(this.counter);
+	public stop() {
+		clearInterval(this.timeInterval);
+		let currentDate = new Date();
+		this.preExistingTimeData['time'][currentDate.getFullYear()][currentDate.getMonth() + 1][currentDate.getDate()].total = this.totalTime;
+
+		this.save();
 	}
 
-	private calculateTime() {
-		let rightNow = new Date();
-		if (rightNow.getDate() !== this.sinceStart.getDate() || rightNow.getMonth() !== this.sinceStart.getMonth()) {
-			this.sinceStart = rightNow;
-		}
-		let oldTime = this.savedValues['time'][rightNow.getFullYear()][rightNow.getMonth() + 1][rightNow.getDate()]['total'] !== undefined ? this.savedValues['time'][rightNow.getFullYear()][rightNow.getMonth() + 1][rightNow.getDate()]['total'] : 0;
-		return rightNow.getTime() - this.sinceStart.getTime() + oldTime;
+	private save() {
+		this.preExistingTimeData = this.sanitize(this.preExistingTimeData);
+		this.storageUtils.setLocalStoredTime(this.preExistingTimeData);
 	}
 
-	private verifyTime(data: Object) {
-		let rightNow = new Date();
+	private sanitize(timeValues: object) {
+		let currentDate = new Date();
 
-		if (!data['time']) {
-			data['time'] = {};
+		if (!timeValues['time']) {
+			timeValues['time'] = {};
 		}
 
-		if (!data['time'][rightNow.getFullYear()]) {
-			data['time'][rightNow.getFullYear()] = {};
+		if (!timeValues['time'][currentDate.getFullYear()]) {
+			timeValues['time'][currentDate.getFullYear()] = {};
 		}
 
-		if (!data['time'][rightNow.getFullYear()][rightNow.getMonth() + 1]) {
-			data['time'][rightNow.getFullYear()][rightNow.getMonth() + 1] = {};
+		if (!timeValues['time'][currentDate.getFullYear()][currentDate.getMonth() + 1]) {
+			timeValues['time'][currentDate.getFullYear()][currentDate.getMonth() + 1] = {};
 		}
 
-		if (!data['time'][rightNow.getFullYear()][rightNow.getMonth() + 1][rightNow.getDate()]) {
-			data['time'][rightNow.getFullYear()][rightNow.getMonth() + 1][rightNow.getDate()] = {
-				total: this.time,
+		if (!timeValues['time'][currentDate.getFullYear()][currentDate.getMonth() + 1][currentDate.getDate()]) {
+			timeValues['time'][currentDate.getFullYear()][currentDate.getMonth() + 1][currentDate.getDate()] = {
+				total: 0,
+				timeZone: [currentDate.getTimezoneOffset()],
 			};
 		}
 
-		return data;
-	}
-
-	private loadTime() {
-		let alreadyStored = this.storageUtils.getLocalStoredTime();
-
-		if (alreadyStored['time']) {
-			return alreadyStored;
-		} else {
-			return {};
-		}
+		return timeValues;
 	}
 }

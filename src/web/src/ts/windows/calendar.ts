@@ -22,6 +22,10 @@ export function cycle(monthOffset = 0) {
 	dateValues.weeks.forEach((week) => {
 		cellHolder.append(`<div class="cell-week">${moment(new Date(dateValues.days[week[0]])).format('MMM Do')} - ${moment(new Date(dateValues.days[week[1]])).format('MMM Do')}</div>`);
 	});
+
+	let spans = cellHolder.parent().find('.sub-header').find('.center').find('span');
+	spans[0].textContent = moment(new Date(dateValues.currentMonth)).format('MMM');
+	spans[1].textContent = moment(new Date(dateValues.currentMonth)).format('Y');
 }
 
 function getDateValues({ end, start }: { end: Date; start: Date }, monthOffset = 0) {
@@ -89,5 +93,5 @@ function getDateValues({ end, start }: { end: Date; start: Date }, monthOffset =
 		}
 	}
 
-	return { weeks, days, limitReached };
+	return { weeks, days, limitReached, currentMonth };
 }
