@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import { BadgeUtils } from './Utilities/BadgeUtils';
 import { StorageUtils } from './Utilities/StorageUtils';
-import { MillisecondsToSeconds, SecondsToHoursMinutesSeconds, seconds, minutes } from './../func/timeConverters';
+import { MillisecondsToSeconds, SecondsToHoursMinutesSeconds, minutes } from './../func/timeConverters';
 
 export class TimeTracker {
 	timeInterval: NodeJS.Timer;
