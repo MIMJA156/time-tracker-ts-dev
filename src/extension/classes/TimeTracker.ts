@@ -33,6 +33,10 @@ export class TimeTracker {
 			true,
 		);
 
+		badgeUtils.linkCommandToBadge(this.displayBadge, 'time-tracker', () => {
+			console.log('web button clicked');
+		});
+
 		this.storageUtils = storageUtils;
 	}
 

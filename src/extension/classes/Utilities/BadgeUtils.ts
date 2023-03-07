@@ -21,6 +21,11 @@ export class BadgeUtils {
 	public deleteBadge(toBeDeletedBadge: Badge) {
 		toBeDeletedBadge.badge.dispose();
 	}
+
+	public linkCommandToBadge(badge: Badge, uri: string, callback: (...args: any[]) => any) {
+		this.context.subscriptions.push(vscode.commands.registerCommand(uri, callback));
+		badge.badge.command = uri;
+	}
 }
 
 export class Badge {
