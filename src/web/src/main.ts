@@ -1,17 +1,6 @@
-// import Alwan from "alwan";
-import "alwan/dist/css/alwan.min.css";
+import './scss/main.scss';
 
-import "./scss/styles.scss";
-import "./scripts/scripts";
+import setup from './ts/setup';
+setup();
 
-console.log("Hello World!");
-
-// const alwan = new Alwan('#reference', {
-//     popover: true,
-//     position: "right",
-//     inputs: {
-//         rgb: false,
-//         hex: false,
-//         hsl: false,
-//     }
-// });
+console.log('Hello World!');

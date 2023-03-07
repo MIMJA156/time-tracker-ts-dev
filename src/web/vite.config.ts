@@ -2,7 +2,7 @@ import { defineConfig } from "vite";
 
 export default defineConfig({
     build: {
-        outDir: './../../out/web',
+        outDir: './../../out/web/',
         emptyOutDir: true
     }
 });

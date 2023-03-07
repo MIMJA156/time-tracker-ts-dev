@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans&display=swap');
+@import "./../../../../node_modules/@fortawesome/fontawesome-free/css/all.css";
+
+@import "./window-bar.scss";
+@import "./moveable-window.scss";
+
+@import "./vars";
+
+body {
+    font-family: 'IBM Plex Sans', sans-serif;
+    margin: 0;
+    background-color: $window-background-color;
+    color: $font-color;
+}
+
+.click-allowed {
+    cursor: pointer;
+}
+
+.hide {
+    display: none;
+}

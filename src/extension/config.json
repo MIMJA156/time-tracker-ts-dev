@@ -1,0 +1,17 @@
+{
+	"file": {
+		"dir": "time-tracker-files",
+		"suffix": "mimja"
+	},
+	"server": {
+		"port": 3803
+	},
+	"github": {
+		"client_id": "995870bf92a88cd7da39",
+		"client_secret": "c69fdc887f9afc8e3a40aed7219b04460dbf8452",
+		"hosts": {
+			"authorize": "https://github.com/login/oauth/authorize",
+			"access_token": "https://github.com/login/oauth/access_token"
+		}
+	}
+}

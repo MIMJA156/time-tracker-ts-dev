@@ -1,6 +1,6 @@
-![GitHub](https://img.shields.io/github/license/MIMJA156/time-tracker-ts-dev?style=plastic)
+# Improving Server/UI
 
-# VS Code Coding Time Tracker
+As I was working on the main branch I realized that updating the page with new data would have been painful. I decided to begin using WebSockets to make my life better and so in this branch I am adding support for just that.
 
 This VS Code extension tracks the amount of time you spend coding.
 

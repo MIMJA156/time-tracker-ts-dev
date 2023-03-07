@@ -4,13 +4,18 @@
 			"path": "../time-tracker-ts-dev"
 		},
 		{
-			"path": "../time-tracker-ts-dev/src"
+			"path": "src/web"
 		},
 		{
-			"path": "../time-tracker-ts-dev/src/web"
+			"path": "src/extension"
 		}
 	],
 	"settings": {
-		"typescript.tsc.autoDetect": "off"
+		"typescript.tsc.autoDetect": "off",
+		"cSpell.words": [
+			"esbuild",
+			"outfile",
+			"Plex"
+		]
 	}
 }
