@@ -23,8 +23,11 @@ export class BadgeUtils {
 	}
 
 	public linkCommandToBadge(badge: Badge, uri: string, callback: (...args: any[]) => any) {
-		this.context.subscriptions.push(vscode.commands.registerCommand(uri, callback));
-		badge.badge.command = uri;
+		try {
+			this.context.subscriptions.push(vscode.commands.registerCommand(uri, callback));
+		} finally {
+			badge.badge.command = uri;
+		}
 	}
 }
 

@@ -10,13 +10,15 @@
 	},
 	"main": "./out/main.js",
 	"scripts": {
-		"build": "npm run esbuild-base -- --minify && npm run vite-base",
+		"build": "npm run vite-base && npm run esbuild-base -- --minify",
 		"web-dev": "vite ./src/web/",
 		"api-dev": "npm run esbuild-base",
 		"esbuild-base": "esbuild ./src/extension/extension.js --bundle --outfile=./out/main.js --external:vscode --format=cjs --platform=node",
-		"vite-base": "tsc && vite build ./src/web/"
+		"vite-base": "tsc && vite build ./src/web/",
+		"vite-build": "vite build ./src/web/"
 	},
 	"devDependencies": {
+		"@types/cors": "^2.8.13",
 		"@types/express": "^4.17.14",
 		"@types/express-ws": "^3.0.1",
 		"@types/jquery": "^3.5.14",
@@ -30,6 +32,7 @@
 		"@fortawesome/fontawesome-free": "^6.2.0",
 		"@octokit/rest": "^19.0.4",
 		"axios": "^1.1.2",
+		"cors": "^2.8.5",
 		"express": "^4.18.2",
 		"jquery": "^3.6.1",
 		"moment": "^2.29.4",

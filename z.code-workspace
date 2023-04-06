@@ -19,6 +19,7 @@
 			"esbuild",
 			"outfile",
 			"Plex"
-		]
+		],
+		"liveServer.settings.multiRootWorkspaceName": "time-tracker-ts-dev"
 	}
 }

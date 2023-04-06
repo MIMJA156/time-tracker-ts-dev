@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
-import { BadgeUtils } from './Utilities/BadgeUtils';
+import { Badge, BadgeUtils } from './Utilities/BadgeUtils';
 import { StorageUtils } from './Utilities/StorageUtils';
+import { APIServiceManager } from './Utilities/APIService';
 import { MillisecondsToSeconds, SecondsToHoursMinutesSeconds, minutes } from './../func/timeConverters';
 
 export class TimeTracker {
@@ -13,7 +14,7 @@ export class TimeTracker {
 
 	storageUtils: StorageUtils;
 
-	constructor({ sampleRate, storageUtils, badgeUtils }: { sampleRate: number; storageUtils: StorageUtils; badgeUtils: BadgeUtils }) {
+	constructor({ sampleRate, storageUtils, badgeUtils, apiServiceManager }: { sampleRate: number; storageUtils: StorageUtils; badgeUtils: BadgeUtils; apiServiceManager: APIServiceManager }) {
 		let savedInformation = this.sanitize(storageUtils.getLocalStoredTime());
 
 		let currentDate = new Date();
@@ -33,8 +34,29 @@ export class TimeTracker {
 			true,
 		);
 
-		badgeUtils.linkCommandToBadge(this.displayBadge, 'time-tracker', () => {
-			console.log('web button clicked');
+		// >>> -- NOT PERMANENT CODE
+		let stopServer = badgeUtils.createBadge(
+			{
+				icon: 'none',
+				text: 'Stop Web Server',
+				tooltip: 'Stops the current web server',
+				alignment: vscode.StatusBarAlignment.Right,
+				priority: 10,
+				command: null,
+			},
+			false,
+		);
+
+		badgeUtils.linkCommandToBadge(stopServer, 'time-tracker-stop-server', () => {
+			stopServer.show(false);
+			apiServiceManager.stop();
+		});
+		// <<< -- NOT PERMANENT CODE
+
+		badgeUtils.linkCommandToBadge(this.displayBadge, 'time-tracker-start-server', () => {
+			stopServer.show(true);
+			apiServiceManager.start();
+			apiServiceManager.openInBrowser();
 		});
 
 		this.storageUtils = storageUtils;
@@ -48,8 +70,6 @@ export class TimeTracker {
 			let maybeTodayDay = new Date().getDay();
 
 			if (maybeTodayDay !== todayDay) {
-				console.log('New Day!');
-
 				this.preExistingTimeData['time'][today.getFullYear()][today.getMonth() + 1][today.getDate()].total = this.totalTime;
 				this.save();
 
