@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { Badge, BadgeUtils } from './Utilities/BadgeUtils';
+import { BadgeUtils } from './Utilities/BadgeUtils';
 import { StorageUtils } from './Utilities/StorageUtils';
 import { APIServiceManager } from './Utilities/APIService';
 import { MillisecondsToSeconds, SecondsToHoursMinutesSeconds, minutes } from './../func/timeConverters';

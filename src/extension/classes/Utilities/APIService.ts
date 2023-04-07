@@ -19,7 +19,7 @@ export class APIServiceManager {
 	}
 
 	defineEndpoints() {
-		this._application.use('/', express.static(path.join(__dirname, '/web/')));
+		this._application.use('/dashboard', express.static(path.join(__dirname, '/web/')));
 	}
 
 	start() {
