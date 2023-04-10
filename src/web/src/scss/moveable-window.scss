@@ -12,6 +12,14 @@ div.moveable-window {
     left: 50%;
     transform: translate(-50%, -50%);
 
+    &.fade-out {
+        animation: fadeOut .1s;
+    }
+
+    &.fade-in {
+        animation: fadeIn .1s;
+    }
+
     &[data-type="calendar"] {
         width: 400px;
         height: 460px;
@@ -29,6 +37,14 @@ div.moveable-window {
 
         &.hide {
             display: none;
+        }
+
+        i:active {
+            transform: scale(.8);
+        }
+
+        i.disabled:active {
+            transform: scale(1);
         }
 
         >div.header {
@@ -119,4 +135,14 @@ div.moveable-window {
             flex: 1 1 auto;
         }
     }
+}
+
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+
+@keyframes fadeOut {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
 }

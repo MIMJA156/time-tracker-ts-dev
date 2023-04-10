@@ -13,18 +13,34 @@ export default () => {
 		}
 
 		hide(id: string) {
-			$('#' + id).addClass('hide');
+			$('#' + id).removeClass('fade-in');
+			$('#' + id).addClass('fade-out');
+
+			setTimeout(() => {
+				$('#' + id).addClass('hide');
+			}, 90);
 		}
 
 		show(id: string) {
 			$('#' + id).removeClass('hide');
+
+			$('#' + id).removeClass('fade-out');
+			$('#' + id).addClass('fade-in');
 		}
 
 		toggle(id: string) {
 			if ($('#' + id).hasClass('hide')) {
 				$('#' + id).removeClass('hide');
+
+				$('#' + id).removeClass('fade-out');
+				$('#' + id).addClass('fade-in');
 			} else {
-				$('#' + id).addClass('hide');
+				$('#' + id).removeClass('fade-in');
+				$('#' + id).addClass('fade-out');
+
+				setTimeout(() => {
+					$('#' + id).addClass('hide');
+				}, 90);
 			}
 		}
 	}

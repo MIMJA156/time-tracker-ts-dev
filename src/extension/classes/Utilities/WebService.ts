@@ -1,4 +1,4 @@
-import WebSocket, { Server as WebSocketServerType, WebSocketServer } from 'ws';
+import WebSocket, { Server as WebSocketServerType, WebSocketServer, RawData } from 'ws';
 import { Server as HTTPServerType } from 'http';
 import express from 'express';
 import { Socket } from 'net';
@@ -6,6 +6,7 @@ import path from 'path';
 import cors from 'cors';
 import open from 'open';
 import url from 'url';
+import { WebSocketOnMessage } from '../../func/webSocketOnMessage';
 
 export class WebServiceManager {
 	_port: number;
@@ -73,9 +74,7 @@ class WebSocketServerManager {
 
 	constructor(webSocketServer: WebSocket.Server<WebSocket.WebSocket>) {
 		webSocketServer.on('connection', (client: WebSocket) => {
-			client.on('message', (data) => {
-				client.send(`Thank you for sending -> ${data.toString()}`);
-			});
+			client.on('message', WebSocketOnMessage);
 		});
 
 		this._wss = webSocketServer;
@@ -85,6 +84,7 @@ class WebSocketServerManager {
 		this._wss.close(() => {
 			console.log('Closed out remaining connections - web sockets');
 		});
+
 		for (const client of this._wss.clients) {
 			client.close();
 		}
