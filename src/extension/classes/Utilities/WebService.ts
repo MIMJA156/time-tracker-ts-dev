@@ -15,8 +15,10 @@ export class WebServiceManager {
 	_httpConnections: Socket[];
 	_wsServer: WebSocketServerType;
 	_webSocketServerManager: WebSocketServerManager;
+	_running: boolean;
 
 	constructor(port: number) {
+		this._running = false;
 		this._port = port;
 		this._expressServer = express();
 		this._expressServer.use(cors());
@@ -31,6 +33,9 @@ export class WebServiceManager {
 	}
 
 	start() {
+		if (this._running) this.stop();
+		this._running = true;
+
 		this._httpServer = this._expressServer.listen(this._port);
 
 		this._httpServer.on('connection', (connection) => {
@@ -58,6 +63,7 @@ export class WebServiceManager {
 
 		this._httpServer.close(() => {
 			console.log('Closed out remaining connections - dashboard');
+			this._running = false;
 		});
 
 		this._httpConnections.forEach((curr) => curr.end());
