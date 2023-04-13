@@ -67,10 +67,14 @@ export class TimeTracker {
 		let todayDay = today.getDay();
 
 		this.timeInterval = setInterval(() => {
-			let maybeTodayDay = new Date().getDay();
+			let maybeToday = new Date();
+			let maybeTodayDay = maybeToday.getDay();
+			let dayData = this.preExistingTimeData['time'][today.getFullYear()][today.getMonth() + 1][today.getDate()];
+
+			dayData.timeZone[dayData.timeZone.indexOf(maybeToday.getTimezoneOffset())] = maybeToday.getTimezoneOffset();
 
 			if (maybeTodayDay !== todayDay) {
-				this.preExistingTimeData['time'][today.getFullYear()][today.getMonth() + 1][today.getDate()].total = this.totalTime;
+				dayData.total = this.totalTime;
 				this.save();
 
 				this.totalTime = 0;
@@ -81,7 +85,7 @@ export class TimeTracker {
 			this.totalTime += MillisecondsToSeconds(this.sampleRate);
 
 			if (this.totalTime % MillisecondsToSeconds(minutes(1)) === 0) {
-				this.preExistingTimeData['time'][today.getFullYear()][today.getMonth() + 1][today.getDate()].total = this.totalTime;
+				dayData.total = this.totalTime;
 				this.save();
 			}
 
@@ -100,7 +104,7 @@ export class TimeTracker {
 
 	private save() {
 		this.preExistingTimeData = this.sanitize(this.preExistingTimeData);
-		this.storageUtils.setLocalStoredTime(this.preExistingTimeData);
+		this.storageUtils.setLocalStoredTime(this.preExistingTimeData, true);
 	}
 
 	private sanitize(timeValues: object) {

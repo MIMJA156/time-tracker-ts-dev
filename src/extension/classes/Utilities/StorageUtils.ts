@@ -29,8 +29,12 @@ export class StorageUtils {
 		return JSON.parse(readFileSync(`${this._user_path}${this.timeFileName}`, 'utf-8'));
 	}
 
-	public setLocalStoredTime(newValue: Object) {
-		writeFileSync(`${this._user_path}${this.timeFileName}`, JSON.stringify(newValue), 'utf-8');
+	public setLocalStoredTime(newValue: Object, format = false) {
+		if (format) {
+			writeFileSync(`${this._user_path}${this.timeFileName}`, JSON.stringify(newValue, null, 4), 'utf-8');
+		} else {
+			writeFileSync(`${this._user_path}${this.timeFileName}`, JSON.stringify(newValue), 'utf-8');
+		}
 	}
 
 	public getLocalStoredSettings(): settingsInterface {
