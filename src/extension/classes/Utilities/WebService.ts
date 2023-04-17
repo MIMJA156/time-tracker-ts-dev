@@ -81,6 +81,15 @@ class WebSocketServerManager {
 	constructor(webSocketServer: WebSocket.Server<WebSocket.WebSocket>) {
 		webSocketServer.on('connection', (client: WebSocket) => {
 			client.on('message', WebSocketOnMessage);
+
+			client.send(
+				JSON.stringify({
+					type: 'initial',
+					data: {
+						test: 'This is random data that does not matter!',
+					},
+				}),
+			);
 		});
 
 		this._wss = webSocketServer;
