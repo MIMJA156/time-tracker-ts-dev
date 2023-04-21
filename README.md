@@ -24,7 +24,7 @@ There are a few main features to consider:
 
 #### Cloud Storage
 
-To use this feature you need to link your github account account and allow gist read and write access. To do this run the command VSCode command ``Time Tracker: Link Github`` or access it inside the options window on the web GUI.
+To use this feature you need to link your github account account and allow gist read and write access. To do this run the VSCode command ``Time Tracker: Link Github`` or access it inside the options window on the web GUI.
 
 #### Web GUI
 
