@@ -19,7 +19,7 @@ Simply download the extension from the marketplace and enjoy!
 
 There are a few main features to consider:
 - Cloud Storage for global time using gists
-- web GUI
+- Web GUI
 - Basic Settings
 
 #### Cloud Storage
