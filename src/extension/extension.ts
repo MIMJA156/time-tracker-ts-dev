@@ -1,10 +1,10 @@
 import * as vscode from 'vscode';
+import config from './config.json';
+import { TimeTracker } from './classes/TimeTracker';
 import { BadgeUtils } from './classes/Utilities/BadgeUtils';
 import { StorageUtils } from './classes/Utilities/StorageUtils';
-import { TimeTracker } from './classes/TimeTracker';
 import { SecondsToMilliseconds } from './func/timeConverters';
 import { ServerManager } from './classes/Utilities/ServerUtils';
-import config from './config.json';
 
 var timeTracker: TimeTracker;
 

@@ -1,9 +1,9 @@
-import { Server, createServer } from 'http';
-import express from 'express';
-import { Express } from 'express-serve-static-core';
-import { WebSocketServer as NpmWebSocketServer, WebSocket as NpmWebSocket } from 'ws';
 import path from 'path';
+import express from 'express';
+import { Server, createServer } from 'http';
+import { Express } from 'express-serve-static-core';
 import { getInitialData, onMessage } from '../../func/webSocketOn';
+import { WebSocketServer as NpmWebSocketServer, WebSocket as NpmWebSocket } from 'ws';
 
 export class ServerManager {
 	httpServer: Server;

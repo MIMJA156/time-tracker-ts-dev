@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
+import { file } from '../../config.json';
 import { normalize, resolve } from 'path';
 import { existsSync, PathLike, readFileSync, writeFileSync } from 'fs';
-import { file } from '../../config.json';
 
 export class StorageUtils {
 	private _user_path: PathLike;
