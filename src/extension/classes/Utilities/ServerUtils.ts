@@ -3,6 +3,7 @@ import express from 'express';
 import { Express } from 'express-serve-static-core';
 import { WebSocketServer as NpmWebSocketServer, WebSocket as NpmWebSocket } from 'ws';
 import path from 'path';
+import { getInitialData, onMessage } from '../../func/webSocketOn';
 
 export class ServerManager {
 	httpServer: Server;
@@ -27,8 +28,9 @@ export class ServerManager {
 		this.httpServer.close(() => {
 			console.log('Closed out http server.');
 		});
-		this._expressServer.stop();
+
 		this._webSocketServer.stop();
+		this._expressServer.stop();
 	}
 }
 
@@ -62,18 +64,16 @@ class WebSocketServer {
 	_wss: any;
 
 	constructor(httpServer: Server) {
-		const wss = new NpmWebSocketServer({ server: httpServer });
+		this._wss = new NpmWebSocketServer({ server: httpServer });
 
-		wss.on('connection', (connection) => {
+		this._wss.on('connection', (connection) => {
 			this.onConnection(connection);
 		});
-
-		this._wss = wss;
 	}
 
 	private onConnection(socket: NpmWebSocket) {
-		socket.send('Hello World!');
-
+		socket.send(getInitialData());
+		socket.on('message', onMessage);
 		socket.on('close', this.onDisconnect);
 		this.connectionsList.push(socket);
 	}

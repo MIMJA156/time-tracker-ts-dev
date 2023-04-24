@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import { BadgeUtils } from './Utilities/BadgeUtils';
 import { StorageUtils } from './Utilities/StorageUtils';
+import { ServerManager } from './Utilities/ServerUtils';
 import { MillisecondsToSeconds, SecondsToHoursMinutesSeconds, MinutesToMilliseconds } from './../func/timeConverters';
 
 export class TimeTracker {
@@ -13,7 +14,7 @@ export class TimeTracker {
 
 	storageUtils: StorageUtils;
 
-	constructor({ sampleRate, storageUtils, badgeUtils }: { sampleRate: number; storageUtils: StorageUtils; badgeUtils: BadgeUtils }) {
+	constructor({ sampleRate, storageUtils, badgeUtils, serverManager }: { sampleRate: number; storageUtils: StorageUtils; badgeUtils: BadgeUtils; serverManager: ServerManager }) {
 		let savedInformation = this.sanitize(storageUtils.getLocalStoredTime());
 
 		let currentDate = new Date();
@@ -48,11 +49,13 @@ export class TimeTracker {
 
 		badgeUtils.linkCommandToBadge(stopServer, 'time-tracker-stop-server', () => {
 			stopServer.show(false);
+			serverManager.stop();
 		});
 		// <<< -- NOT PERMANENT CODE
 
 		badgeUtils.linkCommandToBadge(this.displayBadge, 'time-tracker-start-server', () => {
 			stopServer.show(true);
+			serverManager.start();
 		});
 
 		this.storageUtils = storageUtils;
