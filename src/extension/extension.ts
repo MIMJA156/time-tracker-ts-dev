@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import { BadgeUtils } from './classes/Utilities/BadgeUtils';
 import { StorageUtils } from './classes/Utilities/StorageUtils';
 import { TimeTracker } from './classes/TimeTracker';
-import { seconds } from './func/timeConverters';
+import { SecondsToMilliseconds } from './func/timeConverters';
 import { ServerManager } from './classes/Utilities/ServerUtils';
 import config from './config.json';
 
@@ -17,7 +17,7 @@ export function activate(context: vscode.ExtensionContext) {
 	webServiceManager.start();
 
 	timeTracker = new TimeTracker({
-		sampleRate: seconds(1),
+		sampleRate: SecondsToMilliseconds(1),
 		badgeUtils,
 		storageUtils,
 	});
