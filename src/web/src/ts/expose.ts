@@ -13,34 +13,18 @@ export default () => {
 		}
 
 		hide(id: string) {
-			$('#' + id).removeClass('fade-in');
-			$('#' + id).addClass('fade-out');
-
-			setTimeout(() => {
-				$('#' + id).addClass('hide');
-			}, 90);
+			$('#' + id).addClass('hide');
 		}
 
 		show(id: string) {
 			$('#' + id).removeClass('hide');
-
-			$('#' + id).removeClass('fade-out');
-			$('#' + id).addClass('fade-in');
 		}
 
 		toggle(id: string) {
 			if ($('#' + id).hasClass('hide')) {
 				$('#' + id).removeClass('hide');
-
-				$('#' + id).removeClass('fade-out');
-				$('#' + id).addClass('fade-in');
 			} else {
-				$('#' + id).removeClass('fade-in');
-				$('#' + id).addClass('fade-out');
-
-				setTimeout(() => {
-					$('#' + id).addClass('hide');
-				}, 90);
+				$('#' + id).addClass('hide');
 			}
 		}
 	}

@@ -14,7 +14,7 @@ export function activate(context: vscode.ExtensionContext) {
 	const storageUtils = new StorageUtils(context);
 	const badgeUtils = new BadgeUtils(context);
 	const webServiceManager = new ServerManager(config.server.port);
-	// webServiceManager.start();
+	webServiceManager.start();
 
 	timeTracker = new TimeTracker({
 		sampleRate: seconds(1),

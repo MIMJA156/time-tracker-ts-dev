@@ -2,6 +2,7 @@ import { Server, createServer } from 'http';
 import express from 'express';
 import { Express } from 'express-serve-static-core';
 import { WebSocketServer as NpmWebSocketServer, WebSocket as NpmWebSocket } from 'ws';
+import path from 'path';
 
 export class ServerManager {
 	_httpServer: Server;
@@ -31,6 +32,8 @@ class ExpressServer {
 	}
 
 	private defineEndpoints(instance: Express) {
+		instance.use('/dashboard', express.static(path.join(__dirname, '/web/')));
+
 		instance.get('/foo', (req, res) => {
 			res.send('Hello World!');
 		});
@@ -47,6 +50,6 @@ class WebSocketServer {
 	}
 
 	private onConnection(connection: NpmWebSocket) {
-		connection.send('hello world...');
+		connection.send('Hello World!');
 	}
 }

@@ -17,7 +17,7 @@
 					<span class="click-allowed" id="todays-date-span">Null :(</span>
 				</div>
 				<div class="right">
-					<i class="fa-solid fa-calendar-week right click-allowed" onclick="moveableWindowTools.toggle('weeks-moveable-window')"></i>
+					<i class="fa-solid fa-calendar-week right click-allowed" onmousedown="moveableWindowTools.toggle('weeks-moveable-window')"></i>
 				</div>
 			</div>
 			<div class="window-bar bottom">
@@ -35,11 +35,11 @@
 			<div data-index="0">
 				<div class="header">
 					<div class="left"><span>Week Calendar</span></div>
-					<div class="right"><i class="fa-solid fa-compress" onclick="moveableWindowTools.hide('weeks-moveable-window')"></i></div>
+					<div class="right"><i class="fa-solid fa-compress" onmousedown="moveableWindowTools.hide('weeks-moveable-window')"></i></div>
 				</div>
 				<div class="sub-header">
 					<div class="left">
-						<i class="fa-solid fa-chevron-left" onclick="calendarTools.increment(-1)" id="increment-calendar-down"></i>
+						<i class="fa-solid fa-chevron-left" onmousedown="calendarTools.increment(-1)" id="increment-calendar-down"></i>
 					</div>
 					<div class="center">
 						<span>Oct</span>
@@ -47,7 +47,7 @@
 						<span>2022</span>
 					</div>
 					<div class="right">
-						<i class="fa-solid fa-chevron-right" onclick="calendarTools.increment(1)" id="increment-calendar-up"></i>
+						<i class="fa-solid fa-chevron-right" onmousedown="calendarTools.increment(1)" id="increment-calendar-up"></i>
 					</div>
 				</div>
 				<div class="body" id="week-cell-holder"></div>
