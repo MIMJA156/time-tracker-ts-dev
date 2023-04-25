@@ -2,8 +2,7 @@ import path from 'path';
 import express from 'express';
 import { Server, createServer } from 'http';
 import { Express } from 'express-serve-static-core';
-import { getInitialData, onMessage } from '../../func/webSocketOn';
-import { WebSocketServer as NpmWebSocketServer, WebSocket as NpmWebSocket } from 'ws';
+import { WebSocketServer as NpmWebSocketServer, WebSocket as NpmWebSocket, RawData } from 'ws';
 
 export class ServerManager {
 	httpServer: Server;
@@ -47,10 +46,6 @@ class ExpressServer {
 
 	private defineEndpoints(instance: Express) {
 		instance.use('/dashboard', express.static(path.join(__dirname, '/web/')));
-
-		instance.get('/foo', (req, res) => {
-			res.send('Hello World!');
-		});
 	}
 
 	public stop() {
@@ -66,16 +61,29 @@ class WebSocketServer {
 	constructor(httpServer: Server) {
 		this._wss = new NpmWebSocketServer({ server: httpServer });
 
-		this._wss.on('connection', (connection) => {
+		this._wss.on('connection', (connection: NpmWebSocket) => {
 			this.onConnection(connection);
 		});
 	}
 
 	private onConnection(socket: NpmWebSocket) {
-		socket.send(getInitialData());
-		socket.on('message', onMessage);
+		let data = {
+			too: 'web',
+			from: 'server',
+			init: true,
+			settings: {},
+			time: {},
+		};
+
+		socket.send(JSON.stringify(data));
+
+		socket.on('message', this.onMessage);
 		socket.on('close', this.onDisconnect);
 		this.connectionsList.push(socket);
+	}
+
+	private onMessage(data: RawData, client: NpmWebSocket) {
+		console.log(`Message ${new Date().toLocaleDateString()} -> ${data.toString()}`);
 	}
 
 	private onDisconnect(socket: NpmWebSocket) {
@@ -83,7 +91,6 @@ class WebSocketServer {
 	}
 
 	public stop() {
-		this._wss.close();
 		for (const client of this._wss.clients) {
 			client.close();
 		}
