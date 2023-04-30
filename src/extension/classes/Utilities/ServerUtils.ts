@@ -1,98 +1,68 @@
-import path from 'path';
-import express from 'express';
+import { RawData, WebSocket, WebSocketServer } from 'ws';
 import { Server, createServer } from 'http';
-import { Express } from 'express-serve-static-core';
-import { WebSocketServer as NpmWebSocketServer, WebSocket as NpmWebSocket, RawData } from 'ws';
+import express from 'express';
+import { Socket } from 'net';
+import path from 'path';
+
+const initialWebSocketRequestData = {
+	init: true,
+	settings: {},
+};
 
 export class ServerManager {
-	httpServer: Server;
+	private _port: number;
+	private httpServer: Server;
+	private connections: Set<Socket>;
 
-	_expressServer: ExpressServer;
-	_webSocketServer: WebSocketServer;
+	constructor(port: number) {
+		this._port = port;
+		this.connections = new Set();
 
-	constructor(private port: number) {
-		let httpServerInstance = createServer();
+		this.httpServer = createServer();
+		addExpressServerProperties(this.httpServer);
+		addWebSocketProperties(this.httpServer);
 
-		this._expressServer = new ExpressServer(httpServerInstance);
-		this._webSocketServer = new WebSocketServer(httpServerInstance);
+		this.httpServer.on('connection', (socket) => {
+			this.connections.add(socket);
 
-		this.httpServer = httpServerInstance;
+			this.httpServer.once('close', () => {
+				this.connections.delete(socket);
+			});
+		});
 	}
 
 	public start() {
-		this.httpServer.listen(this.port);
+		this.httpServer.listen(this._port);
 	}
 
 	public stop() {
 		this.httpServer.close(() => {
-			console.log('Closed out http server.');
+			console.log('closed!');
 		});
 
-		this._webSocketServer.stop();
-		this._expressServer.stop();
-	}
-}
-
-class ExpressServer {
-	connectionList: any[];
-	expressApplicationInstance: Express;
-
-	constructor(httpServer: Server) {
-		this.expressApplicationInstance = express();
-		this.defineEndpoints(this.expressApplicationInstance);
-
-		httpServer.on('request', this.expressApplicationInstance);
-	}
-
-	private defineEndpoints(instance: Express) {
-		instance.use('/dashboard', express.static(path.join(__dirname, '/web/')));
-	}
-
-	public stop() {
-		this.connectionList.forEach((curr) => curr.end());
-		setTimeout(() => this.connectionList.forEach((curr) => curr.destroy()), 5000);
-	}
-}
-
-class WebSocketServer {
-	connectionsList: NpmWebSocket[];
-	_wss: any;
-
-	constructor(httpServer: Server) {
-		this._wss = new NpmWebSocketServer({ server: httpServer });
-
-		this._wss.on('connection', (connection: NpmWebSocket) => {
-			this.onConnection(connection);
-		});
-	}
-
-	private onConnection(socket: NpmWebSocket) {
-		let data = {
-			too: 'web',
-			from: 'server',
-			init: true,
-			settings: {},
-			time: {},
-		};
-
-		socket.send(JSON.stringify(data));
-
-		socket.on('message', this.onMessage);
-		socket.on('close', this.onDisconnect);
-		this.connectionsList.push(socket);
-	}
-
-	private onMessage(data: RawData, client: NpmWebSocket) {
-		console.log(`Message ${new Date().toLocaleDateString()} -> ${data.toString()}`);
-	}
-
-	private onDisconnect(socket: NpmWebSocket) {
-		this.connectionsList = this.connectionsList.filter((current) => current !== socket);
-	}
-
-	public stop() {
-		for (const client of this._wss.clients) {
-			client.close();
+		for (const socket of this.connections) {
+			socket.destroy();
+			this.connections.delete(socket);
 		}
 	}
+}
+
+function addWebSocketProperties(httpServerInstance: Server) {
+	let wss = new WebSocketServer({ server: httpServerInstance });
+
+	wss.on('connection', (socket: WebSocket) => {
+		socket.send(JSON.stringify(initialWebSocketRequestData));
+
+		socket.on('message', (sentData: RawData, client: WebSocket) => {
+			console.log(`Message ${new Date().toLocaleDateString()} -> ${sentData.toString()}`);
+		});
+	});
+}
+
+function addExpressServerProperties(httpServerInstance: Server) {
+	let expressApplicationInstance = express();
+
+	expressApplicationInstance.use('/dashboard', express.static(path.join(__dirname, '/web/')));
+
+	httpServerInstance.on('request', expressApplicationInstance);
 }
