@@ -10,11 +10,10 @@
 	},
 	"main": "./out/main.js",
 	"scripts": {
-		"build": "npm run vite-base && npm run esbuild-base -- --minify",
+		"build": "npm run vite-build && npm run esbuild-base -- --minify",
 		"web-dev": "vite ./src/web/",
 		"api-dev": "npm run esbuild-base",
-		"esbuild-base": "esbuild ./src/extension/extension.js --bundle --outfile=./out/main.js --external:vscode --format=cjs --platform=node",
-		"vite-base": "tsc && vite build ./src/web/",
+		"esbuild-base": "esbuild ./src/extension/extension.ts --bundle --outfile=./out/main.js --external:vscode --format=cjs --platform=node",
 		"vite-build": "vite build ./src/web/"
 	},
 	"devDependencies": {

@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-	base: '/dashboard',
+	base: '/dashboard/',
 	build: {
 		outDir: './../../out/web/',
 		emptyOutDir: true,
