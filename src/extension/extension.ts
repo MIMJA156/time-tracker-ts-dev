@@ -16,7 +16,7 @@ export function activate(context: vscode.ExtensionContext) {
 	const serverManager = new ServerManager(config.server.port);
 
 	timeTracker = new TimeTracker({
-		sampleRate: SecondsToMilliseconds(1),
+		sampleRate: SecondsToMilliseconds(5),
 		badgeUtils,
 		storageUtils,
 		serverManager,

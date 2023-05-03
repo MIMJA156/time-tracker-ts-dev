@@ -36,9 +36,7 @@ export class ServerManager {
 	}
 
 	public stop() {
-		this.httpServer.close(() => {
-			console.log('closed!');
-		});
+		this.httpServer.close();
 
 		for (const socket of this.connections) {
 			socket.destroy();

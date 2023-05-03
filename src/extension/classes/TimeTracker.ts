@@ -72,6 +72,9 @@ export class TimeTracker {
 
 			dayData.timeZone[dayData.timeZone.indexOf(maybeToday.getTimezoneOffset())] = maybeToday.getTimezoneOffset();
 
+			console.log(maybeTodayDay);
+			console.log(todayDay);
+
 			if (maybeTodayDay !== todayDay) {
 				dayData.total = this.totalTime;
 				this.save();
