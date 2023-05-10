@@ -22,7 +22,7 @@ div.moveable-window {
 
     &[data-type="calendar"] {
         width: 400px;
-        height: calc(500px);
+        height: 500px;
 
         >div>div.body {
             @include calender-body();
