@@ -1,36 +1,54 @@
 import $ from 'jquery';
-import moment from 'moment';
 import { timeLimitations } from '../setup';
+
+var month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 export function cycle(monthOffset = 0) {
 	const cellHolder = $('#week-cell-holder');
 	const dateValues = getDateValues(timeLimitations, monthOffset);
 
-	if (dateValues.limitReached.backwards) {
+	if (dateValues.backwardsLimitReached) {
 		$('#increment-calendar-down').addClass('disabled');
 	} else {
 		$('#increment-calendar-down').removeClass('disabled');
 	}
 
-	if (dateValues.limitReached.forwards) {
+	if (dateValues.forwardLimitReached) {
 		$('#increment-calendar-up').addClass('disabled');
 	} else {
 		$('#increment-calendar-up').removeClass('disabled');
 	}
 
 	cellHolder.html('');
-	dateValues.weeks.forEach((week) => {
-		cellHolder.append(`<div class="cell-week">${moment(new Date(dateValues.days[week[0]])).format('MMM Do')} - ${moment(new Date(dateValues.days[week[1]])).format('MMM Do')}</div>`);
+	cellHolder.append(`
+	<div class="row-of-days">
+		<div class="day no-border">Su</div>
+		<div class="day no-border">Mo</div>
+		<div class="day no-border">Tu</div>
+		<div class="day no-border">We</div>
+		<div class="day no-border">Th</div>
+		<div class="day no-border">Fr</div>
+		<div class="day no-border">Sa</div>
+	</div>`);
+
+	dateValues._2DArrayOfDays.forEach((dayRow) => {
+		let daysInRow = '';
+		dayRow.forEach((day: any) => {
+			daysInRow += `<div class="day ${day.greyOut ? 'grey-out' : ''}${day.disabled ? 'not-available' : ''}">${day.day}</div>`;
+		});
+		cellHolder.append(`<div class="row-of-days">${daysInRow}</div>`);
 	});
 
 	let spans = cellHolder.parent().find('.sub-header').find('.center').find('span');
-	spans[0].textContent = moment(new Date(dateValues.currentMonth)).format('MMM');
-	spans[1].textContent = moment(new Date(dateValues.currentMonth)).format('Y');
+	spans[0].textContent = month[dateValues.today.getMonth()];
+	spans[1].textContent = `${dateValues.today.getFullYear()}`;
 }
 
 function getDateValues({ end, start }: { end: Date; start: Date }, monthOffset = 0) {
 	let days = [];
-	let weeks = [];
+	let forwardLimitReached = false;
+	let backwardsLimitReached = false;
 
 	const today = new Date();
 	today.setDate(1);
@@ -38,60 +56,75 @@ function getDateValues({ end, start }: { end: Date; start: Date }, monthOffset =
 
 	const currentMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
 	const lastMonth = new Date(today.getFullYear(), today.getMonth(), 0);
-	const nextMonth = new Date(today.getFullYear(), today.getMonth() + 2, 0);
 
-	let limitReached = {
-		backwards: false,
-		forwards: false,
-	};
-
-	for (let i = today.getDay(); i > 0; i--) {
-		days.push(`${lastMonth.getMonth() + 1}/${lastMonth.getDate() - i + 1}/${lastMonth.getFullYear()}`);
+	let stepsBack = lastMonth.getDay() + 1;
+	for (let i = lastMonth.getDate() - stepsBack + 1; i <= lastMonth.getDate(); i++) {
+		days.push({
+			day: i,
+			date: `${lastMonth.getMonth() + 1}/${i}/${lastMonth.getFullYear()}`,
+			greyOut: true,
+		});
 	}
 
-	for (let i = 1; i <= currentMonth.getDate(); i++) {
-		days.push(`${currentMonth.getMonth() + 1}/${i}/${currentMonth.getFullYear()}`);
+	for (let i = 0; i < currentMonth.getDate(); i++) {
+		days.push({
+			day: i + 1,
+			date: `${currentMonth.getMonth() + 1}/${i + 1}/${currentMonth.getFullYear()}`,
+		});
 	}
 
-	for (let i = 1; i <= 7 - currentMonth.getDay() - 1; i++) {
-		days.push(`${nextMonth.getMonth() + 1}/${i}/${nextMonth.getFullYear()}`);
+	for (let i = 1; i <= 8 - currentMonth.getDay(); i++) {
+		days.push({
+			day: i,
+			date: `${currentMonth.getMonth() + 2 <= 12 ? currentMonth.getMonth() + 2 : 1}/${i}/${currentMonth.getFullYear()}`,
+			greyOut: true,
+		});
 	}
 
-	let dayCountForwards = 1;
-	let dayCountBackwards = 1;
-	days.forEach((day) => {
-		if (new Date(day).getTime() >= end.getTime()) {
-			limitReached.forwards = true;
-		} else {
-			dayCountForwards++;
-		}
-
-		if (new Date(day).getTime() <= start.getTime()) {
-			limitReached.backwards = true;
-		} else {
-			dayCountBackwards++;
-		}
-	});
-
-	if (limitReached.forwards) {
-		let daysOver = days.length - dayCountForwards;
-		if (daysOver >= 7) {
-			days.splice(days.length - 7 * parseInt(`${daysOver / 7}`.split('.')[0]), days.length);
-		}
-	}
-
-	if (limitReached.backwards) {
-		let daysOver = days.length - dayCountBackwards;
-		if (daysOver >= 7) {
-			days = days.slice(7 * parseInt(`${daysOver / 7}`.split('.')[0]));
-		}
-	}
+	let _2DArrayOfDays = [];
+	let currentRowOfDays = [];
 
 	for (let i = 0; i < days.length; i++) {
-		if (i % 7 == 0) {
-			weeks.push([i, i + 6]);
+		currentRowOfDays.push(days[i]);
+		if (currentRowOfDays.length === 7) {
+			_2DArrayOfDays.push(currentRowOfDays);
+			currentRowOfDays = [];
 		}
 	}
 
-	return { weeks, days, limitReached, currentMonth };
+	currentRowOfDays = [];
+
+	if (_2DArrayOfDays.length < 6) {
+		for (let i = _2DArrayOfDays.at(-1).at(-1).day + 1; i <= _2DArrayOfDays.at(-1).at(-1).day + 7; i++) {
+			currentRowOfDays.push({
+				day: i,
+				date: `${currentMonth.getMonth() + 2 <= 12 ? currentMonth.getMonth() + 2 : 1}/${i}/${currentMonth.getFullYear()}`,
+				greyOut: true,
+			});
+		}
+
+		_2DArrayOfDays.push(currentRowOfDays);
+	}
+
+	for (let i = 0; i < _2DArrayOfDays.length; i++) {
+		let arrayOfDays = _2DArrayOfDays[i];
+
+		for (let l = 0; l < arrayOfDays.length; l++) {
+			let days: { date: string | number | Date } = arrayOfDays[l];
+
+			if (new Date(days.date).getTime() >= end.getTime()) {
+				forwardLimitReached = true;
+				_2DArrayOfDays[i][l].disabled = true;
+				delete _2DArrayOfDays[i][l].greyOut;
+			}
+
+			if (new Date(days.date).getTime() <= start.getTime()) {
+				backwardsLimitReached = true;
+				_2DArrayOfDays[i][l].disabled = true;
+				delete _2DArrayOfDays[i][l].greyOut;
+			}
+		}
+	}
+
+	return { today, _2DArrayOfDays, forwardLimitReached, backwardsLimitReached };
 }
