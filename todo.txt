@@ -1,0 +1,2 @@
+TODO:
+ 1) make a "timothy_" mode, it removes all css styling.
