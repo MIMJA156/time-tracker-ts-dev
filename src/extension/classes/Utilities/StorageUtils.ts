@@ -26,7 +26,13 @@ export class StorageUtils {
 		if (!existsSync(`${this._user_path}${this.timeFileName}`)) {
 			writeFileSync(`${this._user_path}${this.timeFileName}`, '{}');
 		}
-		return JSON.parse(readFileSync(`${this._user_path}${this.timeFileName}`, 'utf-8'));
+
+		let fileData = readFileSync(`${this._user_path}${this.timeFileName}`, 'utf-8');
+		if (fileData) {
+			return JSON.parse(readFileSync(`${this._user_path}${this.timeFileName}`, 'utf-8'));
+		} else {
+			return {};
+		}
 	}
 
 	public setLocalStoredTime(newValue: Object, format = false) {

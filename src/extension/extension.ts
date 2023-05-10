@@ -10,13 +10,14 @@ var timeTracker: TimeTracker;
 
 export function activate(context: vscode.ExtensionContext) {
 	console.log('Hello World from Time Tracker!');
+	console.log('ps: Maple says hi');
 
 	const storageUtils = new StorageUtils(context);
 	const badgeUtils = new BadgeUtils(context);
-	const serverManager = new ServerManager(config.server.port);
+	const serverManager = new ServerManager(config.server.port, storageUtils);
 
 	timeTracker = new TimeTracker({
-		sampleRate: SecondsToMilliseconds(5),
+		sampleRate: SecondsToMilliseconds(1),
 		badgeUtils,
 		storageUtils,
 		serverManager,

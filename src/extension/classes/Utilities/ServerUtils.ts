@@ -1,26 +1,24 @@
 import { RawData, WebSocket, WebSocketServer } from 'ws';
+import { StorageUtils } from './StorageUtils';
 import { Server, createServer } from 'http';
 import express from 'express';
 import { Socket } from 'net';
 import path from 'path';
 
-const initialWebSocketRequestData = {
-	init: true,
-	settings: {},
-};
-
 export class ServerManager {
 	private _port: number;
 	private httpServer: Server;
 	private connections: Set<Socket>;
+	private _storageUtils: StorageUtils;
 
-	constructor(port: number) {
+	constructor(port: number, storageUtils: StorageUtils) {
 		this._port = port;
 		this.connections = new Set();
+		this._storageUtils = storageUtils;
 
 		this.httpServer = createServer();
-		addExpressServerProperties(this.httpServer);
-		addWebSocketProperties(this.httpServer);
+		this.addExpressServerProperties();
+		this.addWebSocketProperties();
 
 		this.httpServer.on('connection', (socket) => {
 			this.connections.add(socket);
@@ -43,24 +41,27 @@ export class ServerManager {
 			this.connections.delete(socket);
 		}
 	}
-}
 
-function addWebSocketProperties(httpServerInstance: Server) {
-	let wss = new WebSocketServer({ server: httpServerInstance });
+	private addWebSocketProperties() {
+		let wss = new WebSocketServer({ server: this.httpServer });
 
-	wss.on('connection', (socket: WebSocket) => {
-		socket.send(JSON.stringify(initialWebSocketRequestData));
+		wss.on('connection', (socket: WebSocket) => {
+			socket.send('initial data');
 
-		socket.on('message', (sentData: RawData, client: WebSocket) => {
-			console.log(`Message ${new Date().toLocaleDateString()} -> ${sentData.toString()}`);
+			socket.on('message', (sentData: RawData, client: WebSocket) => {
+				console.log(`Message ${new Date().toLocaleDateString()} -> ${sentData.toString()}`);
+			});
 		});
-	});
-}
+	}
 
-function addExpressServerProperties(httpServerInstance: Server) {
-	let expressApplicationInstance = express();
+	private addExpressServerProperties() {
+		let expressApplicationInstance = express();
 
-	expressApplicationInstance.use('/dashboard', express.static(path.join(__dirname, '/web/')));
+		expressApplicationInstance.get('/dashboard', express.static(path.join(__dirname, '/web/')));
+		expressApplicationInstance.get('/api/state', (req, res) => {
+			res.json(this._storageUtils.getLocalStoredTime());
+		});
 
-	httpServerInstance.on('request', expressApplicationInstance);
+		this.httpServer.on('request', expressApplicationInstance);
+	}
 }

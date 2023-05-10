@@ -20,12 +20,14 @@ export class TimeTracker {
 		let currentDate = new Date();
 		this.totalTime = savedInformation['time'][currentDate.getFullYear()][currentDate.getMonth() + 1][currentDate.getDate()].total;
 
+		let humanReadableTimes = SecondsToHoursMinutesSeconds(this.totalTime);
+
 		this.preExistingTimeData = savedInformation;
 		this.sampleRate = sampleRate;
 		this.displayBadge = badgeUtils.createBadge(
 			{
 				icon: 'timeline-view-icon',
-				text: 'Starting Time Loop...',
+				text: `${humanReadableTimes.hours} hr : ${humanReadableTimes.minutes} min : ${humanReadableTimes.seconds} sec`,
 				tooltip: `Time Spent Coding Today!`,
 				alignment: vscode.StatusBarAlignment.Right,
 				priority: 10,
@@ -35,17 +37,14 @@ export class TimeTracker {
 		);
 
 		// >>> -- NOT PERMANENT CODE
-		let stopServer = badgeUtils.createBadge(
-			{
-				icon: 'none',
-				text: 'Stop Web Server',
-				tooltip: 'Stops the current web server',
-				alignment: vscode.StatusBarAlignment.Right,
-				priority: 10,
-				command: null,
-			},
-			false,
-		);
+		let stopServer = badgeUtils.createBadge({
+			icon: 'none',
+			text: 'Stop Web Server',
+			tooltip: 'Stops the current web server',
+			alignment: vscode.StatusBarAlignment.Right,
+			priority: 10,
+			command: null,
+		});
 
 		badgeUtils.linkCommandToBadge(stopServer, 'time-tracker-stop-server', () => {
 			stopServer.show(false);
@@ -70,10 +69,12 @@ export class TimeTracker {
 			let maybeTodayDay = maybeToday.getDay();
 			let dayData = this.preExistingTimeData['time'][today.getFullYear()][today.getMonth() + 1][today.getDate()];
 
-			dayData.timeZone[dayData.timeZone.indexOf(maybeToday.getTimezoneOffset())] = maybeToday.getTimezoneOffset();
+			this.totalTime += MillisecondsToSeconds(this.sampleRate);
 
-			console.log(maybeTodayDay);
-			console.log(todayDay);
+			if (this.totalTime % MillisecondsToSeconds(MinutesToMilliseconds(1)) === 0) {
+				dayData.total = this.totalTime;
+				this.save();
+			}
 
 			if (maybeTodayDay !== todayDay) {
 				dayData.total = this.totalTime;
@@ -82,13 +83,6 @@ export class TimeTracker {
 				this.totalTime = 0;
 				today = new Date();
 				todayDay = today.getDay();
-			}
-
-			this.totalTime += MillisecondsToSeconds(this.sampleRate);
-
-			if (this.totalTime % MillisecondsToSeconds(MinutesToMilliseconds(1)) === 0) {
-				dayData.total = this.totalTime;
-				this.save();
 			}
 
 			let humanReadableTimes = SecondsToHoursMinutesSeconds(this.totalTime);
@@ -127,7 +121,6 @@ export class TimeTracker {
 		if (!timeValues['time'][currentDate.getFullYear()][currentDate.getMonth() + 1][currentDate.getDate()]) {
 			timeValues['time'][currentDate.getFullYear()][currentDate.getMonth() + 1][currentDate.getDate()] = {
 				total: 0,
-				timeZone: [currentDate.getTimezoneOffset()],
 			};
 		}
 
