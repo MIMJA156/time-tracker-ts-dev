@@ -4,6 +4,7 @@ import { Server, createServer } from 'http';
 import express from 'express';
 import { Socket } from 'net';
 import path from 'path';
+import cors from 'cors';
 
 export class ServerManager {
 	private _port: number;
@@ -57,8 +58,10 @@ export class ServerManager {
 	private addExpressServerProperties() {
 		let expressApplicationInstance = express();
 
-		expressApplicationInstance.get('/dashboard', express.static(path.join(__dirname, '/web/')));
-		expressApplicationInstance.get('/api/state', (req, res) => {
+		expressApplicationInstance.use(cors());
+		expressApplicationInstance.use('/dashboard', express.static(path.join(__dirname, '/web/')));
+
+		expressApplicationInstance.get('/api/get/current-time-object', (req, res) => {
 			res.json(this._storageUtils.getLocalStoredTime());
 		});
 

@@ -4,6 +4,6 @@
 	"trailingComma": "all",
 	"tabWidth": 8,
 	"bracketSpacing": true,
-	"printWidth": 1000,
+	"printWidth": 10000,
 	"useTabs": true
 }
