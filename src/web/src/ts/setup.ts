@@ -3,13 +3,44 @@ import moment from 'moment';
 import expose from './expose';
 import register from './moveable-window';
 import { cycle } from './windows/calendar';
+import { time } from 'console';
 
-export const timeLimitations = {
-	start: new Date('1/1/2022'),
-	end: new Date(),
+export let timeLimitations = {
+	start: new Date(2022, 1, 1),
+	end: new Date(2023, 10, 20),
 };
 
-export default () => {
+export let timeData = {};
+
+export default async () => {
+	let data = fetch('http://localhost:3803/api/get/current-time-object');
+	data.then((response) => {
+		response.json().then((parsedData) => {
+			timeData = parsedData;
+
+			let years = Object.keys(parsedData['time']);
+			let firstYear = years[0];
+			let lastYear = years[years.length - 1];
+
+			let monthsOfFirstYear = Object.keys(parsedData['time'][firstYear]);
+			let monthsOfLastYear = Object.keys(parsedData['time'][lastYear]);
+
+			let firstMonth = monthsOfFirstYear[0];
+			let lastMonth = monthsOfLastYear[monthsOfLastYear.length - 1];
+
+			let daysOfFirstMonth = Object.keys(parsedData['time'][firstYear][firstMonth]);
+			let daysOfLastMonth = Object.keys(parsedData['time'][lastYear][lastMonth]);
+
+			let firstDay = daysOfFirstMonth[0];
+			let lastDay = daysOfLastMonth[daysOfLastMonth.length - 1];
+
+			timeLimitations.start = new Date(Number.parseInt(firstYear), Number.parseInt(firstMonth) - 1, Number.parseInt(firstDay));
+			timeLimitations.end = new Date(Number.parseInt(lastYear), Number.parseInt(lastMonth) - 1, Number.parseInt(lastDay));
+
+			cycle();
+		});
+	});
+
 	expose();
 
 	let todaySpan = $('#todays-date-span');

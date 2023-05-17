@@ -1,12 +1,16 @@
 import $ from 'jquery';
-import { timeLimitations } from '../setup';
+import { timeLimitations, timeData } from '../setup';
 
 var month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+// var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 export function cycle(monthOffset = 0) {
 	const cellHolder = $('#week-cell-holder');
 	const dateValues = getDateValues(timeLimitations, monthOffset);
+
+	if (Object.keys(timeData).length) {
+		console.log(timeData['time']);
+	}
 
 	if (dateValues.backwardsLimitReached) {
 		$('#increment-calendar-down').addClass('disabled');
@@ -74,9 +78,10 @@ function getDateValues({ end, start }: { end: Date; start: Date }, monthOffset =
 	}
 
 	for (let i = 1; i <= 8 - currentMonth.getDay(); i++) {
+		let dayAsDate = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, i);
 		days.push({
 			day: i,
-			date: `${currentMonth.getMonth() + 2 <= 12 ? currentMonth.getMonth() + 2 : 1}/${i}/${currentMonth.getFullYear()}`,
+			date: `${dayAsDate.getMonth() + 1}/${dayAsDate.getDate()}/${dayAsDate.getFullYear()}`,
 			greyOut: true,
 		});
 	}
@@ -95,10 +100,14 @@ function getDateValues({ end, start }: { end: Date; start: Date }, monthOffset =
 	currentRowOfDays = [];
 
 	if (_2DArrayOfDays.length < 6) {
-		for (let i = _2DArrayOfDays.at(-1).at(-1).day + 1; i <= _2DArrayOfDays.at(-1).at(-1).day + 7; i++) {
+		let lastDayArray = _2DArrayOfDays.at(-1).at(-1)['date'].split('/');
+		let lastDayDate = new Date(lastDayArray[2], Number.parseInt(lastDayArray[0]) - 1, Number.parseInt(lastDayArray[1]) + 1);
+
+		for (let i = lastDayDate.getDate(); i < lastDayDate.getDate() + 7; i++) {
+			let dayAsDate = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, i);
 			currentRowOfDays.push({
 				day: i,
-				date: `${currentMonth.getMonth() + 2 <= 12 ? currentMonth.getMonth() + 2 : 1}/${i}/${currentMonth.getFullYear()}`,
+				date: `${dayAsDate.getMonth() + 1}/${dayAsDate.getDate()}/${dayAsDate.getFullYear()}`,
 				greyOut: true,
 			});
 		}
@@ -110,15 +119,16 @@ function getDateValues({ end, start }: { end: Date; start: Date }, monthOffset =
 		let arrayOfDays = _2DArrayOfDays[i];
 
 		for (let l = 0; l < arrayOfDays.length; l++) {
-			let days: { date: string | number | Date } = arrayOfDays[l];
+			let days: { date: string } = arrayOfDays[l];
+			let dayArray = days.date.split('/');
 
-			if (new Date(days.date).getTime() >= end.getTime()) {
+			if (new Date(Number.parseInt(dayArray[2]), Number.parseInt(dayArray[0]), Number.parseInt(dayArray[1])).getTime() > end.getTime()) {
 				forwardLimitReached = true;
 				_2DArrayOfDays[i][l].disabled = true;
 				delete _2DArrayOfDays[i][l].greyOut;
 			}
 
-			if (new Date(days.date).getTime() <= start.getTime()) {
+			if (new Date(Number.parseInt(dayArray[2]), Number.parseInt(dayArray[0]), Number.parseInt(dayArray[1])).getTime() < start.getTime()) {
 				backwardsLimitReached = true;
 				_2DArrayOfDays[i][l].disabled = true;
 				delete _2DArrayOfDays[i][l].greyOut;
