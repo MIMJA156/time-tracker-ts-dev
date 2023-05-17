@@ -1,5 +1,3 @@
-![GitHub](https://img.shields.io/github/license/MIMJA156/time-tracker-ts-dev?style=plastic)
-
 # VSCode Coding Time Tracker
 
 This VSCode extension tracks the amount of time you spend coding.
