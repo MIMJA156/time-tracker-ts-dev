@@ -8,10 +8,6 @@ export function cycle(monthOffset = 0) {
 	const cellHolder = $('#week-cell-holder');
 	const dateValues = getDateValues(timeLimitations, monthOffset);
 
-	if (Object.keys(timeData).length) {
-		console.log(timeData['time']);
-	}
-
 	if (dateValues.backwardsLimitReached) {
 		$('#increment-calendar-down').addClass('disabled');
 	} else {
@@ -59,11 +55,11 @@ export function cycle(monthOffset = 0) {
 
 			if (greyOut != false) finalStyle = greyOut;
 			if (noData != false) finalStyle = noData;
+			if (disabled != false) finalStyle = disabled;
 
 			if (greyOut != false && noData != false) finalStyle = `${greyOut} ${noData}`;
 
-			if (disabled != false) finalStyle = disabled;
-
+			if (finalStyle == greyOut) finalStyle = 'grey-out yes-data';
 			if (finalStyle == undefined) finalStyle = 'yes-data';
 
 			daysInRow += `<div class="day ${finalStyle}" data-time=${JSON.stringify(dataAttribute)}>${day.day}</div>`;
@@ -151,17 +147,34 @@ function getDateValues({ end, start }: { end: Date; start: Date }, monthOffset =
 			let dayArray = days.date.split('/');
 
 			if (new Date(Number.parseInt(dayArray[2]), Number.parseInt(dayArray[0]), Number.parseInt(dayArray[1])).getTime() > end.getTime()) {
-				forwardLimitReached = true;
-				_2DArrayOfDays[i][l].disabled = true;
-				delete _2DArrayOfDays[i][l].greyOut;
+				if (!_2DArrayOfDays[i][l].greyOut) {
+					forwardLimitReached = true;
+				}
+
+				if (forwardLimitReached) {
+					_2DArrayOfDays[i][l].disabled = true;
+					delete _2DArrayOfDays[i][l].greyOut;
+				}
 			}
 
 			if (new Date(Number.parseInt(dayArray[2]), Number.parseInt(dayArray[0]), Number.parseInt(dayArray[1])).getTime() < start.getTime()) {
-				backwardsLimitReached = true;
-				_2DArrayOfDays[i][l].disabled = true;
-				delete _2DArrayOfDays[i][l].greyOut;
+				if (!_2DArrayOfDays[i][l].greyOut) {
+					backwardsLimitReached = true;
+				}
+
+				if (backwardsLimitReached) {
+					_2DArrayOfDays[i][l].disabled = true;
+					delete _2DArrayOfDays[i][l].greyOut;
+				}
 			}
 		}
+	}
+
+	if (backwardsLimitReached) {
+		_2DArrayOfDays[0].forEach((item: { disabled: boolean; greyOut: boolean }) => {
+			item.disabled = true;
+			delete item.greyOut;
+		});
 	}
 
 	return { today, _2DArrayOfDays, forwardLimitReached, backwardsLimitReached };

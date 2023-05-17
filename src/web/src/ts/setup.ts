@@ -3,7 +3,6 @@ import moment from 'moment';
 import expose from './expose';
 import register from './moveable-window';
 import { cycle } from './windows/calendar';
-import { time } from 'console';
 
 export let timeLimitations = {
 	start: new Date(),

@@ -55,20 +55,7 @@
             &.no-data {
                 filter: brightness(.8);
 
-                &::after {
-                    content: "";
-                    z-index: 1;
-                    position: absolute;
-                    
-                    top: 50%;
-                    
-                    width: 100%;
-                    height: 10%;
-                    
-                    background-color: #ffcc33;
-                    
-                    transform: rotate(-45deg);
-                }
+                @include drawLineAtDeg(#ffcc33, -45deg, "after");
             }
             
             &.grey-out {
@@ -83,22 +70,46 @@
                 filter: brightness(0.4);
                 cursor: auto;
                 background-color: $nav-bars-background-color;
-                
-                &::after {
-                    content: "";
-                    z-index: 1;
-                    position: absolute;
-                    
-                    top: 50%;
-                    
-                    width: 100%;
-                    height: 10%;
-                    
-                    background-color: red;
-                    
-                    transform: rotate(-45deg);
-                }
+
+                @include drawLineAtDeg(#FF1205, -45deg, "after");
+                @include drawLineAtDeg(#FF1205, 45deg, "before");
             }
+        }
+    }
+}
+
+@mixin drawLineAtDeg($color, $angle, $on){
+    @if $on == "after" {
+        &::after {
+            content: "";
+            z-index: 1;
+            position: absolute;
+            
+            top: 50%;
+            
+            width: 100%;
+            height: 10%;
+            
+            background-color: $color;
+            
+            transform: rotate($angle);
+        }
+    }
+
+    @if $on == "before" {
+        &::before {
+            content: "";
+            z-index: 1;
+            position: absolute;
+            
+            top: 50%;
+            
+            width: 100%;
+            height: 10%;
+            
+            background-color: $color;
+            
+            transform: rotate($angle);
         }
     }
 }
