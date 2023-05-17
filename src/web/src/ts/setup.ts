@@ -39,6 +39,9 @@ export default async () => {
 			cycle();
 		});
 	});
+	data.catch(() => {
+		console.log('problem fetching');
+	});
 
 	expose();
 
