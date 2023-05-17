@@ -35,7 +35,7 @@ export function cycle(monthOffset = 0) {
 	dateValues._2DArrayOfDays.forEach((dayRow) => {
 		let daysInRow = '';
 
-		dayRow.forEach((day: any) => {
+		dayRow.forEach((day: { date: string; day: number; disabled: boolean; greyOut: boolean }) => {
 			let dayArray = day.date.split('/');
 			let thisDay = new Date(Number.parseInt(dayArray[2]), Number.parseInt(dayArray[0]) - 1, Number.parseInt(dayArray[1]));
 
@@ -72,6 +72,8 @@ export function cycle(monthOffset = 0) {
 	spans[0].textContent = month[dateValues.today.getMonth()];
 	spans[1].textContent = `${dateValues.today.getFullYear()}`;
 }
+
+function determineDayStyle(day: { date: string; day: number; disabled: boolean; greyOut: boolean }) {}
 
 function getDateValues({ end, start }: { end: Date; start: Date }, monthOffset = 0) {
 	let days = [];
