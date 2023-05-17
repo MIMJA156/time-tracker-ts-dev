@@ -6,8 +6,8 @@ import { cycle } from './windows/calendar';
 import { time } from 'console';
 
 export let timeLimitations = {
-	start: new Date(2022, 1, 1),
-	end: new Date(2023, 10, 20),
+	start: new Date(),
+	end: new Date(),
 };
 
 export let timeData = {};
@@ -34,8 +34,8 @@ export default async () => {
 			let firstDay = daysOfFirstMonth[0];
 			let lastDay = daysOfLastMonth[daysOfLastMonth.length - 1];
 
-			timeLimitations.start = new Date(Number.parseInt(firstYear), Number.parseInt(firstMonth) - 1, Number.parseInt(firstDay));
-			timeLimitations.end = new Date(Number.parseInt(lastYear), Number.parseInt(lastMonth) - 1, Number.parseInt(lastDay));
+			timeLimitations.start = new Date(Number.parseInt(firstYear), Number.parseInt(firstMonth), Number.parseInt(firstDay));
+			timeLimitations.end = new Date(Number.parseInt(lastYear), Number.parseInt(lastMonth), Number.parseInt(lastDay));
 
 			cycle();
 		});

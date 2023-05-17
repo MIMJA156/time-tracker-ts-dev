@@ -38,9 +38,37 @@ export function cycle(monthOffset = 0) {
 
 	dateValues._2DArrayOfDays.forEach((dayRow) => {
 		let daysInRow = '';
+
 		dayRow.forEach((day: any) => {
-			daysInRow += `<div class="day ${day.greyOut ? 'grey-out' : ''}${day.disabled ? 'not-available' : ''}">${day.day}</div>`;
+			let dayArray = day.date.split('/');
+			let thisDay = new Date(Number.parseInt(dayArray[2]), Number.parseInt(dayArray[0]) - 1, Number.parseInt(dayArray[1]));
+
+			let currentDayData: { error: string; total: number };
+
+			try {
+				currentDayData = timeData['time'][thisDay.getFullYear()][thisDay.getMonth() + 1][thisDay.getDate()];
+			} catch {}
+
+			let dataAttribute = currentDayData == undefined ? { error: 'no-data' } : currentDayData;
+
+			let noData = dataAttribute.error ? 'no-data' : false;
+			let disabled = day.disabled ? 'not-available' : false;
+			let greyOut = day.greyOut ? 'grey-out' : false;
+
+			let finalStyle: string;
+
+			if (greyOut != false) finalStyle = greyOut;
+			if (noData != false) finalStyle = noData;
+
+			if (greyOut != false && noData != false) finalStyle = `${greyOut} ${noData}`;
+
+			if (disabled != false) finalStyle = disabled;
+
+			if (finalStyle == undefined) finalStyle = 'yes-data';
+
+			daysInRow += `<div class="day ${finalStyle}" data-time=${JSON.stringify(dataAttribute)}>${day.day}</div>`;
 		});
+
 		cellHolder.append(`<div class="row-of-days">${daysInRow}</div>`);
 	});
 

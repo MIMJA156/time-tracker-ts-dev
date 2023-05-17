@@ -48,31 +48,54 @@
                 }
             }
 
-            &.grey-out {
-                filter: brightness(0.6);
-
-                &:hover {
-                    filter: brightness(0.8);
-                }
+            &.yes-data {
+                font-weight: bolder;
             }
-
-            &.not-available {
-                filter: brightness(0.4);
-                cursor: auto;
-                // overflow: hidden;
+            
+            &.no-data {
+                filter: brightness(.8);
 
                 &::after {
                     content: "";
                     z-index: 1;
                     position: absolute;
-
+                    
                     top: 50%;
-
+                    
                     width: 100%;
                     height: 10%;
-
+                    
+                    background-color: #ffcc33;
+                    
+                    transform: rotate(-45deg);
+                }
+            }
+            
+            &.grey-out {
+                filter: brightness(0.6);
+                
+                &:hover {
+                    filter: brightness(0.8);
+                }
+            }
+            
+            &.not-available {
+                filter: brightness(0.4);
+                cursor: auto;
+                background-color: $nav-bars-background-color;
+                
+                &::after {
+                    content: "";
+                    z-index: 1;
+                    position: absolute;
+                    
+                    top: 50%;
+                    
+                    width: 100%;
+                    height: 10%;
+                    
                     background-color: red;
-
+                    
                     transform: rotate(-45deg);
                 }
             }
