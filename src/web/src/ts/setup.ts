@@ -49,10 +49,10 @@ export default async () => {
 		let captivePortalTextSub = $('#captive-screen-text-sub');
 
 		captivePortalText.empty();
-		captivePortalText.append('Error Getting Data...');
+		captivePortalText.append('Error Getting Data!');
 
 		captivePortalTextSub.empty();
-		captivePortalTextSub.append('Make sure the server is running and reload.');
+		captivePortalTextSub.append('Try reloading and if the error persists reload VSCode.');
 	});
 
 	expose();

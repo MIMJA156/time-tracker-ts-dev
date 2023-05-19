@@ -1,4 +1,4 @@
-import $, { data } from 'jquery';
+import $ from 'jquery';
 import { timeLimitations, timeData } from '../setup';
 
 var month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -36,7 +36,18 @@ export function cycle(monthOffset = 0) {
 		let daysInRow = '';
 
 		dayRow.forEach((day: { disabled: boolean; greyOut: boolean; hasData: boolean; date: string; day: number }) => {
-			daysInRow += `<div class="day ${determineDayStyle(day)}" data-time=${JSON.stringify(data)}>${day.day}</div>`;
+			// let dataString = ` data-time='${JSON.stringify({ user: 'Tartar Sauce' })}'`;
+
+			let dataString = '""';
+
+			if (day.hasData) {
+				let dateArray = day.date.split('/');
+				let data = timeData['time'][dateArray[2]][dateArray[0]][dateArray[1]];
+				data.date = day.date;
+				dataString = ` ${JSON.stringify(data)}`;
+			}
+
+			daysInRow += `<div class="day ${determineDayStyle(day)}" data-time=${dataString} onmousedown="calendarTools.openDay(this)">${day.day}</div>`;
 		});
 
 		cellHolder.append(`<div class="row-of-days">${daysInRow}</div>`);

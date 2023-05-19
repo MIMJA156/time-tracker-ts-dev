@@ -59,22 +59,16 @@
 			</div>
 			<div data-index="1" class="hide">
 				<div class="header">
-					<div class="left"><span>Day Viewer</span></div>
+					<div class="left"><span>Detailed View</span></div>
 					<div class="right">
-						<i class="fa-solid fa-chevron-left"></i>
-						<i class="fa-solid fa-compress"></i>
+						<i class="fa-solid fa-chevron-left space-right" onmousedown="moveableWindowTools.switch('weeks-moveable-window', 1, 0)"></i>
+						<i class="fa-solid fa-compress" onmousedown="moveableWindowTools.hide('weeks-moveable-window')"></i>
 					</div>
 				</div>
-				<div class="body no-flex">
-					<div class="cell-week"></div>
-					<div class="cell-day">
-						<div class="day"></div>
-						<div class="day"></div>
-						<div class="day"></div>
-						<div class="day"></div>
-						<div class="day"></div>
-						<div class="day"></div>
-						<div class="day"></div>
+				<div class="body">
+					<div class="day-breakdown-title">
+						<span class="header"></span>
+						<span class="sub-header"></span>
 					</div>
 				</div>
 			</div>

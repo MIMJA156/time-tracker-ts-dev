@@ -7,9 +7,12 @@ export default () => {
 			console.log('Using parent class: ', parent);
 		}
 
-		switch(parent: string, index: Number) {
-			console.log('Using parent class: ', parent);
-			console.log('Using index: ', index);
+		switch(id: string, index_from: Number, index_too: Number) {
+			let from = $('#' + id).find(`[data-index='${index_from}']`);
+			let too = $('#' + id).find(`[data-index='${index_too}']`);
+
+			from.addClass('hide');
+			too.removeClass('hide');
 		}
 
 		hide(id: string) {
@@ -48,6 +51,23 @@ export default () => {
 				this.o = this.o + offset;
 				cycle(this.o);
 			}
+		}
+
+		openDay(self: HTMLElement) {
+			let data = JSON.parse(self.dataset.time);
+
+			let from = $('#weeks-moveable-window').find(`[data-index='${0}']`);
+			let too = $('#weeks-moveable-window').find(`[data-index='${1}']`);
+
+			from.addClass('hide');
+			too.removeClass('hide');
+
+			let childrenOfTitle = too.find('[class="body"]').find('[class="day-breakdown-title"]').children();
+			let title = $(childrenOfTitle[0]);
+			let subTitle = $(childrenOfTitle[1]);
+
+			title.text('seconds ' + data.total);
+			subTitle.text(`Spent coding on ${data.date}`);
 		}
 	}
 

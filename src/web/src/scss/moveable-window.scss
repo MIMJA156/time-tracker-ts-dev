@@ -74,6 +74,10 @@ div.moveable-window {
                 >span {
                     text-indent: 15px;
                 }
+
+                >i.space-right {
+                    padding-right: 10px
+                }
             }
 
             >div.left {
@@ -112,6 +116,10 @@ div.moveable-window {
                 display: flex;
                 align-items: center;
                 justify-content: center;
+
+                >span {
+                    text-indent: 15px;
+                }
             }
 
             >div.center {
@@ -138,11 +146,21 @@ div.moveable-window {
 }
 
 @keyframes fadeIn {
-    0% { opacity: 0; }
-    100% { opacity: 1; }
-  }
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
 
 @keyframes fadeOut {
-    0% { opacity: 1; }
-    100% { opacity: 0; }
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
 }
