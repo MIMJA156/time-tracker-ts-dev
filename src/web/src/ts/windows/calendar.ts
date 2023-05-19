@@ -1,4 +1,4 @@
-import $ from 'jquery';
+import $, { data } from 'jquery';
 import { timeLimitations, timeData } from '../setup';
 
 var month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -35,34 +35,8 @@ export function cycle(monthOffset = 0) {
 	dateValues._2DArrayOfDays.forEach((dayRow) => {
 		let daysInRow = '';
 
-		dayRow.forEach((day: { date: string; day: number; disabled: boolean; greyOut: boolean }) => {
-			let dayArray = day.date.split('/');
-			let thisDay = new Date(Number.parseInt(dayArray[2]), Number.parseInt(dayArray[0]) - 1, Number.parseInt(dayArray[1]));
-
-			let currentDayData: { error: string; total: number };
-
-			try {
-				currentDayData = timeData['time'][thisDay.getFullYear()][thisDay.getMonth() + 1][thisDay.getDate()];
-			} catch {}
-
-			let dataAttribute = currentDayData == undefined ? { error: 'no-data' } : currentDayData;
-
-			let noData = dataAttribute.error ? 'no-data' : false;
-			let disabled = day.disabled ? 'not-available' : false;
-			let greyOut = day.greyOut ? 'grey-out' : false;
-
-			let finalStyle: string;
-
-			if (greyOut != false) finalStyle = greyOut;
-			if (noData != false) finalStyle = noData;
-			if (disabled != false) finalStyle = disabled;
-
-			if (greyOut != false && noData != false) finalStyle = `${greyOut} ${noData}`;
-
-			if (finalStyle == greyOut) finalStyle = 'grey-out yes-data';
-			if (finalStyle == undefined) finalStyle = 'yes-data';
-
-			daysInRow += `<div class="day ${finalStyle}" data-time=${JSON.stringify(dataAttribute)}>${day.day}</div>`;
+		dayRow.forEach((day: { disabled: boolean; greyOut: boolean; hasData: boolean; date: string; day: number }) => {
+			daysInRow += `<div class="day ${determineDayStyle(day)}" data-time=${JSON.stringify(data)}>${day.day}</div>`;
 		});
 
 		cellHolder.append(`<div class="row-of-days">${daysInRow}</div>`);
@@ -73,7 +47,15 @@ export function cycle(monthOffset = 0) {
 	spans[1].textContent = `${dateValues.today.getFullYear()}`;
 }
 
-function determineDayStyle(day: { date: string; day: number; disabled: boolean; greyOut: boolean }) {}
+function determineDayStyle(day: { disabled: boolean; greyOut: boolean; hasData: boolean }) {
+	if (day.disabled) return 'not-available';
+
+	if (day.greyOut && day.hasData) return 'grey-out h yes-data';
+	if (day.greyOut && !day.hasData) return 'grey-out no-data';
+
+	if (day.hasData) return 'yes-data';
+	if (!day.hasData) return 'no-data';
+}
 
 function getDateValues({ end, start }: { end: Date; start: Date }, monthOffset = 0) {
 	let days = [];
@@ -93,6 +75,7 @@ function getDateValues({ end, start }: { end: Date; start: Date }, monthOffset =
 			day: i,
 			date: `${lastMonth.getMonth() + 1}/${i}/${lastMonth.getFullYear()}`,
 			greyOut: true,
+			disabled: false,
 		});
 	}
 
@@ -100,6 +83,8 @@ function getDateValues({ end, start }: { end: Date; start: Date }, monthOffset =
 		days.push({
 			day: i + 1,
 			date: `${currentMonth.getMonth() + 1}/${i + 1}/${currentMonth.getFullYear()}`,
+			greyOut: false,
+			disabled: false,
 		});
 	}
 
@@ -109,6 +94,7 @@ function getDateValues({ end, start }: { end: Date; start: Date }, monthOffset =
 			day: i,
 			date: `${dayAsDate.getMonth() + 1}/${dayAsDate.getDate()}/${dayAsDate.getFullYear()}`,
 			greyOut: true,
+			disabled: false,
 		});
 	}
 
@@ -135,6 +121,7 @@ function getDateValues({ end, start }: { end: Date; start: Date }, monthOffset =
 				day: i,
 				date: `${dayAsDate.getMonth() + 1}/${dayAsDate.getDate()}/${dayAsDate.getFullYear()}`,
 				greyOut: true,
+				disabled: false,
 			});
 		}
 
@@ -145,8 +132,23 @@ function getDateValues({ end, start }: { end: Date; start: Date }, monthOffset =
 		let arrayOfDays = _2DArrayOfDays[i];
 
 		for (let l = 0; l < arrayOfDays.length; l++) {
-			let days: { date: string } = arrayOfDays[l];
-			let dayArray = days.date.split('/');
+			let currentDay: { date: string } = arrayOfDays[l];
+			let dayArray = currentDay.date.split('/');
+
+			let hasTimeData: boolean;
+
+			try {
+				let data = timeData['time'][dayArray[2]][dayArray[0]][dayArray[1]];
+				if (data == undefined) {
+					hasTimeData = false;
+				} else {
+					hasTimeData = true;
+				}
+			} catch (error) {
+				hasTimeData = false;
+			}
+
+			_2DArrayOfDays[i][l].hasData = hasTimeData;
 
 			if (new Date(Number.parseInt(dayArray[2]), Number.parseInt(dayArray[0]), Number.parseInt(dayArray[1])).getTime() > end.getTime()) {
 				if (!_2DArrayOfDays[i][l].greyOut) {
@@ -155,7 +157,7 @@ function getDateValues({ end, start }: { end: Date; start: Date }, monthOffset =
 
 				if (forwardLimitReached) {
 					_2DArrayOfDays[i][l].disabled = true;
-					delete _2DArrayOfDays[i][l].greyOut;
+					_2DArrayOfDays[i][l].greyOut = false;
 				}
 			}
 
@@ -166,7 +168,7 @@ function getDateValues({ end, start }: { end: Date; start: Date }, monthOffset =
 
 				if (backwardsLimitReached) {
 					_2DArrayOfDays[i][l].disabled = true;
-					delete _2DArrayOfDays[i][l].greyOut;
+					_2DArrayOfDays[i][l].greyOut = false;
 				}
 			}
 		}
@@ -175,7 +177,7 @@ function getDateValues({ end, start }: { end: Date; start: Date }, monthOffset =
 	if (backwardsLimitReached) {
 		_2DArrayOfDays[0].forEach((item: { disabled: boolean; greyOut: boolean }) => {
 			item.disabled = true;
-			delete item.greyOut;
+			item.greyOut = false;
 		});
 	}
 

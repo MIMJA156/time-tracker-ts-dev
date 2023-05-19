@@ -8,13 +8,18 @@
 	</head>
 
 	<body>
+		<div class="loading-screen visible" id="captive-screen">
+			<span class="information" id="captive-screen-text">Fetching Data...</span>
+			<span class="information-sub" id="captive-screen-text-sub"></span>
+		</div>
+
 		<main>
 			<div class="window-bar top">
 				<div class="left">
-					<span class="selected click-allowed" id="selected-date-span">Null :(</span>
+					<span class="selected click-allowed" id="selected-date-span">Null</span>
 				</div>
 				<div class="center">
-					<span class="click-allowed" id="todays-date-span">Null :(</span>
+					<span class="click-allowed" id="todays-date-span">Null</span>
 				</div>
 				<div class="right">
 					<i class="fa-solid fa-calendar-week right click-allowed" onmousedown="moveableWindowTools.toggle('weeks-moveable-window')"></i>
@@ -39,15 +44,15 @@
 				</div>
 				<div class="sub-header">
 					<div class="left">
-						<i class="fa-solid fa-chevron-left" onmousedown="calendarTools.increment(-1)" id="increment-calendar-down"></i>
+						<i class="fa-solid fa-chevron-left disabled" onmousedown="calendarTools.increment(-1)" id="increment-calendar-down"></i>
 					</div>
 					<div class="center">
-						<span>Oct</span>
+						<span>Null</span>
 						<div class="spacer"></div>
-						<span>2022</span>
+						<span>Null</span>
 					</div>
 					<div class="right">
-						<i class="fa-solid fa-chevron-right" onmousedown="calendarTools.increment(1)" id="increment-calendar-up"></i>
+						<i class="fa-solid fa-chevron-right disabled" onmousedown="calendarTools.increment(1)" id="increment-calendar-up"></i>
 					</div>
 				</div>
 				<div class="body" id="week-cell-holder"></div>

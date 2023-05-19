@@ -12,9 +12,12 @@ export let timeLimitations = {
 export let timeData = {};
 
 export default async () => {
+	let captivePortal = $('#captive-screen');
 	let data = fetch('http://localhost:3803/api/get/current-time-object');
 	data.then((response) => {
 		response.json().then((parsedData) => {
+			captivePortal.removeClass('visible');
+
 			timeData = parsedData;
 
 			let years = Object.keys(parsedData['time']);
@@ -39,8 +42,17 @@ export default async () => {
 			cycle();
 		});
 	});
+
 	data.catch(() => {
 		console.log('problem fetching');
+		let captivePortalText = $('#captive-screen-text');
+		let captivePortalTextSub = $('#captive-screen-text-sub');
+
+		captivePortalText.empty();
+		captivePortalText.append('Error Getting Data...');
+
+		captivePortalTextSub.empty();
+		captivePortalTextSub.append('Make sure the server is running and reload.');
 	});
 
 	expose();
@@ -50,7 +62,7 @@ export default async () => {
 
 	let setDateSpans = () => {
 		todaySpan.text(`Today. ${moment().format('ddd, MMM Do')}`);
-		selectedSpan.text(`Sel. ${moment().format('ddd, MMM Do')}`);
+		selectedSpan.text(`${moment().format('ddd, MMM Do')}`);
 	};
 
 	setDateSpans();
@@ -71,5 +83,5 @@ export default async () => {
 		}
 	}
 
-	cycle();
+	// cycle();
 };

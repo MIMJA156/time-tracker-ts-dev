@@ -54,6 +54,7 @@
             
             &.no-data {
                 filter: brightness(.8);
+                cursor: auto;
 
                 @include drawLineAtDeg(#ffcc33, -45deg, "after");
             }
@@ -61,7 +62,7 @@
             &.grey-out {
                 filter: brightness(0.6);
                 
-                &:hover {
+                &.h:hover {
                     filter: brightness(0.8);
                 }
             }
