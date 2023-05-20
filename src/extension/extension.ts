@@ -6,7 +6,7 @@ import { StorageUtils } from './classes/Utilities/StorageUtils';
 import { SecondsToMilliseconds } from './func/timeConverters';
 import { ServerManager } from './classes/Utilities/ServerUtils';
 
-var timeTracker: TimeTracker;
+let timeTracker: TimeTracker;
 
 export function activate(context: vscode.ExtensionContext) {
 	console.log('Hello World from Time Tracker!');
