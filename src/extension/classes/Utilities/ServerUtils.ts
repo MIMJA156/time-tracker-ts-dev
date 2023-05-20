@@ -7,12 +7,15 @@ import path from 'path';
 import cors from 'cors';
 
 export class ServerManager {
-	private _port: number;
+	private started: boolean;
+	private _port: Number;
 	private httpServer: Server;
 	private connections: Set<Socket>;
 	private _storageUtils: StorageUtils;
 
-	constructor(port: number, storageUtils: StorageUtils) {
+	private wss: WebSocketServer;
+
+	constructor(port: Number, storageUtils: StorageUtils) {
 		this._port = port;
 		this.connections = new Set();
 		this._storageUtils = storageUtils;
@@ -24,23 +27,34 @@ export class ServerManager {
 		this.httpServer.on('connection', (socket) => {
 			this.connections.add(socket);
 
-			this.httpServer.once('close', () => {
+			socket.once('close', () => {
 				this.connections.delete(socket);
 			});
 		});
 	}
 
 	public start() {
+		this.started = true;
 		this.httpServer.listen(this._port);
 	}
 
 	public stop() {
+		this.started = false;
 		this.httpServer.close();
 
 		for (const socket of this.connections) {
 			socket.destroy();
 			this.connections.delete(socket);
 		}
+	}
+
+	public signal(message: String | Object) {
+		if (!this.started) return;
+		if (typeof message == typeof {}) message = JSON.stringify(message);
+
+		this.wss.clients.forEach((client) => {
+			client.send(message as string);
+		});
 	}
 
 	private addWebSocketProperties() {
@@ -53,6 +67,8 @@ export class ServerManager {
 				console.log(`Message ${new Date().toLocaleDateString()} -> ${sentData.toString()}`);
 			});
 		});
+
+		this.wss = wss;
 	}
 
 	private addExpressServerProperties() {

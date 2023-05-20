@@ -13,6 +13,7 @@ export class TimeTracker {
 	displayBadge: import('./Utilities/BadgeUtils').Badge;
 
 	storageUtils: StorageUtils;
+	serverManager: ServerManager;
 
 	constructor({ sampleRate, storageUtils, badgeUtils, serverManager }: { sampleRate: number; storageUtils: StorageUtils; badgeUtils: BadgeUtils; serverManager: ServerManager }) {
 		let savedInformation = this.sanitize(storageUtils.getLocalStoredTime());
@@ -58,6 +59,7 @@ export class TimeTracker {
 		});
 
 		this.storageUtils = storageUtils;
+		this.serverManager = serverManager;
 	}
 
 	public start() {
@@ -74,6 +76,11 @@ export class TimeTracker {
 			if (this.totalTime % MillisecondsToSeconds(MinutesToMilliseconds(1)) === 0) {
 				dayData.total = this.totalTime;
 				this.save();
+
+				this.serverManager.signal({
+					type: 'update',
+					of: 'time-data',
+				});
 			}
 
 			if (maybeTodayDay !== todayDay) {

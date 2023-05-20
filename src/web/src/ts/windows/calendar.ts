@@ -1,5 +1,6 @@
 import $ from 'jquery';
 import { timeLimitations, timeData } from '../setup';
+import { prettySeconds } from '../secondsToPretty';
 
 let month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 export const dayIndexToStringShort = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -7,9 +8,26 @@ export const dayIndexToStringLong = ['Sunday', 'Monday', 'Tuesday', 'Wednesday',
 
 export let selectedWeek = [];
 export let lastCycle = 0;
+export let detailedViewOpen: { data: any } = { data: {} };
 
-export function cycle(monthOffset = 0) {
+export function cycle(monthOffset: number | undefined = undefined) {
+	if (monthOffset == undefined) monthOffset = lastCycle;
 	lastCycle = monthOffset;
+
+	if (Object.values(detailedViewOpen.data).length != 0) {
+		let too = $('#weeks-moveable-window').find(`[data-index='${1}']`);
+		let childrenOfTitle = too.find('[class="body"]').find('[class="day-breakdown-title"]').children();
+		let title = $(childrenOfTitle[0]);
+		let subTitle = $(childrenOfTitle[1]);
+
+		let dateArray = detailedViewOpen.data.date.split('/');
+		detailedViewOpen.data.total = timeData['time'][dateArray[2]][dateArray[0]][dateArray[1]].total;
+
+		title.empty();
+		subTitle.empty();
+		title.html(prettySeconds(detailedViewOpen.data.total));
+		subTitle.html(`Spent coding on ${detailedViewOpen.data.date}`);
+	}
 
 	let today = new Date();
 	today.setHours(0, 0, 0, 0);
@@ -214,5 +232,3 @@ function getDateValues({ end, start }: { end: Date; start: Date }, monthOffset =
 
 	return { today, _2DArrayOfDays, forwardLimitReached, backwardsLimitReached };
 }
-
-export function getCurrentWeek() {}

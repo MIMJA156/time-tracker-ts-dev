@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import { cycle } from './windows/calendar';
+import { cycle, detailedViewOpen } from './windows/calendar';
 import { prettySeconds } from './secondsToPretty';
 
 export default () => {
@@ -57,6 +57,8 @@ export default () => {
 		openDay(self: HTMLElement) {
 			let data = JSON.parse(self.dataset.time);
 
+			detailedViewOpen.data = data;
+
 			let from = $('#weeks-moveable-window').find(`[data-index='${0}']`);
 			let too = $('#weeks-moveable-window').find(`[data-index='${1}']`);
 
@@ -69,6 +71,11 @@ export default () => {
 
 			title.html(prettySeconds(data.total));
 			subTitle.html(`Spent coding on ${data.date}`);
+		}
+
+		closeDay() {
+			delete detailedViewOpen.data;
+			detailedViewOpen.data = {};
 		}
 	}
 

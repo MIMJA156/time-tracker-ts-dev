@@ -4,6 +4,8 @@ import { dayIndexToStringLong, selectedWeek } from './windows/calendar';
 import { ChartItem, plugins } from 'chart.js';
 import { prettySeconds } from './secondsToPretty';
 
+let chart: Chart;
+
 export function setupMainChart() {
 	const data = selectedWeek.map((date) => {
 		let splitDate = date.split('/');
@@ -18,7 +20,13 @@ export function setupMainChart() {
 		return { time: totalTime, day: dayIndexToStringLong[dateDay.getDay()] };
 	});
 
-	new Chart(document.getElementById('main-chart') as ChartItem, {
+	if (chart) {
+		chart.data.datasets[0].data = data.map((row) => row.time);
+		chart.update();
+		return;
+	}
+
+	chart = new Chart(document.getElementById('main-chart') as ChartItem, {
 		type: 'bar',
 		options: {
 			maintainAspectRatio: false,

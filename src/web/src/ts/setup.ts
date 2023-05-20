@@ -4,6 +4,7 @@ import expose from './expose';
 import register from './moveable-window';
 import { cycle } from './windows/calendar';
 import { setupMainChart } from './setupMainChart';
+import { initUpdater } from './update';
 
 export let timeLimitations = {
 	start: new Date(),
@@ -15,8 +16,43 @@ export let timeData = {};
 export default async () => {
 	let captivePortal = $('#captive-screen');
 	let data = fetch('http://localhost:3803/api/get/current-time-object');
+	handleTimeDataRequest(data, captivePortal);
+
+	expose();
+
+	let todaySpan = $('#todays-date-span');
+	let selectedSpan = $('#selected-date-span');
+
+	let setDateSpans = () => {
+		todaySpan.text(`Today. ${moment().format('ddd, MMM Do')}`);
+		selectedSpan.text(`${moment().format('ddd, MMM Do')}`);
+	};
+
+	setDateSpans();
+	setInterval(() => {
+		setDateSpans();
+	}, 1000);
+
+	for (const element of $('.moveable-window')) {
+		for (const child of $(element.children)) {
+			for (const childOfChild of $(child.children)) {
+				if (childOfChild.classList.contains('header')) {
+					register({
+						parent: $(element),
+						child: $(childOfChild) as JQuery<HTMLElement>,
+					});
+				}
+			}
+		}
+	}
+
+	// cycle();
+	initUpdater();
+};
+
+export function handleTimeDataRequest(data: Promise<any>, captivePortal: { removeClass: (arg0: string) => void }) {
 	data.then((response) => {
-		response.json().then((parsedData) => {
+		response.json().then((parsedData: { [x: string]: { [x: string]: { [x: string]: {} } } }) => {
 			captivePortal.removeClass('visible');
 
 			timeData = parsedData;
@@ -54,36 +90,6 @@ export default async () => {
 		captivePortalText.append('Error Getting Data!');
 
 		captivePortalTextSub.empty();
-		captivePortalTextSub.append('Try reloading and if the error persists reload VSCode.');
+		captivePortalTextSub.append('Try reloading and if the error persists reload VS Code.');
 	});
-
-	expose();
-
-	let todaySpan = $('#todays-date-span');
-	let selectedSpan = $('#selected-date-span');
-
-	let setDateSpans = () => {
-		todaySpan.text(`Today. ${moment().format('ddd, MMM Do')}`);
-		selectedSpan.text(`${moment().format('ddd, MMM Do')}`);
-	};
-
-	setDateSpans();
-	setInterval(() => {
-		setDateSpans();
-	}, 1000);
-
-	for (const element of $('.moveable-window')) {
-		for (const child of $(element.children)) {
-			for (const childOfChild of $(child.children)) {
-				if (childOfChild.classList.contains('header')) {
-					register({
-						parent: $(element),
-						child: $(childOfChild) as JQuery<HTMLElement>,
-					});
-				}
-			}
-		}
-	}
-
-	// cycle();
-};
+}
