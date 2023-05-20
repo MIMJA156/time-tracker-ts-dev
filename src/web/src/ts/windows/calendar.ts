@@ -1,10 +1,19 @@
 import $ from 'jquery';
 import { timeLimitations, timeData } from '../setup';
 
-var month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-// var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+let month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+export const dayIndexToStringShort = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+export const dayIndexToStringLong = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+export let selectedWeek = [];
+export let lastCycle = 0;
 
 export function cycle(monthOffset = 0) {
+	lastCycle = monthOffset;
+
+	let today = new Date();
+	today.setHours(0, 0, 0, 0);
+
 	const cellHolder = $('#week-cell-holder');
 	const dateValues = getDateValues(timeLimitations, monthOffset);
 
@@ -34,14 +43,21 @@ export function cycle(monthOffset = 0) {
 
 	dateValues._2DArrayOfDays.forEach((dayRow) => {
 		let daysInRow = '';
+		let week = [];
+		let isCurrentWeek = false;
 
 		dayRow.forEach((day: { disabled: boolean; greyOut: boolean; hasData: boolean; date: string; day: number }) => {
-			// let dataString = ` data-time='${JSON.stringify({ user: 'Tartar Sauce' })}'`;
+			let dateArray = day.date.split('/');
+			let possibleToday = new Date(Number.parseInt(dateArray[2]), Number.parseInt(dateArray[0]) - 1, Number.parseInt(dateArray[1]));
+
+			week.push(day.date);
+			if (today.getTime() == possibleToday.getTime()) {
+				isCurrentWeek = true;
+			}
 
 			let dataString = '""';
 
 			if (day.hasData) {
-				let dateArray = day.date.split('/');
 				let data = timeData['time'][dateArray[2]][dateArray[0]][dateArray[1]];
 				data.date = day.date;
 				dataString = ` ${JSON.stringify(data)}`;
@@ -50,7 +66,11 @@ export function cycle(monthOffset = 0) {
 			daysInRow += `<div class="day ${determineDayStyle(day)}" ${day.hasData ? `data-time=${dataString}` : ''} ${day.hasData ? 'onmousedown="calendarTools.openDay(this)"' : ''}>${day.day}</div>`;
 		});
 
-		cellHolder.append(`<div class="row-of-days">${daysInRow}</div>`);
+		if (isCurrentWeek) {
+			selectedWeek = week.slice();
+		}
+
+		cellHolder.append(`<div class="row-of-days" data-week='${JSON.stringify(week)}'>${daysInRow}</div>`);
 	});
 
 	let spans = cellHolder.parent().find('.sub-header').find('.center').find('span');
@@ -194,3 +214,5 @@ function getDateValues({ end, start }: { end: Date; start: Date }, monthOffset =
 
 	return { today, _2DArrayOfDays, forwardLimitReached, backwardsLimitReached };
 }
+
+export function getCurrentWeek() {}

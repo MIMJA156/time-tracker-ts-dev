@@ -25,6 +25,9 @@
 					<i class="fa-solid fa-calendar-week right click-allowed" onmousedown="moveableWindowTools.toggle('weeks-moveable-window')"></i>
 				</div>
 			</div>
+
+			<div style="width: 100%; height: 100%"><canvas id="main-chart"></canvas></div>
+
 			<div class="window-bar bottom">
 				<div class="left">
 					<i class="fa-solid fa-gear left click-allowed"></i>
@@ -36,7 +39,7 @@
 			</div>
 		</main>
 
-		<div class="moveable-window" data-type="calendar" id="weeks-moveable-window">
+		<div class="moveable-window hide" data-type="calendar" id="weeks-moveable-window">
 			<div data-index="0">
 				<div class="header">
 					<div class="left"><span>Week Calendar</span></div>

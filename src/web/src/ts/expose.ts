@@ -1,6 +1,6 @@
 import $ from 'jquery';
 import { cycle } from './windows/calendar';
-import { prettySeconds } from './functions/secondsToPretty';
+import { prettySeconds } from './secondsToPretty';
 
 export default () => {
 	class windowTools {

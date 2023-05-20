@@ -3,6 +3,7 @@ import moment from 'moment';
 import expose from './expose';
 import register from './moveable-window';
 import { cycle } from './windows/calendar';
+import { setupMainChart } from './setupMainChart';
 
 export let timeLimitations = {
 	start: new Date(),
@@ -40,6 +41,7 @@ export default async () => {
 			timeLimitations.end = new Date(Number.parseInt(lastYear), Number.parseInt(lastMonth), Number.parseInt(lastDay));
 
 			cycle();
+			setupMainChart();
 		});
 	});
 
