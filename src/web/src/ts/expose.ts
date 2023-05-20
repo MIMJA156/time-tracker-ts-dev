@@ -67,8 +67,8 @@ export default () => {
 			let title = $(childrenOfTitle[0]);
 			let subTitle = $(childrenOfTitle[1]);
 
-			title.text(prettySeconds(data.total));
-			subTitle.text(`Spent coding on ${data.date}`);
+			title.html(prettySeconds(data.total));
+			subTitle.html(`Spent coding on ${data.date}`);
 		}
 	}
 

@@ -7,5 +7,5 @@ export function prettySeconds(seconds: number): string {
 	let minuteSuffix = minutes != 1 ? 'mins' : 'min';
 	let hourSuffix = hours != 1 ? 'hrs' : 'hr';
 
-	return `${hours}${hourSuffix} & ${minutes}${minuteSuffix}`;
+	return `<strong>${hours} ${hourSuffix}</strong> & <strong>${minutes} ${minuteSuffix}</strong>`;
 }
