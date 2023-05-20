@@ -1,5 +1,6 @@
 import $ from 'jquery';
 import { cycle } from './windows/calendar';
+import { prettySeconds } from './functions/secondsToPretty';
 
 export default () => {
 	class windowTools {
@@ -66,7 +67,7 @@ export default () => {
 			let title = $(childrenOfTitle[0]);
 			let subTitle = $(childrenOfTitle[1]);
 
-			title.text('seconds ' + data.total);
+			title.text(prettySeconds(data.total));
 			subTitle.text(`Spent coding on ${data.date}`);
 		}
 	}

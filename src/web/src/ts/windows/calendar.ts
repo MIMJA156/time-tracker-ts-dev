@@ -47,7 +47,7 @@ export function cycle(monthOffset = 0) {
 				dataString = ` ${JSON.stringify(data)}`;
 			}
 
-			daysInRow += `<div class="day ${determineDayStyle(day)}" data-time=${dataString} onmousedown="calendarTools.openDay(this)">${day.day}</div>`;
+			daysInRow += `<div class="day ${determineDayStyle(day)}" ${day.hasData ? `data-time=${dataString}` : ''} ${day.hasData ? 'onmousedown="calendarTools.openDay(this)"' : ''}>${day.day}</div>`;
 		});
 
 		cellHolder.append(`<div class="row-of-days">${daysInRow}</div>`);
