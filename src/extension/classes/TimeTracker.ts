@@ -1,3 +1,4 @@
+import open from 'open';
 import * as vscode from 'vscode';
 import { BadgeUtils } from './Utilities/BadgeUtils';
 import { StorageUtils } from './Utilities/StorageUtils';
@@ -56,6 +57,7 @@ export class TimeTracker {
 		badgeUtils.linkCommandToBadge(this.displayBadge, 'time-tracker-start-server', () => {
 			stopServer.show(true);
 			serverManager.start();
+			open('http://localhost:3803/dashboard');
 		});
 
 		this.storageUtils = storageUtils;
