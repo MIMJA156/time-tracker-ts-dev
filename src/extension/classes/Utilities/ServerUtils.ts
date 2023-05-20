@@ -61,9 +61,15 @@ export class ServerManager {
 		let wss = new WebSocketServer({ server: this.httpServer });
 
 		wss.on('connection', (socket: WebSocket) => {
-			socket.send('initial data');
+			let initialData = {
+				type: 'initial',
+				payload: {
+					time: this._storageUtils.getLocalStoredTime()['time'],
+				},
+			};
+			socket.send(JSON.stringify(initialData));
 
-			socket.on('message', (sentData: RawData, client: WebSocket) => {
+			socket.on('message', (sentData: RawData) => {
 				console.log(`Message ${new Date().toLocaleDateString()} -> ${sentData.toString()}`);
 			});
 		});

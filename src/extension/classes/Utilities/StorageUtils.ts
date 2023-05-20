@@ -22,7 +22,7 @@ export class StorageUtils {
 		return this._user_path;
 	}
 
-	public getLocalStoredTime(): Object {
+	public getLocalStoredTime(): { time: Object } {
 		if (!existsSync(`${this._user_path}${this.timeFileName}`)) {
 			writeFileSync(`${this._user_path}${this.timeFileName}`, '{}');
 		}
@@ -31,7 +31,7 @@ export class StorageUtils {
 		if (fileData) {
 			return JSON.parse(readFileSync(`${this._user_path}${this.timeFileName}`, 'utf-8'));
 		} else {
-			return {};
+			return { time: {} };
 		}
 	}
 
@@ -43,7 +43,7 @@ export class StorageUtils {
 		}
 	}
 
-	public getLocalStoredSettings(): settingsInterface {
+	public getLocalStoredSettings(): SettingsInterface {
 		if (!existsSync(`${this._user_path}${this.settingsFileName}`)) {
 			writeFileSync(`${this._user_path}${this.settingsFileName}`, '{}');
 		}
@@ -76,7 +76,7 @@ export class StorageUtils {
 	}
 }
 
-interface settingsInterface {
+interface SettingsInterface {
 	gist: {
 		access_token: string;
 	};
