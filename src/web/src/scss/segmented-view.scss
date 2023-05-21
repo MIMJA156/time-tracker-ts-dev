@@ -1,0 +1,46 @@
+@mixin segmented-view ($width, $height, $background, $floater-color, $item-width) {
+    position: relative;
+    width: $width;
+    height: $height;
+    font-size: 16px;
+
+    &>div.segmented-view-floater {
+        position: absolute;
+
+        width: $item-width;
+        height: 100%;
+        z-index: 50;
+        pointer-events: none;
+
+        display: block;
+        background-color: $floater-color;
+        border-radius: 4px;
+
+        transition: all .4s ease;
+    }
+
+    &>div.segmented-view-item-container {
+        width: 100%;
+        height: 100%;
+
+        background-color: $background;
+
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+
+        &>div.segmented-view-item {
+            width: $item-width;
+            height: 80%;
+
+            cursor: pointer;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            z-index: 100;
+        }
+    }
+
+}

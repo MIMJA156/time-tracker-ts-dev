@@ -1,6 +1,7 @@
 import $ from 'jquery';
 import { timeLimitations, timeData } from '../setup';
 import { prettySeconds } from '../secondsToPretty';
+import { drawSegmentedFloater } from '../segmented-view';
 
 let month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 export const dayIndexToStringShort = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -47,9 +48,17 @@ export function cycle(monthOffset: number | undefined = undefined) {
 		$('#increment-calendar-up').removeClass('disabled');
 	}
 
+	document.getElementById('weeks-moveable-window').classList.remove('hide');
 	cellHolder.html('');
 	cellHolder.append(`
-	<div class="row-of-days">
+	<div class="segmented-view-wrapper selection-type-label">
+		<div class="segmented-view-floater"></div>
+		<div class="segmented-view-item-container">
+			<div class="segmented-view-item selected" onclick="segmentClicked(this)">Day Selection</div>
+			<div class="segmented-view-item" onclick="segmentClicked(this)">Week Selection</div>
+		</div>
+	</div>
+	<div class="row-of-days day-keys">
 		<div class="day no-border">Su</div>
 		<div class="day no-border">Mo</div>
 		<div class="day no-border">Tu</div>
@@ -58,6 +67,8 @@ export function cycle(monthOffset: number | undefined = undefined) {
 		<div class="day no-border">Fr</div>
 		<div class="day no-border">Sa</div>
 	</div>`);
+	drawSegmentedFloater();
+	document.getElementById('weeks-moveable-window').classList.add('hide');
 
 	dateValues._2DArrayOfDays.forEach((dayRow) => {
 		let daysInRow = '';

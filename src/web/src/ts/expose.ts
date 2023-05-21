@@ -1,6 +1,7 @@
 import $ from 'jquery';
 import { cycle, detailedViewOpen } from './windows/calendar';
 import { prettySeconds } from './secondsToPretty';
+import { clearAllSelections, drawSegmentedFloater } from './segmented-view';
 
 export default () => {
 	class windowTools {
@@ -84,4 +85,11 @@ export default () => {
 
 	//@ts-ignore
 	window.calendarTools = new calendarTools();
+
+	//@ts-ignore
+	window.segmentClicked = (segment) => {
+		clearAllSelections();
+		segment.classList.add('selected');
+		drawSegmentedFloater();
+	};
 };

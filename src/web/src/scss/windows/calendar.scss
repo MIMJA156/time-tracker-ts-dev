@@ -1,3 +1,5 @@
+@import "../segmented-view.scss";
+
 @mixin calender-body {
     display: flex;
     flex-direction: column;
@@ -7,10 +9,38 @@
         justify-content: start;
     }
 
+    >div.selection-type-label {
+        margin-top: 3px;
+        @include segmented-view(100%, 30px, none, $matt-black , 150px);
+    }
+
     >div.row-of-days {
         display: flex;
         flex-direction: row;
-        margin-top: 10px;
+        margin-top: 5px;
+        margin-bottom: 5px;
+
+        &.day-keys {
+            >div.day.no-border {
+                cursor: auto;
+                font-size: 18px;
+
+                width: 44px;
+                height: 30px;
+            }
+
+            &:hover {
+                margin-top: 5px;
+                margin-bottom: 5px;
+                border: none;
+            }
+        }
+
+        &:hover {
+            margin-top: 3px;
+            margin-bottom: 3px;
+            border: 2px solid orange;
+        }
 
         >div.day {
             cursor: pointer;
