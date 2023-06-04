@@ -1,0 +1,16 @@
+@import "./var";
+@import "./window.scss";
+@import "./window-bar.scss";
+
+@import "./../../../../node_modules/@fortawesome/fontawesome-free/css/all.css";
+
+body {
+    margin: 0;
+    background-color: $window-background-color;
+}
+
+i {
+    &.clickable {
+        cursor: pointer;
+    }
+}

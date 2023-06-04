@@ -1,0 +1,39 @@
+@mixin calender-body {}
+
+@mixin drawLineAtDeg($color, $angle, $on, $filter) {
+    @if $on =="after" {
+        &::after {
+            content: "";
+            z-index: 1;
+            position: absolute;
+            filter: brightness($filter);
+
+            top: 50%;
+
+            width: 100%;
+            height: 10%;
+
+            background-color: $color;
+
+            transform: rotate($angle);
+        }
+    }
+
+    @if $on =="before" {
+        &::before {
+            content: "";
+            z-index: 1;
+            position: absolute;
+            filter: brightness($filter);
+
+            top: 50%;
+
+            width: 100%;
+            height: 10%;
+
+            background-color: $color;
+
+            transform: rotate($angle);
+        }
+    }
+}
