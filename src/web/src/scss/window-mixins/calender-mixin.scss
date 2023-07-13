@@ -1,4 +1,105 @@
-@mixin calender-body {}
+@mixin calender-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &.no-flex {
+        justify-content: start;
+    }
+
+    >div.row-of-days {
+        display: flex;
+        flex-direction: row;
+        margin-top: 10px;
+
+        >div.day {
+            cursor: pointer;
+            font-size: 18px;
+
+            margin: 0 5px 0 5px;
+
+            width: 40px;
+            height: 40px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border: 2px solid black;
+            border-radius: 5px;
+
+            transition: .3s;
+            background-color: $window-bar-background-color;
+
+            &:hover {
+                filter: brightness(0.8);
+            }
+
+            &.no-border {
+                border: none;
+                width: 44px;
+                height: 44px;
+
+                cursor: auto;
+
+                &:hover {
+                    filter: none;
+                }
+            }
+
+            &.yes-data {
+                font-weight: bolder;
+            }
+
+            &.no-data {
+                filter: brightness(.8);
+                cursor: auto;
+
+                @include drawLineAtDeg(#FF1205, -45deg, "after", .8);
+                @include drawLineAtDeg(#FF1205, 45deg, "before", .8);
+            }
+
+            &.grey-out {
+                filter: brightness(0.6);
+
+                &.h:hover {
+                    filter: brightness(0.8);
+                }
+            }
+
+            &.not-available {
+                filter: brightness(0.4);
+                cursor: auto;
+                background-color: $window-bar-background-color;
+
+                @include drawLineAtDeg(#FF1205, -45deg, "after", 1);
+                @include drawLineAtDeg(#FF1205, 45deg, "before", 1);
+            }
+        }
+    }
+
+    >div.day-breakdown-title {
+        height: 70px;
+        width: 100%;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items: left;
+
+        border-bottom: 2px solid black;
+
+        >span.header {
+            font-size: 22px;
+            text-indent: 15px;
+        }
+
+        >span.sub-header {
+            font-size: 16px;
+            text-indent: 15px;
+        }
+    }
+}
 
 @mixin drawLineAtDeg($color, $angle, $on, $filter) {
     @if $on =="after" {

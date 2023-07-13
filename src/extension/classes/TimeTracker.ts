@@ -9,8 +9,8 @@ export class TimeTracker {
 	timeInterval: NodeJS.Timer;
 
 	totalTime: number;
-	preExistingTimeData: object;
 	sampleRate: number;
+	preExistingTimeData: object;
 	displayBadge: import('./Utilities/BadgeUtils').Badge;
 
 	storageUtils: StorageUtils;
