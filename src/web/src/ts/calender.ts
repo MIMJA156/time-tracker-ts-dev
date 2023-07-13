@@ -2,6 +2,7 @@ import { cleanDate, getCleanDate } from '../../../extension/func/getCleanDate';
 import $ from 'jquery';
 
 type CycleCalenderDataType = {
+	dateOfReference: Date;
 	isNextOld: boolean;
 	isNextYoung: boolean;
 
@@ -16,14 +17,15 @@ type Day = {
 let month = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
 export function cycleCalender(range: { s: Date; e: Date }, offset = 0) {
+	let offsetMonth: Date = getCleanDate();
+	offsetMonth.setMonth(offsetMonth.getMonth() + offset);
+
 	let dataToBeDisplayed: CycleCalenderDataType = {
+		dateOfReference: new Date(offsetMonth),
 		isNextOld: false,
 		isNextYoung: false,
 		days: [],
 	};
-
-	let offsetMonth: Date = getCleanDate();
-	offsetMonth.setMonth(offsetMonth.getMonth() + offset);
 
 	let oldestSelectedMonth: Date = new Date(range.s);
 	oldestSelectedMonth.setMonth(oldestSelectedMonth.getMonth() + 1);
@@ -50,8 +52,8 @@ function display(data: CycleCalenderDataType) {
 	let calenderBody = $('#day-cell-holder');
 
 	let spans = calenderBody.parent().find('.sub-header').find('.center').find('span');
-	spans[0].textContent = month[new Date().getMonth()];
-	spans[1].textContent = `${new Date().getFullYear()}`;
+	spans[0].textContent = month[data.dateOfReference.getMonth()];
+	spans[1].textContent = `${data.dateOfReference.getFullYear()}`;
 
 	calenderBody.html('');
 	calenderBody.append(`
