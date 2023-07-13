@@ -13,9 +13,7 @@ type Day = {
 	isInRange: boolean;
 };
 
-let month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-export const dayIndexToStringShort = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-export const dayIndexToStringLong = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+let month = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
 export function cycleCalender(range: { s: Date; e: Date }, offset = 0) {
 	let dataToBeDisplayed: CycleCalenderDataType = {
@@ -69,11 +67,25 @@ function display(data: CycleCalenderDataType) {
 
 	let currentRow = [];
 	for (let i = 0; i < data.days.length; i++) {
-		currentRow[i % 7] = `<div class="day">${data.days[i].date.getDate()}</div>`;
+		currentRow[i % 7] = `<div class="day ${data.days[i].isInRange ? ' ' : 'out-of-range'}">${data.days[i].date.getDate()}</div>`;
 
 		if (i % 7 == 6) {
 			calenderBody.append(`<div class="row-of-days">${currentRow.join('')}</div>`);
 		}
+	}
+
+	let backButton = calenderBody.parent().find('.sub-header').find('.left').find('i');
+	if (data.isNextOld) {
+		backButton.addClass('disabled');
+	} else {
+		backButton.removeClass('disabled');
+	}
+
+	let forwardButton = calenderBody.parent().find('.sub-header').find('.right').find('i');
+	if (data.isNextYoung) {
+		forwardButton.addClass('disabled');
+	} else {
+		forwardButton.removeClass('disabled');
 	}
 }
 

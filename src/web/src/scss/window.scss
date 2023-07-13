@@ -31,12 +31,12 @@ div.window {
             display: none;
         }
 
-        i:active {
-            transform: scale(.8);
+        i.disabled {
+            pointer-events: none;
         }
 
-        i.disabled:active {
-            transform: scale(1);
+        i:active {
+            transform: scale(.8);
         }
 
         >div.header {
