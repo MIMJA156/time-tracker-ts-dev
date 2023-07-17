@@ -79,10 +79,7 @@ export class TimeTracker {
 				dayData.total = this.totalTime;
 				this.save();
 
-				this.serverManager.signal({
-					type: 'update',
-					of: 'time-data',
-				});
+				this.serverManager.signal('UPDATE');
 			}
 
 			if (maybeTodayDay !== todayDay) {

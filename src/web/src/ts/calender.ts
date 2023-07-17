@@ -1,5 +1,5 @@
 import { cleanDate, getCleanDate } from './getCleanDate';
-import $ from 'jquery';
+import $, { data } from 'jquery';
 
 type CycleCalenderDataType = {
 	dateOfReference: Date;
@@ -18,7 +18,7 @@ type Day = {
 
 let month = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-export function cycleCalender(timeObject: { start?: number; end?: number; time: Object }, range: { s: Date; e: Date }, offset = 0) {
+export function cycleCalender(timeObject: { start?: number; end?: number; time: Object }, range: { s: Date; e: Date }, offset = 0, style: string) {
 	let offsetMonth: Date = getCleanDate();
 	offsetMonth.setMonth(offsetMonth.getMonth() + offset);
 
@@ -55,10 +55,10 @@ export function cycleCalender(timeObject: { start?: number; end?: number; time: 
 
 	dataToBeDisplayed.days = daysInOffsetMonth;
 
-	display(dataToBeDisplayed);
+	display(dataToBeDisplayed, style);
 }
 
-function display(data: CycleCalenderDataType) {
+function display(data: CycleCalenderDataType, style: string) {
 	let calenderBody = $('#day-cell-holder');
 
 	let spans = calenderBody.parent().find('.sub-header').find('.center').find('span');
@@ -66,28 +66,57 @@ function display(data: CycleCalenderDataType) {
 	spans[1].textContent = `${data.dateOfReference.getFullYear()}`;
 
 	calenderBody.html('');
-	calenderBody.append(`
-	<div class="row-of-days">
-		<div class="day no-border">Su</div>
-		<div class="day no-border">Mo</div>
-		<div class="day no-border">Tu</div>
-		<div class="day no-border">We</div>
-		<div class="day no-border">Th</div>
-		<div class="day no-border">Fr</div>
-		<div class="day no-border">Sa</div>
-	</div>`);
 
-	let currentRow = [];
-	for (let i = 0; i < data.days.length; i++) {
-		let dataToBeSent = {
-			timeSpentCoding: data.days[i].data['time'],
-			dateInSeconds: data.days[i].date,
-		};
+	let icons = $(`[data-type='calender']`).find(`[data-index='0']`).find('.header').find('.right').find('i');
 
-		currentRow[i % 7] = `<div data-data="${JSON.stringify(dataToBeSent).replace(/"/g, "'")}" class="day${data.days[i].isInRange ? '' : ' hide-item'}${data.days[i].isShadow ? ' shadow-item' : ''}" onclick="CalenderTools.openDay(this)"><span>${data.days[i].date.getDate()}</span></div>`;
+	if (style == 'day') {
+		$(icons[0]).removeClass('hide');
+		$(icons[1]).addClass('hide');
 
-		if (i % 7 == 6) {
-			calenderBody.append(`<div class="row-of-days">${currentRow.join('')}</div>`);
+		calenderBody.append(`
+		<div class="row-of-days">
+			<div class="day no-border">Su</div>
+			<div class="day no-border">Mo</div>
+			<div class="day no-border">Tu</div>
+			<div class="day no-border">We</div>
+			<div class="day no-border">Th</div>
+			<div class="day no-border">Fr</div>
+			<div class="day no-border">Sa</div>
+		</div>`);
+
+		let currentRow = [];
+		for (let i = 0; i < data.days.length; i++) {
+			let dataToBeSent = {
+				timeSpentCoding: data.days[i].data['total'],
+				dateInSeconds: data.days[i].date,
+			};
+
+			currentRow[i % 7] = `<div id="day-in-calender-${i}" data-data="${JSON.stringify(dataToBeSent).replace(/"/g, "'")}" class="day${data.days[i].isShadow ? ' shadow-item' : ''}${dataToBeSent.timeSpentCoding ? ' full' : ' empty'}" onclick="CalenderTools.openDay(this)"><span>${data.days[i].date.getDate()}</span></div>`;
+
+			if (i % 7 == 6) {
+				calenderBody.append(`<div class="row-of-days">${currentRow.join('')}</div>`);
+			}
+		}
+	} else if (style == 'week') {
+		$(icons[0]).addClass('hide');
+		$(icons[1]).removeClass('hide');
+
+		let currentRow = [];
+		let isCurrentRowEmpty = true;
+		for (let i = 0; i < data.days.length; i++) {
+			currentRow[i % 7] = {
+				date: data.days[i].date,
+				data: data.days[i].data,
+			};
+
+			if (JSON.stringify(data.days[i].data) !== '{}') {
+				isCurrentRowEmpty = false;
+			}
+
+			if (i % 7 == 6) {
+				calenderBody.append(`<div data-data="${JSON.stringify(currentRow).replace(/"/g, "'")}" class="row${isCurrentRowEmpty ? ' empty' : ''}" onclick="CalenderTools.displayWeekOnGraph(this)"><span>${data.days[i - 6].date.toDateString()} - ${data.days[i].date.toDateString()}</span></div>`);
+				isCurrentRowEmpty = true;
+			}
 		}
 	}
 

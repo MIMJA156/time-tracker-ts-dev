@@ -19,8 +19,6 @@ export function showDetailedDayView(element: any) {
 		from.addClass('hide');
 		too.removeClass('hide');
 
-		console.log(data);
-
 		too.find('#detailed-view-date-sub-header')
 			.find('.left')
 			.find('span')

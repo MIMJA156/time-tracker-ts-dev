@@ -48,12 +48,17 @@ export class ServerManager {
 		}
 	}
 
-	public signal(message: String | Object) {
+	public signal(message: String) {
 		if (!this.started) return;
-		if (typeof message == typeof {}) message = JSON.stringify(message);
+
+		let data = {};
+
+		if (message == 'UPDATE') {
+			data = this.getTimeDataForSending();
+		}
 
 		this.wss.clients.forEach((client) => {
-			client.send(message as string);
+			client.send(JSON.stringify(data));
 		});
 	}
 
@@ -61,13 +66,7 @@ export class ServerManager {
 		let wss = new WebSocketServer({ server: this.httpServer });
 
 		wss.on('connection', (socket: WebSocket) => {
-			let initialData = {
-				type: 'initial',
-				payload: {
-					time: this._storageUtils.getLocalStoredTime()['time'],
-				},
-			};
-			socket.send(JSON.stringify(initialData));
+			socket.send(JSON.stringify(this.getTimeDataForSending()));
 
 			socket.on('message', (sentData: RawData) => {
 				console.log(`Message ${new Date().toLocaleDateString()} -> ${sentData.toString()}`);
@@ -84,9 +83,30 @@ export class ServerManager {
 		expressApplicationInstance.use('/dashboard', express.static(path.join(__dirname, '/web/')));
 
 		expressApplicationInstance.get('/api/get/current-time-object', (req, res) => {
-			res.json(this._storageUtils.getLocalStoredTime());
+			res.json(this.getTimeDataForSending());
 		});
 
 		this.httpServer.on('request', expressApplicationInstance);
+	}
+
+	private getTimeDataForSending(): object {
+		let dataToSend = this._storageUtils.getLocalStoredTime();
+
+		let keysOfYear = Object.keys(dataToSend.time);
+		let keysOfMonth = Object.keys(dataToSend.time[keysOfYear[0]]);
+		let keysOfDay = Object.keys(dataToSend.time[keysOfYear[0]][keysOfMonth[0]]);
+
+		dataToSend['start'] = new Date(parseInt(keysOfYear[0]), parseInt(keysOfMonth[0]) - 1, parseInt(keysOfDay[0])).valueOf() / 1000;
+
+		let cleanToday = new Date();
+		cleanToday.setHours(0, 0, 0, 0);
+		dataToSend['end'] = Math.floor(cleanToday.valueOf() / 1000);
+
+		let initialData = {
+			type: 'update',
+			payload: dataToSend,
+		};
+
+		return initialData;
 	}
 }
