@@ -47,11 +47,21 @@
                 }
             }
 
-            &.out-of-range {
-                filter: blur();
+            &.shadow-item {
+                filter: brightness(.9);
+            }
 
-                @include drawLineAtDeg(#640500, -45deg, "after", 1);
-                @include drawLineAtDeg(#640500, 45deg, "before", 1);
+            &.hide-item {
+                cursor: default;
+                filter: none;
+
+                border: none;
+                width: 44px;
+                height: 44px;
+
+                >span {
+                    display: none;
+                }
             }
         }
     }

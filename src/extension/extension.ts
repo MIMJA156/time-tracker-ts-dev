@@ -10,7 +10,7 @@ let timeTracker: TimeTracker;
 
 export function activate(context: vscode.ExtensionContext) {
 	console.log('Hello World from Time Tracker!');
-	console.log('ps: Maple says hi');
+	// console.log('ps: Maple says hi');
 
 	const storageUtils = new StorageUtils(context);
 	const badgeUtils = new BadgeUtils(context);

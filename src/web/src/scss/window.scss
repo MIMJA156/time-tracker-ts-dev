@@ -89,6 +89,10 @@ div.window {
             grid-template-columns: 25% 50% 25%;
             font-size: 22px;
 
+            &.full {
+                grid-template-columns: 100%;
+            }
+
             i {
                 font-size: $icon-font-size;
                 margin-right: 15px;

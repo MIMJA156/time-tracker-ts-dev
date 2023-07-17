@@ -1,4 +1,4 @@
-import { cleanDate, getCleanDate } from '../../../extension/func/getCleanDate';
+import { cleanDate, getCleanDate } from './getCleanDate';
 import $ from 'jquery';
 
 type CycleCalenderDataType = {
@@ -12,11 +12,13 @@ type CycleCalenderDataType = {
 type Day = {
 	date: Date;
 	isInRange: boolean;
+	isShadow: boolean;
+	data: Object;
 };
 
 let month = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-export function cycleCalender(range: { s: Date; e: Date }, offset = 0) {
+export function cycleCalender(timeObject: { start?: number; end?: number; time: Object }, range: { s: Date; e: Date }, offset = 0) {
 	let offsetMonth: Date = getCleanDate();
 	offsetMonth.setMonth(offsetMonth.getMonth() + offset);
 
@@ -40,7 +42,15 @@ export function cycleCalender(range: { s: Date; e: Date }, offset = 0) {
 	let daysInOffsetMonth: Day[] = generateDaysForMonth(offsetMonth);
 
 	for (let day of daysInOffsetMonth) {
-		if (cleanDate(day.date) < range.s || cleanDate(day.date) > range.e) day.isInRange = false;
+		try {
+			if (cleanDate(day.date) < range.s || cleanDate(day.date) > range.e) {
+				day.isInRange = false;
+			}
+
+			if (timeObject.time[day.date.getFullYear()][day.date.getMonth() + 1][day.date.getDate()]) {
+				day.data = timeObject.time[day.date.getFullYear()][day.date.getMonth() + 1][day.date.getDate()];
+			}
+		} catch (error) {}
 	}
 
 	dataToBeDisplayed.days = daysInOffsetMonth;
@@ -69,7 +79,12 @@ function display(data: CycleCalenderDataType) {
 
 	let currentRow = [];
 	for (let i = 0; i < data.days.length; i++) {
-		currentRow[i % 7] = `<div class="day ${data.days[i].isInRange ? ' ' : 'out-of-range'}">${data.days[i].date.getDate()}</div>`;
+		let dataToBeSent = {
+			timeSpentCoding: data.days[i].data['time'],
+			dateInSeconds: data.days[i].date,
+		};
+
+		currentRow[i % 7] = `<div data-data="${JSON.stringify(dataToBeSent).replace(/"/g, "'")}" class="day${data.days[i].isInRange ? '' : ' hide-item'}${data.days[i].isShadow ? ' shadow-item' : ''}" onclick="CalenderTools.openDay(this)"><span>${data.days[i].date.getDate()}</span></div>`;
 
 		if (i % 7 == 6) {
 			calenderBody.append(`<div class="row-of-days">${currentRow.join('')}</div>`);
@@ -108,6 +123,8 @@ function generateDaysForMonth(month: Date): Day[] {
 		allDays.push({
 			date: daySpecificDate,
 			isInRange: true,
+			isShadow: true,
+			data: {},
 		});
 	}
 
@@ -119,6 +136,8 @@ function generateDaysForMonth(month: Date): Day[] {
 		allDays.push({
 			date: daySpecificDate,
 			isInRange: true,
+			isShadow: false,
+			data: {},
 		});
 	}
 
@@ -129,6 +148,8 @@ function generateDaysForMonth(month: Date): Day[] {
 		allDays.push({
 			date: daySpecificDate,
 			isInRange: true,
+			isShadow: true,
+			data: {},
 		});
 	}
 
