@@ -1,12 +1,14 @@
 import './scss/main.scss';
-import { cleanDate } from './ts/getCleanDate';
-import { cycleCalender } from './ts/calender';
-import { initiateAllWindows } from './ts/windows';
-import $ from 'jquery';
-import { showDetailedDayView } from './ts/calender-details';
-import { displayWeekDataOnGraph } from './ts/graph';
 
-export let currentTimeData = {
+import $ from 'jquery';
+import { cleanDate } from './ts/getCleanDate';
+import { cycleCalender, setWeekSelected } from './ts/calender';
+import { initiateAllWindows } from './ts/windows';
+import { displayWeekDataOnGraph } from './ts/graph';
+import { showDetailedDayView } from './ts/calender-details';
+import { processMessageUpdateData } from './ts/tools';
+
+let currentTimeData = {
 	start: 0,
 	end: 0,
 	time: {},
@@ -15,7 +17,7 @@ export let currentTimeData = {
 let start_range = cleanDate(new Date(currentTimeData.start * 1000));
 let end_range = cleanDate(new Date(currentTimeData.end * 1000));
 
-export let range = {
+let range = {
 	s: start_range,
 	e: end_range,
 };
@@ -24,13 +26,14 @@ class CalenderTools {
 	currentOffset: number;
 	hasDayOpen: string;
 	style: string;
+	currentSelectedWeek: { date: Date; data: { total: number } }[];
 
 	isWindowVisible: boolean;
 
 	constructor() {
 		this.currentOffset = 0;
 		this.hasDayOpen = undefined;
-		this.style = 'day';
+		this.style = 'week';
 		this.isWindowVisible = false;
 	}
 
@@ -42,6 +45,8 @@ class CalenderTools {
 		}
 
 		cycleCalender(currentTimeData, range, this.currentOffset, this.style);
+
+		setWeekSelected(this.currentSelectedWeek);
 	}
 
 	openDay(element: any) {
@@ -68,10 +73,29 @@ class CalenderTools {
 	changeStyle(style: string) {
 		this.style = style;
 		cycleCalender(currentTimeData, range, this.currentOffset, this.style);
+
+		setWeekSelected(this.currentSelectedWeek);
 	}
 
-	displayWeekOnGraph(element: any, isElement = true) {
+	weekSelected(element: any, isElement = true) {
+		if (isElement && element.classList.contains('empty')) return;
+
 		displayWeekDataOnGraph(element, isElement);
+
+		if (isElement) this.currentSelectedWeek = JSON.parse($(element).data('data').replace(/'/g, '"'));
+		if (!isElement) {
+			let processedData = processMessageUpdateData(element);
+
+			processedData.forEach((item, index) => {
+				processedData[index].date = JSON.stringify(item.date).replace(/"/g, '');
+			});
+
+			this.currentSelectedWeek = processedData;
+		}
+
+		console.log(this.currentSelectedWeek);
+
+		setWeekSelected(this.currentSelectedWeek);
 	}
 
 	toggle() {
@@ -113,6 +137,6 @@ ws.addEventListener('message', (event) => {
 
 		calenderTools.step(undefined);
 		calenderTools.updateCurrentOpenDay();
-		calenderTools.displayWeekOnGraph(currentTimeData, false);
+		calenderTools.weekSelected(currentTimeData, false);
 	}
 });

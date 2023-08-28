@@ -30,6 +30,10 @@
             filter: brightness(0.8);
         }
 
+        &.selected {
+            filter: brightness(0.6);
+        }
+
         cursor: pointer;
 
         >span {

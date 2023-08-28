@@ -1,5 +1,6 @@
-import { Chart, registerables } from 'chart.js';
 import $ from 'jquery';
+import { Chart, registerables } from 'chart.js';
+import { processMessageUpdateData } from './tools';
 
 let chart: Chart;
 let currentWeek: Date;
@@ -11,34 +12,15 @@ export function displayWeekDataOnGraph(element: any, isElement: boolean) {
 
 	if (isElement) {
 		givenData = JSON.parse($(element).data('data').replace(/'/g, '"'));
-
 		currentWeek = new Date(givenData[0].date);
 	} else {
-		let today = new Date();
-		today.setHours(0, 0, 0, 0);
-
-		let firstDayOfTheWeek = currentWeek ? currentWeek : new Date(today.setDate(today.getDate() - today.getDay()));
-
-		let processedData = [];
-		processedData.push({
-			date: new Date(firstDayOfTheWeek.setDate(firstDayOfTheWeek.getDate())),
-			data: element['time'][firstDayOfTheWeek.getFullYear()][firstDayOfTheWeek.getMonth() + 1][firstDayOfTheWeek.getDate()] ? element['time'][firstDayOfTheWeek.getFullYear()][firstDayOfTheWeek.getMonth() + 1][firstDayOfTheWeek.getDate()] : {},
-		});
-
-		for (let i = 0; i < 6; i++) {
-			processedData.push({
-				date: new Date(firstDayOfTheWeek.setDate(firstDayOfTheWeek.getDate() + 1)),
-				data: element['time'][firstDayOfTheWeek.getFullYear()][firstDayOfTheWeek.getMonth() + 1][firstDayOfTheWeek.getDate()] ? element['time'][firstDayOfTheWeek.getFullYear()][firstDayOfTheWeek.getMonth() + 1][firstDayOfTheWeek.getDate()] : {},
-			});
-		}
-
-		givenData = processedData;
+		givenData = processMessageUpdateData(element);
 	}
 
 	const ctx: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById('main-display');
 
 	if (chart) {
-		chart.data.datasets[0].data = givenData.map((day) => (day.data.total != undefined ? day.data.total : 0));
+		chart.data.datasets[0].data = givenData.map((day: { data: { total: any } }) => (day.data.total != undefined ? day.data.total : 0));
 		chart.update();
 		return;
 	}

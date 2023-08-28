@@ -1,5 +1,5 @@
+import $ from 'jquery';
 import { cleanDate, getCleanDate } from './getCleanDate';
-import $, { data } from 'jquery';
 
 type CycleCalenderDataType = {
 	dateOfReference: Date;
@@ -58,6 +58,28 @@ export function cycleCalender(timeObject: { start?: number; end?: number; time: 
 	display(dataToBeDisplayed, style);
 }
 
+export function setWeekSelected(week: any) {
+	if (week == undefined) return;
+
+	let calenderBody = $('#day-cell-holder');
+
+	calenderBody.children().each((item, week_) => {
+		try {
+			let parsedData = JSON.parse($(week_).data('data').replace(/'/g, '"'));
+
+			let isMatch = true;
+			parsedData.forEach((element: { date: Date }, key: number) => {
+				if (week[key].date != element.date) {
+					isMatch = false;
+				}
+			});
+
+			if (isMatch) week_.classList.add('selected');
+			if (!isMatch) week_.classList.remove('selected');
+		} catch (e) {}
+	});
+}
+
 function display(data: CycleCalenderDataType, style: string) {
 	let calenderBody = $('#day-cell-holder');
 
@@ -114,7 +136,7 @@ function display(data: CycleCalenderDataType, style: string) {
 			}
 
 			if (i % 7 == 6) {
-				calenderBody.append(`<div data-data="${JSON.stringify(currentRow).replace(/"/g, "'")}" class="row${isCurrentRowEmpty ? ' empty' : ''}" onclick="CalenderTools.displayWeekOnGraph(this)"><span>${data.days[i - 6].date.toDateString()} - ${data.days[i].date.toDateString()}</span></div>`);
+				calenderBody.append(`<div data-data="${JSON.stringify(currentRow).replace(/"/g, "'")}" class="row${isCurrentRowEmpty ? ' empty' : ''}" onclick="CalenderTools.weekSelected(this)"><span>${data.days[i - 6].date.toDateString()} - ${data.days[i].date.toDateString()}</span></div>`);
 				isCurrentRowEmpty = true;
 			}
 		}
