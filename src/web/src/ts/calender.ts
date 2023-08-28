@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import { cleanDate, getCleanDate } from './getCleanDate';
+import { cleanDate, getCleanDate } from './get-clean-date';
 
 type CycleCalenderDataType = {
 	dateOfReference: Date;
