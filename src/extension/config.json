@@ -1,17 +1,17 @@
 {
-	"file": {
-		"dir": "time-tracker-files",
-		"suffix": "mimja"
-	},
-	"server": {
-		"port": 3803
-	},
-	"github": {
-		"client_id": "32712de2a196c26292c3",
-		"client_secret": "a817e17cd9f27c3f1c14c21fa926ccc5bea2fe09",
-		"hosts": {
-			"authorize": "https://github.com/login/oauth/authorize",
-			"access_token": "https://github.com/login/oauth/access_token"
-		}
-	}
+    "file": {
+        "dir": "time-tracker-files",
+        "suffix": "mimja"
+    },
+    "server": {
+        "port": 7000
+    },
+    "github": {
+        "client_id": "32712de2a196c26292c3",
+        "client_secret": "a817e17cd9f27c3f1c14c21fa926ccc5bea2fe09",
+        "hosts": {
+            "authorize": "https://github.com/login/oauth/authorize",
+            "access_token": "https://github.com/login/oauth/access_token"
+        }
+    }
 }

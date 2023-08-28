@@ -1,79 +1,79 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Time Tracker GUI</title>
-	</head>
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Time Tracker GUI</title>
+    </head>
 
-	<body>
-		<main>
-			<div class="window-bar top items-1">
-				<div class="right">
-					<i class="fa-solid fa-calendar right clickable" onclick="CalenderTools.toggle()"></i>
-				</div>
-			</div>
-			<div>
-				<canvas id="main-display"></canvas>
-			</div>
-			<div class="window-bar bottom"></div>
-		</main>
+    <body>
+        <main>
+            <div class="window-bar top items-1">
+                <div class="right">
+                    <i class="fa-solid fa-calendar right clickable" onclick="CalenderTools.toggle()"></i>
+                </div>
+            </div>
+            <div>
+                <canvas id="main-display"></canvas>
+            </div>
+            <div class="window-bar bottom"></div>
+        </main>
 
-		<section>
-			<div class="window moveable-window hide" data-type="calender">
-				<div data-index="0">
-					<div class="header">
-						<div class="left">
-							<span>Selection Calendar</span>
-						</div>
-						<div class="right">
-							<i class="fa-solid fa-calendar-week" onclick="CalenderTools.changeStyle('week')"></i>
-							<i class="fa-solid fa-calendar-days hide" onclick="CalenderTools.changeStyle('day')"></i>
-							<i class="fa-solid fa-compress" onclick="CalenderTools.toggle()"></i>
-						</div>
-					</div>
-					<div class="sub-header">
-						<div class="left">
-							<i class="fa-solid fa-chevron-left disabled" onclick="CalenderTools.step(-1)"></i>
-						</div>
-						<div class="center">
-							<span>Null</span>
-							<div class="spacer"></div>
-							<span>Null</span>
-						</div>
-						<div class="right">
-							<i class="fa-solid fa-chevron-right disabled" onclick="CalenderTools.step(1)"></i>
-						</div>
-					</div>
-					<div class="body" id="day-cell-holder"></div>
-				</div>
+        <section>
+            <div class="window moveable-window hide" data-type="calender">
+                <div data-index="0">
+                    <div class="header">
+                        <div class="left">
+                            <span>Selection Calendar</span>
+                        </div>
+                        <div class="right">
+                            <i class="fa-solid fa-calendar-week" onclick="CalenderTools.changeStyle('week')"></i>
+                            <i class="fa-solid fa-calendar-days hide" onclick="CalenderTools.changeStyle('day')"></i>
+                            <i class="fa-solid fa-compress" onclick="CalenderTools.toggle()"></i>
+                        </div>
+                    </div>
+                    <div class="sub-header">
+                        <div class="left">
+                            <i class="fa-solid fa-chevron-left disabled" onclick="CalenderTools.step(-1)"></i>
+                        </div>
+                        <div class="center">
+                            <span>Null</span>
+                            <div class="spacer"></div>
+                            <span>Null</span>
+                        </div>
+                        <div class="right">
+                            <i class="fa-solid fa-chevron-right disabled" onclick="CalenderTools.step(1)"></i>
+                        </div>
+                    </div>
+                    <div class="body" id="day-cell-holder"></div>
+                </div>
 
-				<div class="hide" data-index="1">
-					<div class="header">
-						<div class="left">
-							<span>Detailed View</span>
-						</div>
-						<div class="right">
-							<i class="fa-solid fa-chevron-left space-right" onmousedown="CalenderTools.closeDay()"></i>
-							<i class="fa-solid fa-compress"></i>
-						</div>
-					</div>
-					<div id="detailed-view-date-sub-header" class="sub-header full">
-						<div class="left">
-							<span class="indent"></span>
-						</div>
-					</div>
-					<div id="detailed-view-total-time-spent-sub-header" class="sub-header full">
-						<div class="left">
-							<span class="indent"></span>
-						</div>
-					</div>
-					<div class="body">(More Details are coming soon...)</div>
-				</div>
-			</div>
-		</section>
-	</body>
+                <div class="hide" data-index="1">
+                    <div class="header">
+                        <div class="left">
+                            <span>Detailed View</span>
+                        </div>
+                        <div class="right">
+                            <i class="fa-solid fa-chevron-left space-right" onmousedown="CalenderTools.closeDay()"></i>
+                            <i class="fa-solid fa-compress"></i>
+                        </div>
+                    </div>
+                    <div id="detailed-view-date-sub-header" class="sub-header full">
+                        <div class="left">
+                            <span class="indent"></span>
+                        </div>
+                    </div>
+                    <div id="detailed-view-total-time-spent-sub-header" class="sub-header full">
+                        <div class="left">
+                            <span class="indent"></span>
+                        </div>
+                    </div>
+                    <div class="body">(More Details are coming soon...)</div>
+                </div>
+            </div>
+        </section>
+    </body>
 
-	<script type="module" src="./src/main.ts"></script>
+    <script type="module" src="./src/main.ts"></script>
 </html>

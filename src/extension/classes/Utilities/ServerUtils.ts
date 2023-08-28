@@ -7,106 +7,103 @@ import path from 'path';
 import cors from 'cors';
 
 export class ServerManager {
-	private started: boolean;
-	private _port: Number;
-	private httpServer: Server;
-	private connections: Set<Socket>;
-	private _storageUtils: StorageUtils;
+    private readonly _port: Number;
+    private readonly httpServer: Server;
+    private readonly connections: Set<Socket>;
 
-	private wss: WebSocketServer;
+    private started: boolean;
+    private _storageUtils: StorageUtils;
 
-	constructor(port: Number, storageUtils: StorageUtils) {
-		this._port = port;
-		this.connections = new Set();
-		this._storageUtils = storageUtils;
+    private wss: WebSocketServer;
 
-		this.httpServer = createServer();
-		this.addExpressServerProperties();
-		this.addWebSocketProperties();
+    constructor(port: Number, storageUtils: StorageUtils) {
+        this._port = port;
+        this.connections = new Set();
 
-		this.httpServer.on('connection', (socket) => {
-			this.connections.add(socket);
+        this.httpServer = createServer();
+        this.addExpressServerProperties();
+        this.addWebSocketProperties();
 
-			socket.once('close', () => {
-				this.connections.delete(socket);
-			});
-		});
-	}
+        this._storageUtils = storageUtils;
 
-	public start() {
-		this.started = true;
-		this.httpServer.listen(this._port);
-	}
+        this.httpServer.on('connection', (socket) => {
+            this.connections.add(socket);
 
-	public stop() {
-		this.started = false;
-		this.httpServer.close();
+            socket.once('close', () => {
+                this.connections.delete(socket);
+            });
+        });
+    }
 
-		for (const socket of this.connections) {
-			socket.destroy();
-			this.connections.delete(socket);
-		}
-	}
+    public start() {
+        this.started = true;
+        this.httpServer.listen(this._port);
+    }
 
-	public signal(message: String) {
-		if (!this.started) return;
+    public stop() {
+        this.started = false;
+        this.httpServer.close();
 
-		let data = {};
+        for (const socket of this.connections) {
+            socket.destroy();
+            this.connections.delete(socket);
+        }
+    }
 
-		if (message == 'UPDATE') {
-			data = this.getTimeDataForSending();
-		}
+    public signal(message: String) {
+        if (!this.started) return;
 
-		this.wss.clients.forEach((client) => {
-			client.send(JSON.stringify(data));
-		});
-	}
+        let data = {};
 
-	private addWebSocketProperties() {
-		let wss = new WebSocketServer({ server: this.httpServer });
+        if (message == 'UPDATE') {
+            data = this.getTimeDataForSending();
+        }
 
-		wss.on('connection', (socket: WebSocket) => {
-			socket.send(JSON.stringify(this.getTimeDataForSending()));
+        this.wss.clients.forEach((client) => {
+            client.send(JSON.stringify(data));
+        });
+    }
 
-			socket.on('message', (sentData: RawData) => {
-				console.log(`Message ${new Date().toLocaleDateString()} -> ${sentData.toString()}`);
-			});
-		});
+    private addWebSocketProperties() {
+        let wss = new WebSocketServer({ server: this.httpServer });
 
-		this.wss = wss;
-	}
+        wss.on('connection', (socket: WebSocket) => {
+            socket.send(JSON.stringify(this.getTimeDataForSending()));
 
-	private addExpressServerProperties() {
-		let expressApplicationInstance = express();
+            socket.on('message', (sentData: RawData) => {
+                console.log(`Message ${new Date().toLocaleDateString()} -> ${sentData.toString()}`);
+            });
+        });
 
-		expressApplicationInstance.use(cors());
-		expressApplicationInstance.use('/dashboard', express.static(path.join(__dirname, '/web/')));
+        this.wss = wss;
+    }
 
-		expressApplicationInstance.get('/api/get/current-time-object', (req, res) => {
-			res.json(this.getTimeDataForSending());
-		});
+    private addExpressServerProperties() {
+        let expressApplicationInstance = express();
 
-		this.httpServer.on('request', expressApplicationInstance);
-	}
+        expressApplicationInstance.use(cors());
+        expressApplicationInstance.use('/dashboard', express.static(path.join(__dirname, '/web/')));
 
-	private getTimeDataForSending(): object {
-		let dataToSend = this._storageUtils.getLocalStoredTime();
+        expressApplicationInstance.get('/api/get/current-time-object', (req, res) => {
+            res.json(this.getTimeDataForSending());
+        });
 
-		let keysOfYear = Object.keys(dataToSend.time);
-		let keysOfMonth = Object.keys(dataToSend.time[keysOfYear[0]]);
-		let keysOfDay = Object.keys(dataToSend.time[keysOfYear[0]][keysOfMonth[0]]);
+        this.httpServer.on('request', expressApplicationInstance);
+    }
 
-		dataToSend['start'] = new Date(parseInt(keysOfYear[0]), parseInt(keysOfMonth[0]) - 1, parseInt(keysOfDay[0])).valueOf() / 1000;
+    private getTimeDataForSending(): object {
+        let dataToSend = this._storageUtils.getLocalStoredTime();
 
-		let cleanToday = new Date();
-		cleanToday.setHours(0, 0, 0, 0);
-		dataToSend['end'] = Math.floor(cleanToday.valueOf() / 1000);
+        let keysOfYear = Object.keys(dataToSend.time);
+        let keysOfMonth = Object.keys(dataToSend.time[keysOfYear[0]]);
+        let keysOfDay = Object.keys(dataToSend.time[keysOfYear[0]][keysOfMonth[0]]);
 
-		let initialData = {
-			type: 'update',
-			payload: dataToSend,
-		};
+        dataToSend['start'] = new Date(parseInt(keysOfYear[0]), parseInt(keysOfMonth[0]) - 1, parseInt(keysOfDay[0])).valueOf() / 1000;
 
-		return initialData;
-	}
+        let cleanToday = new Date();
+        cleanToday.setHours(0, 0, 0, 0);
+        dataToSend['end'] = Math.floor(cleanToday.valueOf() / 1000);
+
+        return { type: 'update', payload: dataToSend };
+    }
 }
