@@ -9,23 +9,23 @@ import { ServerManager } from './classes/Utilities/ServerUtils';
 let timeTracker: TimeTracker;
 
 export function activate(context: vscode.ExtensionContext) {
-	console.log('Hello World from Time Tracker!');
-	console.log('ps: Maple says hi');
+    console.log('Hello World from Time Tracker!');
+    // console.log('ps: Maple says hi');
 
-	const storageUtils = new StorageUtils(context);
-	const badgeUtils = new BadgeUtils(context);
-	const serverManager = new ServerManager(config.server.port, storageUtils);
+    const storageUtils = new StorageUtils(context);
+    const badgeUtils = new BadgeUtils(context);
+    const serverManager = new ServerManager(config.server.port, storageUtils);
 
-	timeTracker = new TimeTracker({
-		sampleRate: SecondsToMilliseconds(1),
-		badgeUtils,
-		storageUtils,
-		serverManager,
-	});
+    timeTracker = new TimeTracker({
+        sampleRate: SecondsToMilliseconds(1),
+        badgeUtils,
+        storageUtils,
+        serverManager,
+    });
 
-	timeTracker.start();
+    timeTracker.start();
 }
 
 export function deactivate() {
-	timeTracker.stop();
+    timeTracker.stop();
 }

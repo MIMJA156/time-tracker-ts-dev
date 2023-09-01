@@ -17,9 +17,9 @@ Simply download the extension from the marketplace and enjoy!
 
 There are a few main features to consider:
 
-- Cloud Storage for global time using gists
-- Web GUI
-- Basic Settings
+-   Cloud Storage for global time using gists
+-   Web GUI
+-   Basic Settings
 
 #### Cloud Storage
 
@@ -34,6 +34,6 @@ This will open a new tab in the browser and display the GUI.
 
 There are a few basic settings you can configure at the moment in VSCode,
 
-- Badge Priority
-- Badge Position
-- Badge Icon
+-   Badge Priority
+-   Badge Position
+-   Badge Icon

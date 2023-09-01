@@ -7,14 +7,48 @@
         justify-content: start;
     }
 
-    >div.row-of-days {
+    > div.row {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+
+        height: 40px;
+        width: 54px * 7;
+        margin-top: 15px;
+        border: 2px solid black;
+        border-radius: 5px;
+
+        transition: 0.2s;
+        background-color: $window-bar-background-color;
+
+        &.empty {
+            text-decoration-line: line-through;
+        }
+
+        &:hover {
+            filter: brightness(0.8);
+        }
+
+        &.selected {
+            filter: brightness(0.6);
+        }
+
+        cursor: pointer;
+
+        > span {
+            font-size: 23px;
+        }
+    }
+
+    > div.row-of-days {
         display: flex;
         flex-direction: row;
         margin-top: 10px;
 
-        >div.day {
+        > div.day {
             cursor: pointer;
-            font-size: 18px;
+            font-size: 22px;
 
             margin: 0 5px 0 5px;
 
@@ -28,8 +62,8 @@
             border: 2px solid black;
             border-radius: 5px;
 
-            transition: .3s;
-            background-color: $nav-bars-background-color;
+            transition: 0.2s;
+            background-color: $window-bar-background-color;
 
             &:hover {
                 filter: brightness(0.8);
@@ -47,38 +81,34 @@
                 }
             }
 
-            &.yes-data {
+            &.empty {
+                text-decoration-line: line-through;
+            }
+
+            &.full {
                 font-weight: bolder;
             }
 
-            &.no-data {
-                filter: brightness(.8);
-                cursor: auto;
-
-                @include drawLineAtDeg(#FF1205, -45deg, "after", .8);
-                @include drawLineAtDeg(#FF1205, 45deg, "before", .8);
+            &.shadow-item {
+                filter: brightness(0.9);
             }
 
-            &.grey-out {
-                filter: brightness(0.6);
+            &.hide-item {
+                cursor: default;
+                filter: none;
 
-                &.h:hover {
-                    filter: brightness(0.8);
+                border: none;
+                width: 44px;
+                height: 44px;
+
+                > span {
+                    display: none;
                 }
-            }
-
-            &.not-available {
-                filter: brightness(0.4);
-                cursor: auto;
-                background-color: $nav-bars-background-color;
-
-                @include drawLineAtDeg(#FF1205, -45deg, "after", 1);
-                @include drawLineAtDeg(#FF1205, 45deg, "before", 1);
             }
         }
     }
 
-    >div.day-breakdown-title {
+    > div.day-breakdown-title {
         height: 70px;
         width: 100%;
 
@@ -89,12 +119,12 @@
 
         border-bottom: 2px solid black;
 
-        >span.header {
+        > span.header {
             font-size: 22px;
             text-indent: 15px;
         }
 
-        >span.sub-header {
+        > span.sub-header {
             font-size: 16px;
             text-indent: 15px;
         }
@@ -102,9 +132,9 @@
 }
 
 @mixin drawLineAtDeg($color, $angle, $on, $filter) {
-    @if $on =="after" {
+    @if $on == 'after' {
         &::after {
-            content: "";
+            content: '';
             z-index: 1;
             position: absolute;
             filter: brightness($filter);
@@ -120,9 +150,9 @@
         }
     }
 
-    @if $on =="before" {
+    @if $on == 'before' {
         &::before {
-            content: "";
+            content: '';
             z-index: 1;
             position: absolute;
             filter: brightness($filter);
