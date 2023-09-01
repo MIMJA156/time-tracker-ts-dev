@@ -40,6 +40,8 @@ export class CalenderTools {
         cycleCalender(this.currentTimeData, this.range, this.currentOffset, this.style);
         setWeekSelected(this.currentSelectedWeek);
         this.graph.displayWeekFromWeekArray(processMessageUpdateData(data, this.currentSelectedWeek ? new Date(this.currentSelectedWeek[0].date) : undefined));
+
+        $('#selected-week-title').text(this.currentSelectedWeek[0].date.toDateString() + ' / ' + this.currentSelectedWeek[6].date.toDateString());
     }
 
     step(step: number) {
@@ -87,6 +89,8 @@ export class CalenderTools {
         });
         setWeekSelected(this.currentSelectedWeek);
         this.graph.displayWeekFromWeekArray(this.currentSelectedWeek);
+
+        $('#selected-week-title').text(this.currentSelectedWeek[0].date.toDateString() + ' / ' + this.currentSelectedWeek[6].date.toDateString());
     }
 
     toggle() {

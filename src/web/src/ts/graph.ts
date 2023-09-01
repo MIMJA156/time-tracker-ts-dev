@@ -4,7 +4,7 @@ export class WeekGraphManager {
     ctx: HTMLCanvasElement;
     chart: Chart;
 
-    thisWeek: { date: Date; data: number[] } = { date: null, data: null };
+    thisWeekSimple: { date: Date; data: number[] } = { date: null, data: null };
 
     constructor(id: string) {
         Chart.register(...registerables);
@@ -68,14 +68,14 @@ export class WeekGraphManager {
         });
     }
 
-    displayWeekFromWeekArray(weekArray: object[]) {
-        this.thisWeek.data = [];
-        weekArray.forEach((element: { date: Date; data: { total: number } }, index) => {
-            if (index == 0) this.thisWeek.date = element.date;
-            this.thisWeek.data.push(element.data.total ?? 0);
+    displayWeekFromWeekArray(weekArray: { date: Date; data: { total: number } }[]) {
+        this.thisWeekSimple.data = [];
+        weekArray.forEach((element, index) => {
+            if (index == 0) this.thisWeekSimple.date = element.date;
+            this.thisWeekSimple.data.push(element.data.total ?? 0);
         });
 
-        this.chart.data.datasets[0].data = [...this.thisWeek.data];
+        this.chart.data.datasets[0].data = [...this.thisWeekSimple.data];
         this.chart.update();
     }
 

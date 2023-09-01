@@ -79,8 +79,6 @@ export function setWeekSelected(week: any) {
                 }
             });
 
-            console.log(isMatch);
-
             if (isMatch) week_.classList.add('selected');
             if (!isMatch) week_.classList.remove('selected');
         } catch (e) {}
