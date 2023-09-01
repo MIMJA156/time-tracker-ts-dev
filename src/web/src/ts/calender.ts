@@ -65,14 +65,21 @@ export function setWeekSelected(week: any) {
 
     calenderBody.children().each((item, week_) => {
         try {
-            let parsedData = JSON.parse($(week_).data('data').replace(/'/g, '"'));
+            let parsedData = JSON.parse($(week_).data('data').replace(/'/g, '"')).map((item: { date: string | number | Date; data: any }) => {
+                return {
+                    date: new Date(item.date),
+                    data: item.data,
+                };
+            });
 
             let isMatch = true;
             parsedData.forEach((element: { date: Date }, key: number) => {
-                if (week[key].date != element.date) {
+                if (week[key].date.toString() != element.date.toString()) {
                     isMatch = false;
                 }
             });
+
+            console.log(isMatch);
 
             if (isMatch) week_.classList.add('selected');
             if (!isMatch) week_.classList.remove('selected');

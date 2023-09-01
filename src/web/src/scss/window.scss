@@ -16,12 +16,12 @@ div.window {
         width: 400px;
         height: 500px;
 
-        > div > div.body {
+        >div>div.body {
             @include calender-body();
         }
     }
 
-    > div {
+    >div {
         display: flex;
         flex-flow: column;
         width: 100%;
@@ -39,13 +39,13 @@ div.window {
             transform: scale(0.8);
         }
 
-        > div.header {
+        >div.header {
             cursor: move;
 
             flex: 0 1 $moveable-window-header-height;
             border-bottom: 2px solid black;
 
-            display: grid;
+            display: flex;
             grid-template-columns: 60% 40%;
             font-size: 22px;
 
@@ -56,35 +56,35 @@ div.window {
                 cursor: pointer;
             }
 
-            > div.left,
-            > div.right {
+            >div.left,
+            >div.right {
                 width: 100%;
                 display: flex;
                 align-items: center;
 
-                > span {
+                >span {
                     text-indent: 15px;
                 }
 
-                > i.space-right {
+                >i.space-right {
                     padding-right: 10px;
                 }
             }
 
-            > div.left {
+            >div.left {
                 justify-content: flex-start;
             }
 
-            > div.right {
+            >div.right {
                 justify-content: flex-end;
             }
         }
 
-        > div.sub-header {
+        >div.sub-header {
             flex: 0 1 $moveable-window-header-height;
             border-bottom: 2px solid black;
 
-            display: grid;
+            display: flex;
             grid-template-columns: 25% 50% 25%;
             font-size: 22px;
 
@@ -104,37 +104,37 @@ div.window {
                 cursor: pointer;
             }
 
-            > div.left,
-            > div.right,
-            > div.center {
+            >div.left,
+            >div.right,
+            >div.center {
                 width: 100%;
                 display: flex;
                 align-items: center;
                 justify-content: center;
 
-                > span.indent {
+                >span.indent {
                     text-indent: 15px;
                 }
             }
 
-            > div.center {
-                > div.spacer {
+            >div.center {
+                >div.spacer {
                     width: 10px;
                     min-width: 10px;
                     background-color: black;
                 }
             }
 
-            > div.left {
+            >div.left {
                 justify-content: flex-start;
             }
 
-            > div.right {
+            >div.right {
                 justify-content: flex-end;
             }
         }
 
-        > div.body {
+        >div.body {
             flex: 1 1 auto;
         }
     }

@@ -1,8 +1,8 @@
-import { cycleCalender, setWeekSelected } from './calender';
-import { showDetailedDayView } from './calender-details';
-import { displayWeekDataOnGraph } from './graph';
-import { processMessageUpdateData } from './tools';
 import $ from 'jquery';
+import { WeekGraphManager } from './graph';
+import { processMessageUpdateData } from './tools';
+import { showDetailedDayView } from './calender-details';
+import { cycleCalender, setWeekSelected } from './calender';
 
 export class CalenderTools {
     currentOffset: number;
@@ -15,7 +15,9 @@ export class CalenderTools {
     currentTimeData: { start: number; end: number; time: Object };
     range: { s: Date; e: Date };
 
-    constructor(range: { s: Date; e: Date }, data: { start: number; end: number; time: Object }) {
+    graph: WeekGraphManager;
+
+    constructor(range: { s: Date; e: Date }, data: { start: number; end: number; time: Object }, graph: WeekGraphManager) {
         this.currentOffset = 0;
         this.hasDayOpen = undefined;
         this.style = 'week';
@@ -23,22 +25,26 @@ export class CalenderTools {
 
         this.range = range;
         this.currentTimeData = data;
+
+        this.graph = graph;
+
+        this.currentSelectedWeek = processMessageUpdateData(data, this.currentSelectedWeek ? new Date(this.currentSelectedWeek[0].date) : undefined).map((item) => {
+            return { date: item.date, data: { total: item.total } };
+        });
     }
 
     update(range: { s: Date; e: Date }, data: { start: number; end: number; time: Object }) {
         this.range = range;
         this.currentTimeData = data;
+
+        cycleCalender(this.currentTimeData, this.range, this.currentOffset, this.style);
+        setWeekSelected(this.currentSelectedWeek);
+        this.graph.displayWeekFromWeekArray(processMessageUpdateData(data, this.currentSelectedWeek ? new Date(this.currentSelectedWeek[0].date) : undefined));
     }
 
     step(step: number) {
-        if (step != undefined) {
-            this.currentOffset += step;
-        } else {
-            step = this.currentOffset;
-        }
-
+        this.currentOffset += step;
         cycleCalender(this.currentTimeData, this.range, this.currentOffset, this.style);
-
         setWeekSelected(this.currentSelectedWeek);
     }
 
@@ -71,23 +77,16 @@ export class CalenderTools {
         setWeekSelected(this.currentSelectedWeek);
     }
 
-    weekSelected(element: any, isElement = true) {
-        if (isElement && element.classList.contains('empty')) return;
-
-        displayWeekDataOnGraph(element, isElement);
-
-        if (isElement) this.currentSelectedWeek = JSON.parse($(element).data('data').replace(/'/g, '"'));
-        if (!isElement) {
-            let processedData = processMessageUpdateData(element);
-
-            processedData.forEach((item, index) => {
-                processedData[index].date = JSON.stringify(item.date).replace(/"/g, '');
-            });
-
-            this.currentSelectedWeek = processedData;
-        }
-
+    weekSelected(element: any) {
+        if (!element.classList || element.classList.contains('empty')) return;
+        this.currentSelectedWeek = JSON.parse($(element).data('data').replace(/'/g, '"')).map((item: any) => {
+            return {
+                date: new Date(item.date),
+                data: item.data,
+            };
+        });
         setWeekSelected(this.currentSelectedWeek);
+        this.graph.displayWeekFromWeekArray(this.currentSelectedWeek);
     }
 
     toggle() {

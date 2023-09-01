@@ -3,6 +3,7 @@ import './scss/main.scss';
 import { cleanDate } from './ts/get-clean-date';
 import { initiateAllWindows } from './ts/windows';
 import { CalenderTools } from './ts/calender-tools';
+import { WeekGraphManager } from './ts/graph';
 
 let currentTimeData = {
     start: 0,
@@ -24,7 +25,8 @@ initiateAllWindows();
 
 console.log('Hello World!');
 
-let calenderTools = new CalenderTools(range, currentTimeData);
+let graph = new WeekGraphManager('main-display');
+let calenderTools = new CalenderTools(range, currentTimeData, graph);
 
 //@ts-ignore
 window.CalenderTools = calenderTools;
@@ -46,9 +48,6 @@ ws.addEventListener('message', (event) => {
         };
 
         calenderTools.update(range, currentTimeData);
-
-        calenderTools.step(undefined);
         calenderTools.updateCurrentOpenDay();
-        calenderTools.weekSelected(currentTimeData, false);
     }
 });
