@@ -1,4 +1,5 @@
 @import './window-mixins/calender-mixin.scss';
+@import './window-mixins/settings-mixin.scss';
 
 div.window {
     position: absolute;
@@ -18,6 +19,15 @@ div.window {
 
         >div>div.body {
             @include calender-body();
+        }
+    }
+
+    &[data-type='settings'] {
+        width: 400px;
+        height: 500px;
+
+        >div>div.body {
+            @include settings-body();
         }
     }
 

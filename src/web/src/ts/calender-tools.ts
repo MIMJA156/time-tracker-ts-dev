@@ -95,6 +95,7 @@ export class CalenderTools {
 
     toggle() {
         let calender = $(`[data-type='calender']`);
+
         if (this.isWindowVisible) {
             calender.addClass('hide');
         } else {

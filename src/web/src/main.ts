@@ -4,6 +4,7 @@ import { cleanDate } from './ts/get-clean-date';
 import { initiateAllWindows } from './ts/windows';
 import { CalenderTools } from './ts/calender-tools';
 import { WeekGraphManager } from './ts/graph';
+import SettingsTools from './ts/setting-tools';
 
 let currentTimeData = {
     start: 0,
@@ -26,10 +27,14 @@ initiateAllWindows();
 console.log('Hello World!');
 
 let graph = new WeekGraphManager('main-display');
-let calenderTools = new CalenderTools(range, currentTimeData, graph);
 
+let calenderTools = new CalenderTools(range, currentTimeData, graph);
 //@ts-ignore
 window.CalenderTools = calenderTools;
+
+let settingsTools = new SettingsTools();
+//@ts-ignore
+window.SettingsTools = settingsTools;
 
 let ws = new WebSocket(`ws://localhost:${port}`);
 
