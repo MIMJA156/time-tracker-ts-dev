@@ -5,11 +5,9 @@ export class SettingsManager {
     settings: object;
 
     private _storageUtils: StorageUtils;
-    private _serverUtils: ServerManager;
 
-    constructor(storageUtils: StorageUtils, serverManager: ServerManager) {
+    constructor(storageUtils: StorageUtils) {
         this._storageUtils = storageUtils;
-        this._serverUtils = serverManager;
 
         if (!this.load()) {
             this.settings = {
@@ -26,7 +24,6 @@ export class SettingsManager {
 
     save() {
         this._storageUtils.setLocalStoredSettings(this.settings);
-        this._serverUtils.signal('SETTINGS');
     }
 
     load(): boolean {
@@ -51,4 +48,8 @@ export class SettingsManager {
     }
 
     read(path: string) {}
+
+    handler(data: any, parent: ServerManager) {
+        console.log('Hello World!');
+    }
 }

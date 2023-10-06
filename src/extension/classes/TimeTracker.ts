@@ -18,7 +18,7 @@ export class TimeTracker {
     storageUtils: StorageUtils;
     serverManager: ServerManager;
 
-    constructor({ sampleRate, storageUtils, badgeUtils, serverManager, settingsManager }: { sampleRate: number; storageUtils: StorageUtils; badgeUtils: BadgeUtils; serverManager: ServerManager; settingsManager: SettingsManager }) {
+    constructor({ sampleRate, storageUtils, badgeUtils, serverManager }: { sampleRate: number; storageUtils: StorageUtils; badgeUtils: BadgeUtils; serverManager: ServerManager }) {
         let savedInformation = this.sanitize(storageUtils.getLocalStoredTime());
 
         let currentDate = new Date();

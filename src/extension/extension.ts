@@ -14,16 +14,17 @@ export function activate(context: vscode.ExtensionContext) {
     // console.log('ps: Maple says hi');
 
     const storageUtils = new StorageUtils(context);
+    const settingsManager = new SettingsManager(storageUtils);
     const badgeUtils = new BadgeUtils(context);
     const serverManager = new ServerManager(config.server.port, storageUtils);
-    const settingsManager = new SettingsManager(storageUtils, serverManager);
+
+    serverManager.addMessageCallback('settings', (data: any, parent: ServerManager) => settingsManager.handler(data, parent));
 
     timeTracker = new TimeTracker({
         sampleRate: SecondsToMilliseconds(1),
         badgeUtils,
         storageUtils,
         serverManager,
-        settingsManager,
     });
 
     timeTracker.start();

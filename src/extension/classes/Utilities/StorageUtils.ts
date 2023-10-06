@@ -48,7 +48,7 @@ export class StorageUtils {
             writeFileSync(`${this._user_path}${this.settingsFileName}`, '{}');
         }
 
-        let fileData = JSON.parse(readFileSync(`${this._user_path}${this.settingsFileName}`, 'utf-8'));
+        let fileData = readFileSync(`${this._user_path}${this.settingsFileName}`, 'utf-8');
         if (fileData) {
             return JSON.parse(fileData);
         } else {

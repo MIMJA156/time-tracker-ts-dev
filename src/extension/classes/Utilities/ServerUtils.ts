@@ -10,6 +10,7 @@ export class ServerManager {
     private readonly _port: Number;
     private readonly httpServer: Server;
     private readonly connections: Set<Socket>;
+    private readonly messageCallbacks: Map<string, Function>;
 
     private started: boolean;
     private _storageUtils: StorageUtils;
@@ -19,6 +20,7 @@ export class ServerManager {
     constructor(port: Number, storageUtils: StorageUtils) {
         this._port = port;
         this.connections = new Set();
+        this.messageCallbacks = new Map();
 
         this.httpServer = createServer();
         this.addExpressServerProperties();
@@ -68,6 +70,10 @@ export class ServerManager {
         });
     }
 
+    public addMessageCallback(message: string, callback: Function) {
+        this.messageCallbacks.set(message, callback);
+    }
+
     private addWebSocketProperties() {
         let wss = new WebSocketServer({ server: this.httpServer });
 
@@ -77,6 +83,16 @@ export class ServerManager {
 
             socket.on('message', (sentData: RawData) => {
                 console.log(`Message ${new Date().toLocaleDateString()} -> ${sentData.toString()}`);
+
+                try {
+                    let jsonMessage = JSON.parse(sentData.toString());
+                    if (jsonMessage.type) {
+                        if (this.messageCallbacks.has(jsonMessage.type)) {
+                            let func = this.messageCallbacks.get(jsonMessage.type);
+                            func(jsonMessage, this);
+                        }
+                    }
+                } catch (e) {}
             });
         });
 

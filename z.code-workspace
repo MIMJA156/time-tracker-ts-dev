@@ -8,6 +8,9 @@
         },
         {
             "path": "src/extension"
+        },
+        {
+            "path": "../../../AppData/Roaming/Code/User"
         }
     ],
     "settings": {
