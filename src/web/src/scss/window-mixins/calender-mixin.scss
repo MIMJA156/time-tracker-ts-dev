@@ -7,7 +7,7 @@
         justify-content: start;
     }
 
-    > div.row {
+    >div.row {
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -36,17 +36,17 @@
 
         cursor: pointer;
 
-        > span {
+        >span {
             font-size: 23px;
         }
     }
 
-    > div.row-of-days {
+    >div.row-of-days {
         display: flex;
         flex-direction: row;
         margin-top: 10px;
 
-        > div.day {
+        >div.day {
             cursor: pointer;
             font-size: 22px;
 
@@ -101,14 +101,14 @@
                 width: 44px;
                 height: 44px;
 
-                > span {
+                >span {
                     display: none;
                 }
             }
         }
     }
 
-    > div.day-breakdown-title {
+    >div.day-breakdown-title {
         height: 70px;
         width: 100%;
 
@@ -119,12 +119,12 @@
 
         border-bottom: 2px solid black;
 
-        > span.header {
+        >span.header {
             font-size: 22px;
             text-indent: 15px;
         }
 
-        > span.sub-header {
+        >span.sub-header {
             font-size: 16px;
             text-indent: 15px;
         }
@@ -132,7 +132,7 @@
 }
 
 @mixin drawLineAtDeg($color, $angle, $on, $filter) {
-    @if $on == 'after' {
+    @if $on =='after' {
         &::after {
             content: '';
             z-index: 1;
@@ -150,7 +150,7 @@
         }
     }
 
-    @if $on == 'before' {
+    @if $on =='before' {
         &::before {
             content: '';
             z-index: 1;

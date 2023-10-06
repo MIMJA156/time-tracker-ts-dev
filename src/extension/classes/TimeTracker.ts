@@ -5,9 +5,10 @@ import { BadgeUtils } from './Utilities/BadgeUtils';
 import { StorageUtils } from './Utilities/StorageUtils';
 import { ServerManager } from './Utilities/ServerUtils';
 import { MillisecondsToSeconds, SecondsToHoursMinutesSeconds, MinutesToMilliseconds } from '../func/timeConverters';
+import { SettingsManager } from './Utilities/SettingsUtils';
 
 export class TimeTracker {
-    timeInterval: NodeJS.Timer;
+    timeInterval: NodeJS.Timeout;
 
     totalTime: number;
     sampleRate: number;
@@ -17,7 +18,7 @@ export class TimeTracker {
     storageUtils: StorageUtils;
     serverManager: ServerManager;
 
-    constructor({ sampleRate, storageUtils, badgeUtils, serverManager }: { sampleRate: number; storageUtils: StorageUtils; badgeUtils: BadgeUtils; serverManager: ServerManager }) {
+    constructor({ sampleRate, storageUtils, badgeUtils, serverManager, settingsManager }: { sampleRate: number; storageUtils: StorageUtils; badgeUtils: BadgeUtils; serverManager: ServerManager; settingsManager: SettingsManager }) {
         let savedInformation = this.sanitize(storageUtils.getLocalStoredTime());
 
         let currentDate = new Date();
@@ -76,7 +77,7 @@ export class TimeTracker {
 
             this.totalTime += MillisecondsToSeconds(this.sampleRate);
 
-            if (this.totalTime % MillisecondsToSeconds(MinutesToMilliseconds(1)) === 0) {
+            if (this.totalTime % 60 === 0) {
                 dayData.total = this.totalTime;
                 this.save();
 

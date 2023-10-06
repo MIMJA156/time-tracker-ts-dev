@@ -5,6 +5,7 @@ import { BadgeUtils } from './classes/Utilities/BadgeUtils';
 import { StorageUtils } from './classes/Utilities/StorageUtils';
 import { SecondsToMilliseconds } from './func/timeConverters';
 import { ServerManager } from './classes/Utilities/ServerUtils';
+import { SettingsManager } from './classes/Utilities/SettingsUtils';
 
 let timeTracker: TimeTracker;
 
@@ -15,12 +16,14 @@ export function activate(context: vscode.ExtensionContext) {
     const storageUtils = new StorageUtils(context);
     const badgeUtils = new BadgeUtils(context);
     const serverManager = new ServerManager(config.server.port, storageUtils);
+    const settingsManager = new SettingsManager(storageUtils, serverManager);
 
     timeTracker = new TimeTracker({
         sampleRate: SecondsToMilliseconds(1),
         badgeUtils,
         storageUtils,
         serverManager,
+        settingsManager,
     });
 
     timeTracker.start();

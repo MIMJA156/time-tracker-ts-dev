@@ -1,25 +1,18 @@
 {
-	"folders": [
-		{
-			"path": "../time-tracker-ts-dev"
-		},
-		{
-			"path": "src/web"
-		},
-		{
-			"path": "src/extension"
-		},
-		{
-			"path": "C:\\Users\\mimja\\AppData\\Roaming\\Code\\User"
-		}
-	],
-	"settings": {
-		"typescript.tsc.autoDetect": "off",
-		"cSpell.words": [
-			"esbuild",
-			"outfile",
-			"Plex"
-		],
-		"liveServer.settings.multiRootWorkspaceName": "time-tracker-ts-dev"
-	}
+    "folders": [
+        {
+            "path": "../time-tracker-ts-dev"
+        },
+        {
+            "path": "src/web"
+        },
+        {
+            "path": "src/extension"
+        }
+    ],
+    "settings": {
+        "typescript.tsc.autoDetect": "off",
+        "cSpell.words": ["esbuild", "outfile", "Plex"],
+        "liveServer.settings.multiRootWorkspaceName": "time-tracker-ts-dev"
+    }
 }

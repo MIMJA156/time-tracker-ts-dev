@@ -50,13 +50,17 @@ export class ServerManager {
         }
     }
 
-    public signal(message: String) {
+    public signal(message: 'UPDATE' | 'SETTINGS') {
         if (!this.started) return;
 
         let data = {};
 
         if (message == 'UPDATE') {
             data = this.getTimeDataForSending();
+        }
+
+        if (message == 'SETTINGS') {
+            data = this.getSettingsDataForSending();
         }
 
         this.wss.clients.forEach((client) => {
@@ -69,6 +73,7 @@ export class ServerManager {
 
         wss.on('connection', (socket: WebSocket) => {
             socket.send(JSON.stringify(this.getTimeDataForSending()));
+            socket.send(JSON.stringify(this.getSettingsDataForSending()));
 
             socket.on('message', (sentData: RawData) => {
                 console.log(`Message ${new Date().toLocaleDateString()} -> ${sentData.toString()}`);
@@ -88,6 +93,10 @@ export class ServerManager {
             res.json(this.getTimeDataForSending());
         });
 
+        expressApplicationInstance.get('/api/get/current-settings-object', (req, res) => {
+            res.json(this.getSettingsDataForSending());
+        });
+
         this.httpServer.on('request', expressApplicationInstance);
     }
 
@@ -105,5 +114,10 @@ export class ServerManager {
         dataToSend['end'] = Math.floor(cleanToday.valueOf() / 1000);
 
         return { type: 'update', payload: dataToSend };
+    }
+
+    private getSettingsDataForSending(): object {
+        let dataToSend = this._storageUtils.getLocalStoredSettings();
+        return { type: 'settings', payload: dataToSend };
     }
 }
