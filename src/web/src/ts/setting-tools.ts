@@ -16,7 +16,7 @@ export default class SettingsTools {
         this.currentSettings = settings;
 
         displaySettings(this.currentSettings);
-        evalSettings(this.currentSettings, graph, calender);
+        evalSettings(null, this.currentSettings, graph, calender);
 
         this.weekGraph = graph;
         this.timeCalender = calender;
@@ -40,6 +40,6 @@ export default class SettingsTools {
         let element = $(givenElement);
         let data: { settingIndex: number } = JSON.parse(JSON.stringify(element.data()));
         this.currentSettings[data.settingIndex].current = element.val();
-        evalSettings(this.currentSettings, this.weekGraph, this.timeCalender);
+        evalSettings(data.settingIndex, this.currentSettings, this.weekGraph, this.timeCalender);
     }
 }

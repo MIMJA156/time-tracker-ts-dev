@@ -8,10 +8,20 @@ import SettingsTools from './ts/setting-tools';
 
 let settingsSkeleton = [
     {
-        id: 'graph_color_settings',
+        id: 'graph_type_setting',
+        type: 'select',
+        title: 'Graph Type',
+        current: 'bar',
+        items: [
+            { name: 'Bar', value: 'bar' },
+            { name: 'Line', value: 'line' },
+        ],
+    },
+    {
+        id: 'graph_color_setting',
         type: 'select',
         title: 'Graph Color',
-        current: 'purple',
+        current: 'red',
         items: [
             { name: 'Red', value: 'red' },
             { name: 'Blue', value: 'blue' },

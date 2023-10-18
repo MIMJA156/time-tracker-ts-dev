@@ -11,7 +11,8 @@ function getSelectionListSettingsPage(index: number, name: string, current: stri
             if (item.value == current) {
                 isSelected = true;
             }
-            html += `<option selected=${isSelected} value="${item.value}">${item.name}</option>`;
+            console.log(item.value);
+            html += `<option ${isSelected ? 'selected' : ''} value="${item.value}">${item.name}</option>`;
         }
 
         return html;
@@ -53,13 +54,34 @@ export function displaySettings(settings: any[]) {
     settingsBody.html(pageHTML);
 }
 
-export function evalSettings(settings: any[], graph: WeekGraphManager, calender: CalenderTools) {
+export function evalSettings(index: number | null, settings: any[], graph: WeekGraphManager, calender: CalenderTools) {
+    // if (index != null) {
+    //     let setting = settings[index];
+
+    //     switch (setting.id) {
+    //         case 'graph_color_setting':
+    //             graph.setColors(setting.current);
+    //             break;
+
+    //         case 'graph_type_setting':
+    //             graph.setType(setting.current);
+    //             break;
+
+    //         default:
+    //             break;
+    //     }
+    // }
+
     for (let i = 0; i < settings.length; i++) {
         let setting = settings[i];
 
         switch (setting.id) {
-            case 'graph_color_settings':
+            case 'graph_color_setting':
                 graph.setColors(setting.current);
+                break;
+
+            case 'graph_type_setting':
+                graph.setType(setting.current);
                 break;
 
             default:
