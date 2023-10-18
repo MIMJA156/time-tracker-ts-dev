@@ -4,6 +4,8 @@ export class WeekGraphManager {
     ctx: HTMLCanvasElement;
     chart: Chart;
 
+    chartColors: [];
+
     thisWeekSimple: { date: Date; data: number[] } = { date: null, data: null };
 
     constructor(id: string) {
@@ -93,5 +95,11 @@ export class WeekGraphManager {
         }
 
         return `${hours} ${hourSuffix} & ${minutes} ${minuteSuffix}`;
+    }
+
+    setColors(colors: []) {
+        console.log(colors);
+        this.chart.data.datasets[0].backgroundColor = colors;
+        this.chart.update();
     }
 }

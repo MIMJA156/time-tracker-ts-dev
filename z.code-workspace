@@ -10,6 +10,7 @@
             "path": "src/extension"
         },
         {
+            "name": "User - Windows",
             "path": "../../../AppData/Roaming/Code/User"
         }
     ],

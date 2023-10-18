@@ -6,6 +6,22 @@ import { CalenderTools } from './ts/calender-tools';
 import { WeekGraphManager } from './ts/graph';
 import SettingsTools from './ts/setting-tools';
 
+let settingsSkeleton = [
+    {
+        id: 'graph_color_settings',
+        type: 'select',
+        title: 'Graph Color',
+        current: 'purple',
+        items: [
+            { name: 'Red', value: 'red' },
+            { name: 'Blue', value: 'blue' },
+            { name: 'Green', value: 'green' },
+            { name: 'Orange', value: 'orange' },
+            { name: 'Purple', value: 'purple' },
+        ],
+    },
+];
+
 let currentTimeData = {
     start: 0,
     end: 0,
@@ -27,12 +43,12 @@ initiateAllWindows();
 console.log('Hello World!');
 
 let graph = new WeekGraphManager('main-display');
-
 let calenderTools = new CalenderTools(range, currentTimeData, graph);
+let settingsTools = new SettingsTools(settingsSkeleton, graph, calenderTools);
+
 //@ts-ignore
 window.CalenderTools = calenderTools;
 
-let settingsTools = new SettingsTools();
 //@ts-ignore
 window.SettingsTools = settingsTools;
 

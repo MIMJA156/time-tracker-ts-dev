@@ -52,7 +52,7 @@ div.window {
         >div.header {
             cursor: move;
 
-            flex: 0 1 $moveable-window-header-height;
+            flex: 0 0 $moveable-window-header-height;
             border-bottom: 2px solid black;
 
             display: flex;
@@ -91,7 +91,7 @@ div.window {
         }
 
         >div.sub-header {
-            flex: 0 1 $moveable-window-header-height;
+            flex: 0 0 $moveable-window-header-height;
             border-bottom: 2px solid black;
 
             display: flex;
