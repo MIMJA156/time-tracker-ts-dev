@@ -1,4 +1,4 @@
-import { Chart, registerables } from 'chart.js';
+import { Chart, Color, registerables } from 'chart.js';
 
 export class WeekGraphManager {
     ctx: HTMLCanvasElement;
@@ -44,7 +44,7 @@ export class WeekGraphManager {
         return `${hours} ${hourSuffix} & ${minutes} ${minuteSuffix}`;
     }
 
-    setColors(colors: []) {
+    setColors(colors: Color) {
         this.chart.data.datasets[0].backgroundColor = colors;
         this.chart.update();
     }
