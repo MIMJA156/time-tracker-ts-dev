@@ -8,26 +8,41 @@ import SettingsTools from './ts/setting-tools';
 
 let settingsSkeleton = [
     {
-        id: 'graph_type_setting',
-        type: 'select',
-        title: 'Graph Type',
-        current: 'bar',
+        id: 'main_page',
+        type: 'page',
+        title: 'Main Page',
+        actions: ['toggle'],
+        isDefault: true,
         items: [
-            { name: 'Bar', value: 'bar' },
-            { name: 'Line', value: 'line' },
-        ],
-    },
-    {
-        id: 'graph_color_setting',
-        type: 'select',
-        title: 'Graph Color',
-        current: 'red',
-        items: [
-            { name: 'Red', value: 'red' },
-            { name: 'Blue', value: 'blue' },
-            { name: 'Green', value: 'green' },
-            { name: 'Orange', value: 'orange' },
-            { name: 'Purple', value: 'purple' },
+            {
+                id: 'graph_type_setting',
+                type: 'select',
+                title: 'Graph Type',
+                current: 'bar',
+                items: [
+                    { name: 'Bar', value: 'bar' },
+                    { name: 'Line', value: 'line' },
+                ],
+            },
+            {
+                id: 'graph_color_setting',
+                type: 'select',
+                title: 'Graph Color',
+                current: 'red',
+                items: [
+                    { name: 'Red', value: 'red' },
+                    { name: 'Blue', value: 'blue' },
+                    { name: 'Green', value: 'green' },
+                    { name: 'Orange', value: 'orange' },
+                    { name: 'Purple', value: 'purple' },
+                ],
+            },
+            {
+                id: 'inner_main_page',
+                type: 'page',
+                title: 'Inner Main Page',
+                items: [{ type: 'text', title: 'ooga booga', detail: 'unga bunga' }],
+            },
         ],
     },
 ];
