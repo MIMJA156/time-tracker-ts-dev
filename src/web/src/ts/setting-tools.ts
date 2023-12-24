@@ -11,7 +11,7 @@ export default class SettingsTools {
     weekGraph: WeekGraphManager;
     timeCalender: CalenderTools;
 
-    constructor(settings: any[], graph: WeekGraphManager, calender: CalenderTools) {
+    constructor(settings: any, graph: WeekGraphManager, calender: CalenderTools) {
         this.isWindowVisible = false;
         this.currentSettings = settings;
 
@@ -34,16 +34,15 @@ export default class SettingsTools {
         this.isWindowVisible = !this.isWindowVisible;
     }
 
-    update() {}
+    move(to: string, from: string) {
+        displaySettings(this.currentSettings, to, from);
+        evalSettings(to, null, this.currentSettings, this.weekGraph, this.timeCalender);
+    }
 
     changed(givenElement: HTMLElement) {
         let setting = $(givenElement);
         let settingData: { settingIndex: number; settingPage: string } = JSON.parse(JSON.stringify(setting.data()));
-
-        this.currentSettings.filter((value, index, array) => {
-            if (value.id === settingData.settingPage) return true;
-        })[0].items[settingData.settingIndex].current = setting.val();
-
+        this.currentSettings[settingData.settingPage].items[settingData.settingIndex].current = setting.val();
         evalSettings(settingData.settingPage, settingData.settingIndex, this.currentSettings, this.weekGraph, this.timeCalender);
     }
 }

@@ -3,11 +3,11 @@ import { WeekGraphManager } from './graph';
 import { CalenderTools } from './calender-tools';
 
 const actionsHtml = {
-    back: '<i class="fa-solid fa-chevron-left space-right"></i>',
-    toggle: '<i class="fa-solid fa-compress" onclick="SettingsTools.toggle()"></i>',
+    back: (id) => `<i class="fa-solid fa-chevron-left space-right" onclick="SettingsTools.move('${id}')"></i>`,
+    toggle: (id) => `<i class="fa-solid fa-compress" onclick="SettingsTools.toggle()"></i>`,
 };
 
-function getSelectionListSettingsPage(index: number, page: string, name: string, current: string, options: { value: string; name: string }[]): string {
+function getSelectionListSettingCell(index: number, page: string, name: string, current: string, options: { value: string; name: string }[]): string {
     function renderOptions(): string {
         let html = '';
 
@@ -34,7 +34,7 @@ function getSelectionListSettingsPage(index: number, page: string, name: string,
     `;
 }
 
-function getColorSelectionSettingsPage(title: string, current: string) {
+function getColorSelectionSettingCell(title: string, current: string) {
     return `
     <div class="item">
         <span class="title">${title}</span>
@@ -42,28 +42,29 @@ function getColorSelectionSettingsPage(title: string, current: string) {
     `;
 }
 
-export function displaySettings(settings: any[], pageId: string | null = null) {
-    if (pageId === null) {
-        for (let i = 0; i < settings.length; i++) {
-            const element = settings[i];
-            if (element.type === 'page' && element.isDefault) {
-                pageId = element.id;
-                break;
+function getNavigationSettingItem(title: string, id: string, from: string) {
+    return `
+    <div class="item">
+        <span class="title">${title}</span>
+        <div class="content">
+            <i class="fa-solid fa-chevron-right" onclick="SettingsTools.move('${id}', '${from}')"></i>
+        </div>
+    </div>
+    `;
+}
+
+export function displaySettings(settings: any, page: string | null = null, parent: string | null = null) {
+    if (page === null) {
+        let keys = Object.keys(settings);
+        keys.forEach((key) => {
+            if (settings[key].isDefault) {
+                page = settings[key].id;
             }
-        }
+        });
     }
 
-    let pageToRender: any;
-
-    for (let i = 0; i < settings.length; i++) {
-        const element = settings[i];
-        if (element.type === 'page' && element.id === pageId) {
-            pageToRender = element;
-            break;
-        }
-    }
-
-    if (pageToRender === null) throw Error('Bad Settings!');
+    let pageToRender = settings[page];
+    if (pageToRender === null || pageToRender === undefined) throw Error('Bad Settings!');
 
     let settingsHeaderTitle = $(`[data-type='settings']`).find(`[data-index='0']`).find('.header').find('.left').find('span');
     let settingsHeaderActions = $(`[data-type='settings']`).find(`[data-index='0']`).find('.header').find('.right');
@@ -71,7 +72,7 @@ export function displaySettings(settings: any[], pageId: string | null = null) {
     let renderedActionsHtml = '';
     for (let i = 0; i < pageToRender.actions.length; i++) {
         const element = pageToRender.actions[i];
-        renderedActionsHtml += actionsHtml[element];
+        renderedActionsHtml += actionsHtml[element](parent);
     }
 
     settingsHeaderTitle.html(pageToRender.title);
@@ -83,12 +84,16 @@ export function displaySettings(settings: any[], pageId: string | null = null) {
         let setting = pageToRender.items[i];
 
         switch (setting.type) {
+            case 'navigation':
+                innerSettingsHTML += getNavigationSettingItem(setting.title, setting.destination, page);
+                break;
+
             case 'color':
-                innerSettingsHTML += getColorSelectionSettingsPage(setting.title, setting.current);
+                innerSettingsHTML += getColorSelectionSettingCell(setting.title, setting.current);
                 break;
 
             case 'select':
-                innerSettingsHTML += getSelectionListSettingsPage(i, pageId, setting.title, setting.current, setting.items);
+                innerSettingsHTML += getSelectionListSettingCell(i, page, setting.title, setting.current, setting.items);
                 break;
 
             case 'text':
@@ -105,20 +110,17 @@ export function displaySettings(settings: any[], pageId: string | null = null) {
     $('#settings-holder').html(innerSettingsHTML);
 }
 
-export function evalSettings(page: string, index: number, settings: any[], graph: WeekGraphManager, calender: CalenderTools) {
-    if (page === null) {
-        for (let i = 0; i < settings.length; i++) {
-            const element = settings[i];
-            if (element.type === 'page' && element.isDefault) {
-                page = element.id;
-                break;
+export function evalSettings(pageId: string, index: number, settings: any, graph: WeekGraphManager, calender: CalenderTools) {
+    if (pageId === null) {
+        let keys = Object.keys(settings);
+        keys.forEach((key) => {
+            if (settings[key].isDefault) {
+                pageId = settings[key].id;
             }
-        }
+        });
     }
 
-    let pageSettings = settings.filter((value) => {
-        if (value.id === page) return true;
-    })[0];
+    let pageSettings = settings[pageId];
 
     for (let i = 0; i < pageSettings.items.length; i++) {
         let setting = pageSettings.items[i];

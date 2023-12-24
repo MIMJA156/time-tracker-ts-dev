@@ -6,10 +6,10 @@ import { CalenderTools } from './ts/calender-tools';
 import { WeekGraphManager } from './ts/graph';
 import SettingsTools from './ts/setting-tools';
 
-let settingsSkeleton = [
-    {
+// currently only one level of settings page navigation is supported
+let settingsSkeleton = {
+    main_page: {
         id: 'main_page',
-        type: 'page',
         title: 'Main Page',
         actions: ['toggle'],
         isDefault: true,
@@ -38,14 +38,20 @@ let settingsSkeleton = [
                 ],
             },
             {
-                id: 'inner_main_page',
-                type: 'page',
+                type: 'navigation',
                 title: 'Inner Main Page',
-                items: [{ type: 'text', title: 'ooga booga', detail: 'unga bunga' }],
+                destination: 'inner_main_page',
             },
         ],
     },
-];
+
+    inner_main_page: {
+        id: 'inner_main_page',
+        title: 'Inner Main Page',
+        actions: ['back', 'toggle'],
+        items: [{ type: 'text', title: 'ooga booga', detail: 'unga bunga' }],
+    },
+};
 
 let currentTimeData = {
     start: 0,
