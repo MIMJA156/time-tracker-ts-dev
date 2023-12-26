@@ -22,9 +22,9 @@
                 <canvas id="main-display"></canvas>
             </div>
             <div class="window-bar bottom">
-                <!-- <div class="left">
+                <div class="left">
                     <i class="fa-solid fa-cog left clickable" onclick="SettingsTools.toggle()"></i>
-                </div> -->
+                </div>
             </div>
         </main>
 
@@ -83,17 +83,17 @@
         </section>
 
         <section>
-            <div class="window moveable-window hide" data-type="settings">
+            <div class="window moveable-window" data-type="settings">
                 <div data-index="0">
                     <div class="header">
-                        <div class="left">
+                        <div class="left" id="settings-title">
                             <span>Settings</span>
                         </div>
-                        <div class="right">
+                        <div class="right" id="settings-actions">
                             <i class="fa-solid fa-compress" onclick="SettingsTools.toggle()"></i>
                         </div>
                     </div>
-                    <div class="body" id="settings-holder">Settings coming soon...</div>
+                    <div class="body" id="settings-holder">nothing here? that's a bug!</div>
                 </div>
             </div>
         </section>
