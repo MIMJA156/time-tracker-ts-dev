@@ -5,7 +5,7 @@ export class WeekGraphManager {
     chart: Chart;
 
     id: string;
-    chartColors: [];
+    chartColors: string[];
     chartType: 'bar' | 'line';
 
     thisWeekSimple: { date: Date; data: number[] } = { date: null, data: null };
@@ -14,6 +14,7 @@ export class WeekGraphManager {
         Chart.register(...registerables);
         this.id = id;
         this.chartType = 'bar';
+        this.chartColors = ['', '', '', '', '', '', ''];
         this.makeChart();
     }
 
@@ -44,8 +45,9 @@ export class WeekGraphManager {
         return `${hours} ${hourSuffix} & ${minutes} ${minuteSuffix}`;
     }
 
-    setColors(colors: Color) {
+    setColors(colors: string[]) {
         this.chart.data.datasets[0].backgroundColor = colors;
+        this.chartColors = colors;
         this.chart.update();
     }
 
@@ -66,6 +68,8 @@ export class WeekGraphManager {
                     {
                         label: 'Time Spent',
                         data: [],
+                        backgroundColor: this.chartColors,
+                        borderColor: 'black',
                         borderWidth: 1,
                         pointRadius: 10,
                         pointHoverRadius: 15,

@@ -11,12 +11,87 @@ export class SettingsManager {
 
         if (!this.load()) {
             this.settings = {
-                general: {
-                    message: 'Hello World!',
-                    graph_color: {
-                        type: 'CHOICE',
-                        choices: ['RED', 'GREEN', 'BLUE'],
-                    },
+                primary_settings_page: {
+                    isPrimary: true,
+                    actions: ['toggle'],
+                    items: [
+                        {
+                            type: 'navigation',
+                            title: 'Graph',
+                            destination: 'graph_general_page',
+                        },
+                    ],
+                },
+
+                graph_general_page: {
+                    title: 'Graph',
+                    actions: ['back', 'toggle'],
+                    items: [
+                        {
+                            id: 'graph_type_selector',
+                            type: 'dropdown',
+                            title: 'Type',
+                            current: 'bar',
+                            options: [
+                                { name: 'Bar', value: 'bar' },
+                                { name: 'Line', value: 'line' },
+                            ],
+                        },
+                        {
+                            type: 'navigation',
+                            title: 'Colors',
+                            destination: 'graph_color_page',
+                        },
+                    ],
+                },
+
+                graph_color_page: {
+                    title: 'Colors',
+                    actions: ['back', 'toggle'],
+                    items: [
+                        {
+                            id: 'graph_sunday_color',
+                            type: 'color',
+                            title: 'Sunday',
+                            current: '#9400D3',
+                        },
+                        {
+                            id: 'graph_monday_color',
+                            type: 'color',
+                            title: 'Monday',
+                            current: '#4B0082',
+                        },
+                        {
+                            id: 'graph_tuesday_color',
+                            type: 'color',
+                            title: 'Tuesday',
+                            current: '#0000FF',
+                        },
+                        {
+                            id: 'graph_wednesday_color',
+                            type: 'color',
+                            title: 'Wednesday',
+                            current: '#00FF00',
+                        },
+                        {
+                            id: 'graph_thursday_color',
+                            type: 'color',
+                            title: 'Thursday',
+                            current: '#FFFF00',
+                        },
+                        {
+                            id: 'graph_friday_color',
+                            type: 'color',
+                            title: 'Friday',
+                            current: '#FF7F00',
+                        },
+                        {
+                            id: 'graph_saturday_color',
+                            type: 'color',
+                            title: 'Saturday',
+                            current: '#FF0000',
+                        },
+                    ],
                 },
             };
         }
@@ -28,7 +103,7 @@ export class SettingsManager {
 
     load(): boolean {
         let data = this._storageUtils.getLocalStoredSettings();
-        if (data.EMPTY) return false;
+        if (data.EMPTY === true) return false;
 
         this.settings = data;
         return true;
@@ -47,9 +122,25 @@ export class SettingsManager {
         console.log(currentDepth);
     }
 
-    read(path: string) {}
-
     handler(data: any, parent: ServerManager) {
-        console.log('Hello World!');
+        let pageId = data.payload.page;
+        let setting = data.payload.setting;
+
+        let page = this.settings[pageId];
+        if (page == null) return console.warn('bad page');
+
+        for (let item of page.items) {
+            if (item.id === setting.id) {
+                item.current = setting.current;
+                break;
+            }
+        }
+
+        parent.signal('SETTINGS');
+        this.save();
+    }
+
+    get() {
+        return this.settings;
     }
 }

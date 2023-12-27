@@ -36,7 +36,7 @@ export class Badge {
 
     private _alignment: vscode.StatusBarAlignment;
     private _priority: number;
-    private readonly  _text: string;
+    private readonly _text: string;
     private readonly _tooltip: string;
     private readonly _icon: string;
     private readonly command: string;
