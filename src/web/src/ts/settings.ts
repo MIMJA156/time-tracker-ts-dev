@@ -74,6 +74,7 @@ export function renderSettingsCells(settings: any, pageId: string) {
     let actionsHtml = '';
 
     if (page.title != null) $('#settings-title').html(`<span>${page.title}</span>`);
+    else $('#settings-title').html(`<span>Settings</span>`);
 
     for (let action of page.actions) {
         switch (action) {

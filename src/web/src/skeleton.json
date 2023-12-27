@@ -4,6 +4,18 @@
         "actions": ["toggle"],
         "items": [
             {
+                "type": "navigation",
+                "title": "Graph",
+                "destination": "graph_general_page"
+            }
+        ]
+    },
+
+    "graph_general_page": {
+        "title": "Graph",
+        "actions": ["back", "toggle"],
+        "items": [
+            {
                 "id": "graph_type_selector",
                 "type": "dropdown",
                 "title": "Type",

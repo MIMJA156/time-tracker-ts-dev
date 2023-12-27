@@ -68,6 +68,7 @@ export class WeekGraphManager {
                     {
                         label: 'Time Spent',
                         data: [],
+                        backgroundColor: this.chartColors,
                         borderColor: 'black',
                         borderWidth: 1,
                         pointRadius: 10,
