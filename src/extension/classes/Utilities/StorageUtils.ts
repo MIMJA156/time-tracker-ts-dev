@@ -49,7 +49,7 @@ export class StorageUtils {
         }
 
         let fileData = readFileSync(`${this._user_path}${this.settingsFileName}`, 'utf-8');
-        if (fileData) {
+        if (fileData && fileData != '{}') {
             return JSON.parse(fileData);
         } else {
             return { EMPTY: true };

@@ -139,6 +139,13 @@ function doColorUpdateOnIndex(position: number, setting: any, graph: WeekGraphMa
     graph.setColors(colors);
 }
 
+/* temp */
+export function evaluateSetting2(setting: any, element: HTMLElement) {
+    let val = $(element).val() as string;
+    setting.current = val;
+}
+/* temp */
+
 // I need a better solution for this 😢
 export function evaluateSetting(setting: any, element: HTMLElement, calender: CalenderTools, graph: WeekGraphManager) {
     switch (setting.id) {

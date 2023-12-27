@@ -4,8 +4,7 @@ import * as vscode from 'vscode';
 import { BadgeUtils } from './Utilities/BadgeUtils';
 import { StorageUtils } from './Utilities/StorageUtils';
 import { ServerManager } from './Utilities/ServerUtils';
-import { MillisecondsToSeconds, SecondsToHoursMinutesSeconds, MinutesToMilliseconds } from '../func/timeConverters';
-import { SettingsManager } from './Utilities/SettingsUtils';
+import { MillisecondsToSeconds, SecondsToHoursMinutesSeconds } from '../func/timeConverters';
 
 export class TimeTracker {
     timeInterval: NodeJS.Timeout;

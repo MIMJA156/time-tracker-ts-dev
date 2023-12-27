@@ -5,6 +5,7 @@ import express from 'express';
 import { Socket } from 'net';
 import path from 'path';
 import cors from 'cors';
+import { SettingsManager } from './SettingsUtils';
 
 export class ServerManager {
     private readonly _port: Number;
@@ -14,10 +15,11 @@ export class ServerManager {
 
     private started: boolean;
     private _storageUtils: StorageUtils;
+    private _settingsUtils: SettingsManager;
 
     private wss: WebSocketServer;
 
-    constructor(port: Number, storageUtils: StorageUtils) {
+    constructor(port: Number, storageUtils: StorageUtils, settingsUtils: SettingsManager) {
         this._port = port;
         this.connections = new Set();
         this.messageCallbacks = new Map();
@@ -27,6 +29,7 @@ export class ServerManager {
         this.addWebSocketProperties();
 
         this._storageUtils = storageUtils;
+        this._settingsUtils = settingsUtils;
 
         this.httpServer.on('connection', (socket) => {
             this.connections.add(socket);
@@ -133,7 +136,7 @@ export class ServerManager {
     }
 
     private getSettingsDataForSending(): object {
-        let dataToSend = this._storageUtils.getLocalStoredSettings();
+        let dataToSend = this._settingsUtils.get();
         return { type: 'settings', payload: dataToSend };
     }
 }

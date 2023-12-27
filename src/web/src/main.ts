@@ -6,7 +6,7 @@ import { CalenderTools } from './ts/calender-tools';
 import { WeekGraphManager } from './ts/graph';
 import { SettingsTools } from './ts/settings-tools';
 
-import skeletonSettings from './skeleton.json';
+let currentSettingsData = {};
 
 let currentTimeData = {
     start: 0,
@@ -28,17 +28,17 @@ initiateAllWindows();
 
 console.log('Hello World!');
 
+let ws = new WebSocket(`ws://localhost:${port}`);
+
 let graph = new WeekGraphManager('main-display');
 let calenderTools = new CalenderTools(range, currentTimeData, graph);
-let settingsTools = new SettingsTools(skeletonSettings, calenderTools, graph);
+let settingsTools = new SettingsTools({}, calenderTools, graph, ws);
 
 //@ts-ignore
 window.CalenderTools = calenderTools;
 
 //@ts-ignore
 window.SettingsTools = settingsTools;
-
-let ws = new WebSocket(`ws://localhost:${port}`);
 
 ws.addEventListener('message', (event) => {
     let messageData = JSON.parse(event.data);
@@ -56,5 +56,10 @@ ws.addEventListener('message', (event) => {
 
         calenderTools.update(range, currentTimeData);
         calenderTools.updateCurrentOpenDay();
+    }
+
+    if (messageData.type == 'settings') {
+        currentSettingsData = messageData.payload;
+        settingsTools.update(currentSettingsData);
     }
 });
