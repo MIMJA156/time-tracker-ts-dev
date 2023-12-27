@@ -124,14 +124,6 @@ export function renderSettingsCells(settings: any, pageId: string) {
     $('#settings-holder').html(pageHtml);
 }
 
-function doColorEvaluationOnIndex(position: number, setting: any, element: HTMLElement, graph: WeekGraphManager) {
-    let val = $(element).val() as string;
-    let colors = graph.chartColors;
-    setting.current = val;
-    colors[position] = val;
-    graph.setColors(colors);
-}
-
 function doColorUpdateOnIndex(position: number, setting: any, graph: WeekGraphManager) {
     let val = setting.current;
     let colors = graph.chartColors;
@@ -139,61 +131,20 @@ function doColorUpdateOnIndex(position: number, setting: any, graph: WeekGraphMa
     graph.setColors(colors);
 }
 
-/* temp */
-export function evaluateSetting2(setting: any, element: HTMLElement) {
+export function evaluateSetting(setting: any, element: HTMLElement) {
     let val = $(element).val() as string;
     setting.current = val;
 }
-/* temp */
 
-// I need a better solution for this 😢
-export function evaluateSetting(setting: any, element: HTMLElement, calender: CalenderTools, graph: WeekGraphManager) {
-    switch (setting.id) {
-        case 'graph_type_selector': {
-            let val = $(element).val();
-            setting.current = val;
-
-            //@ts-ignore
-            graph.setType(val);
-            break;
-        }
-
-        case 'graph_sunday_color':
-            doColorEvaluationOnIndex(0, setting, element, graph);
-            break;
-
-        case 'graph_monday_color':
-            doColorEvaluationOnIndex(1, setting, element, graph);
-            break;
-
-        case 'graph_tuesday_color':
-            doColorEvaluationOnIndex(2, setting, element, graph);
-            break;
-
-        case 'graph_wednesday_color':
-            doColorEvaluationOnIndex(3, setting, element, graph);
-            break;
-
-        case 'graph_thursday_color':
-            doColorEvaluationOnIndex(4, setting, element, graph);
-            break;
-
-        case 'graph_friday_color':
-            doColorEvaluationOnIndex(5, setting, element, graph);
-            break;
-
-        case 'graph_saturday_color':
-            doColorEvaluationOnIndex(6, setting, element, graph);
-            break;
-    }
-}
-
-// and for this 😢
+// I want a better way to do this 😢
 export function updateSettings(setting: any, calender: CalenderTools, graph: WeekGraphManager) {
     let keys = Object.keys(setting);
     for (let key of keys) {
         let page = setting[key];
-        if (page == null) throw Error('bad page id');
+        if (page == null) {
+            console.warn('bad page id');
+            continue;
+        }
 
         for (let item of page.items) {
             switch (item.id) {
