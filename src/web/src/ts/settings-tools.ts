@@ -9,9 +9,9 @@ export class SettingsTools {
 
     calender: CalenderTools;
     graph: WeekGraphManager;
-    ws: WebSocket;
+    ws: { ws: WebSocket };
 
-    constructor(settings: any, calender: CalenderTools, graph: WeekGraphManager, websocket: WebSocket) {
+    constructor(settings: any, calender: CalenderTools, graph: WeekGraphManager, websocket: { ws: WebSocket }) {
         this.calender = calender;
         this.graph = graph;
         this.ws = websocket;
@@ -36,7 +36,7 @@ export class SettingsTools {
         let setting = this.settings[this.path[this.path.length - 1]].items.filter((item: any) => item.id === id)[0];
         if (setting == null) throw Error('bad id');
         evaluateSetting(setting, element);
-        this.ws.send(JSON.stringify({ type: 'settings', payload: { page: this.path[this.path.length - 1], setting } }));
+        this.ws.ws.send(JSON.stringify({ type: 'settings', payload: { page: this.path[this.path.length - 1], setting } }));
     }
 
     stepIn(destination: string) {
