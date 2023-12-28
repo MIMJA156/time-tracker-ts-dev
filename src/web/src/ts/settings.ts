@@ -127,8 +127,11 @@ export function renderSettingsCells(settings: any, pageId: string) {
 function doColorUpdateOnIndex(position: number, setting: any, graph: WeekGraphManager) {
     let val = setting.current;
     let colors = graph.chartColors;
-    colors[position] = val;
-    graph.setColors(colors);
+
+    if (colors[position] !== val) {
+        colors[position] = val;
+        graph.setColors(colors);
+    }
 }
 
 export function evaluateSetting(setting: any, element: HTMLElement) {
