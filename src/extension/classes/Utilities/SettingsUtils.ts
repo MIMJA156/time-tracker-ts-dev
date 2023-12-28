@@ -98,7 +98,7 @@ export class SettingsManager {
     }
 
     save() {
-        this._storageUtils.setLocalStoredSettings(this.settings);
+        this._storageUtils.setLocalStoredSettings(this.settings, true);
     }
 
     load(): boolean {
