@@ -4,10 +4,10 @@ import * as vscode from 'vscode';
 import { BadgeUtils } from './Utilities/BadgeUtils';
 import { StorageUtils } from './Utilities/StorageUtils';
 import { ServerManager } from './Utilities/ServerUtils';
-import { MillisecondsToSeconds, SecondsToHoursMinutesSeconds, MinutesToMilliseconds } from '../func/timeConverters';
+import { MillisecondsToSeconds, SecondsToHoursMinutesSeconds } from '../func/timeConverters';
 
 export class TimeTracker {
-    timeInterval: NodeJS.Timer;
+    timeInterval: NodeJS.Timeout;
 
     totalTime: number;
     sampleRate: number;
@@ -76,7 +76,7 @@ export class TimeTracker {
 
             this.totalTime += MillisecondsToSeconds(this.sampleRate);
 
-            if (this.totalTime % MillisecondsToSeconds(MinutesToMilliseconds(1)) === 0) {
+            if (this.totalTime % 60 === 0) {
                 dayData.total = this.totalTime;
                 this.save();
 

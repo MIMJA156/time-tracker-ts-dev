@@ -29,7 +29,7 @@ export class StorageUtils {
 
         let fileData = readFileSync(`${this._user_path}${this.timeFileName}`, 'utf-8');
         if (fileData) {
-            return JSON.parse(readFileSync(`${this._user_path}${this.timeFileName}`, 'utf-8'));
+            return JSON.parse(fileData);
         } else {
             return { time: {} };
         }
@@ -43,15 +43,25 @@ export class StorageUtils {
         }
     }
 
-    public getLocalStoredSettings(): SettingsInterface {
+    public getLocalStoredSettings(): any {
         if (!existsSync(`${this._user_path}${this.settingsFileName}`)) {
             writeFileSync(`${this._user_path}${this.settingsFileName}`, '{}');
         }
-        return JSON.parse(readFileSync(`${this._user_path}${this.settingsFileName}`, 'utf-8'));
+
+        let fileData = readFileSync(`${this._user_path}${this.settingsFileName}`, 'utf-8');
+        if (fileData && fileData != '{}') {
+            return JSON.parse(fileData);
+        } else {
+            return { EMPTY: true };
+        }
     }
 
-    public setLocalStoredSettings(newValue: Object) {
-        writeFileSync(`${this._user_path}${this.settingsFileName}`, JSON.stringify(newValue), 'utf-8');
+    public setLocalStoredSettings(newValue: Object, format = false) {
+        if (format) {
+            writeFileSync(`${this._user_path}${this.settingsFileName}`, JSON.stringify(newValue, null, 4), 'utf-8');
+        } else {
+            writeFileSync(`${this._user_path}${this.settingsFileName}`, JSON.stringify(newValue), 'utf-8');
+        }
     }
 
     private setStoragePaths(context: vscode.ExtensionContext) {
@@ -74,10 +84,4 @@ export class StorageUtils {
             this._extension_path = extension_folder;
         }
     }
-}
-
-interface SettingsInterface {
-    gist: {
-        access_token: string;
-    };
 }

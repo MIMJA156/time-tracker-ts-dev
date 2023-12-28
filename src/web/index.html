@@ -18,10 +18,14 @@
                     <i class="fa-solid fa-calendar right clickable" onclick="CalenderTools.toggle()"></i>
                 </div>
             </div>
-            <div>
+            <div id="main-display-container">
                 <canvas id="main-display"></canvas>
             </div>
-            <div class="window-bar bottom"></div>
+            <div class="window-bar bottom">
+                <div class="left">
+                    <i class="fa-solid fa-cog left clickable" onclick="SettingsTools.toggle()"></i>
+                </div>
+            </div>
         </main>
 
         <section>
@@ -50,7 +54,7 @@
                             <i class="fa-solid fa-chevron-right disabled" onclick="CalenderTools.step(1)"></i>
                         </div>
                     </div>
-                    <div class="body" id="day-cell-holder"></div>
+                    <div class="body" id="day-cell-holder">You can see this?? that's a bug!</div>
                 </div>
 
                 <div class="hide" data-index="1">
@@ -77,7 +81,25 @@
                 </div>
             </div>
         </section>
+
+        <section>
+            <div class="window moveable-window hide" data-type="settings">
+                <div data-index="0">
+                    <div class="header">
+                        <div class="left" id="settings-title">
+                            <span>Settings</span>
+                        </div>
+                        <div class="right" id="settings-actions">
+                            <i class="fa-solid fa-compress" onclick="SettingsTools.toggle()"></i>
+                        </div>
+                    </div>
+                    <div class="body" id="settings-holder">You can see this?? that's a bug!</div>
+                </div>
+            </div>
+        </section>
     </body>
+
+    <div class="cover hide" id="connection-cover">wow</div>
 
     <script type="module" src="./src/main.ts"></script>
 </html>

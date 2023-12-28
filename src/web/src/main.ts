@@ -4,6 +4,10 @@ import { cleanDate } from './ts/get-clean-date';
 import { initiateAllWindows } from './ts/windows';
 import { CalenderTools } from './ts/calender-tools';
 import { WeekGraphManager } from './ts/graph';
+import { SettingsTools } from './ts/settings-tools';
+import { hideConnectingScreen, showConnectingScreenWithText } from './ts/connecting';
+
+let currentSettingsData = {};
 
 let currentTimeData = {
     start: 0,
@@ -19,35 +23,61 @@ let range = {
     e: end_range,
 };
 
-const port = 7000;
+let currentWebSocketInstance: { ws: WebSocket } = { ws: null };
 
-initiateAllWindows();
+const port = 7000;
 
 console.log('Hello World!');
 
+showConnectingScreenWithText('connecting...');
+initiateAllWindows();
+
+currentWebSocketInstance.ws = new WebSocket(`ws://localhost:${port}`);
+
 let graph = new WeekGraphManager('main-display');
 let calenderTools = new CalenderTools(range, currentTimeData, graph);
+let settingsTools = new SettingsTools({}, calenderTools, graph, currentWebSocketInstance);
 
 //@ts-ignore
 window.CalenderTools = calenderTools;
 
-let ws = new WebSocket(`ws://localhost:${port}`);
+//@ts-ignore
+window.SettingsTools = settingsTools;
 
-ws.addEventListener('message', (event) => {
-    let messageData = JSON.parse(event.data);
+defineWebSocketListeners(currentWebSocketInstance.ws);
 
-    if (messageData.type == 'update') {
-        currentTimeData = messageData.payload;
+function defineWebSocketListeners(socket: WebSocket) {
+    socket.addEventListener('message', (event) => {
+        let messageData = JSON.parse(event.data);
 
-        start_range = cleanDate(new Date(currentTimeData.start * 1000));
-        end_range = cleanDate(new Date(currentTimeData.end * 1000));
+        if (messageData.type == 'update') {
+            currentTimeData = messageData.payload;
 
-        range = {
-            s: start_range,
-            e: end_range,
-        };
+            start_range = cleanDate(new Date(currentTimeData.start * 1000));
+            end_range = cleanDate(new Date(currentTimeData.end * 1000));
 
-        calenderTools.update(range, currentTimeData);
-        calenderTools.updateCurrentOpenDay();
-    }
-});
+            range = {
+                s: start_range,
+                e: end_range,
+            };
+
+            calenderTools.update(range, currentTimeData);
+            calenderTools.updateCurrentOpenDay();
+        }
+
+        if (messageData.type == 'settings') {
+            currentSettingsData = messageData.payload;
+            settingsTools.update(currentSettingsData);
+        }
+    });
+
+    socket.addEventListener('open', () => {
+        hideConnectingScreen();
+    });
+
+    socket.addEventListener('close', () => {
+        showConnectingScreenWithText('re connecting...');
+        currentWebSocketInstance.ws = new WebSocket(`ws://localhost:${port}`);
+        defineWebSocketListeners(currentWebSocketInstance.ws);
+    });
+}

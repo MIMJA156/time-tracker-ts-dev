@@ -10,8 +10,6 @@ export class CalenderTools {
     style: string;
     currentSelectedWeek: { date: Date; data: { total: number } }[];
 
-    isWindowVisible: boolean;
-
     currentTimeData: { start: number; end: number; time: Object };
     range: { s: Date; e: Date };
 
@@ -21,7 +19,6 @@ export class CalenderTools {
         this.currentOffset = 0;
         this.hasDayOpen = undefined;
         this.style = 'week';
-        this.isWindowVisible = false;
 
         this.range = range;
         this.currentTimeData = data;
@@ -95,12 +92,6 @@ export class CalenderTools {
 
     toggle() {
         let calender = $(`[data-type='calender']`);
-        if (this.isWindowVisible) {
-            calender.addClass('hide');
-        } else {
-            calender.removeClass('hide');
-        }
-
-        this.isWindowVisible = !this.isWindowVisible;
+        calender.toggleClass('hide');
     }
 }
