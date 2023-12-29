@@ -14,6 +14,10 @@ export class TimeTracker {
     preExistingTimeData: object;
     displayBadge: import('./Utilities/BadgeUtils').Badge;
 
+    badgeIcon: string;
+    badgePriority: number;
+    badgeAlignment: vscode.StatusBarAlignment;
+
     storageUtils: StorageUtils;
     serverManager: ServerManager;
 
@@ -25,15 +29,17 @@ export class TimeTracker {
 
         let humanReadableTimes = SecondsToHoursMinutesSeconds(this.totalTime);
 
+        this.setInternalsBasedOnSettings();
+
         this.preExistingTimeData = savedInformation;
         this.sampleRate = sampleRate;
         this.displayBadge = badgeUtils.createBadge(
             {
-                icon: 'timeline-view-icon',
+                icon: this.badgeIcon == null || this.badgeIcon == '' ? 'timeline-view-icon' : this.badgeIcon,
                 text: `${humanReadableTimes.hours} hr : ${humanReadableTimes.minutes} min : ${humanReadableTimes.seconds} sec`,
                 tooltip: `Time Spent Coding Today!`,
-                alignment: vscode.StatusBarAlignment.Right,
-                priority: 10,
+                alignment: this.badgeAlignment == null ? vscode.StatusBarAlignment.Right : this.badgeAlignment,
+                priority: this.badgePriority == null ? 10 : this.badgePriority,
                 command: null,
             },
             true,
@@ -63,6 +69,14 @@ export class TimeTracker {
 
         this.storageUtils = storageUtils;
         this.serverManager = serverManager;
+
+        vscode.workspace.onDidChangeConfiguration(() => {
+            this.setInternalsBasedOnSettings();
+
+            this.displayBadge.alignment = this.badgeAlignment == null ? vscode.StatusBarAlignment.Right : this.badgeAlignment;
+            this.displayBadge.icon = this.badgeIcon == null || this.badgeIcon == '' ? 'timeline-view-icon' : this.badgeIcon;
+            this.displayBadge.priority = this.badgePriority == null ? 10 : this.badgePriority;
+        });
     }
 
     public start() {
@@ -132,5 +146,23 @@ export class TimeTracker {
         }
 
         return timeValues;
+    }
+
+    private setInternalsBasedOnSettings() {
+        let configuration = vscode.workspace.getConfiguration();
+
+        let icon = configuration.get('mimjas-time-tracker.iconStyle');
+        let alignment = configuration.get('mimjas-time-tracker.labelPosition');
+        let priority = configuration.get('mimjas-time-tracker.labelPriority');
+
+        this.badgeIcon = icon as string;
+
+        if (alignment == 'Left') this.badgeAlignment = vscode.StatusBarAlignment.Left;
+        else this.badgeAlignment = vscode.StatusBarAlignment.Right;
+
+        if (priority) this.badgePriority = priority === vscode.StatusBarAlignment.Right ? Infinity : -Infinity;
+        else this.badgePriority = priority === vscode.StatusBarAlignment.Right ? -Infinity : Infinity;
+
+        console.log(this.badgePriority);
     }
 }

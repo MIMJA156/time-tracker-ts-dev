@@ -36,9 +36,9 @@ export class Badge {
 
     private _alignment: vscode.StatusBarAlignment;
     private _priority: number;
-    private readonly _text: string;
-    private readonly _tooltip: string;
-    private readonly _icon: string;
+    private _text: string;
+    private _tooltip: string;
+    private _icon: string;
     private readonly command: string;
 
     private isShowing: boolean;
@@ -56,6 +56,7 @@ export class Badge {
 
     private createBadge() {
         if (this.badge) this.badge.dispose();
+        this.badge = null;
 
         if (!this._text) throw new Error('Text Required!');
         if (!this._icon) throw new Error('Icon Required!');
@@ -88,14 +89,17 @@ export class Badge {
 
     public set text(data: string) {
         this.badge.text = `$(${this._icon}) ${data}`;
+        this._text = data;
     }
 
     public set icon(data: string) {
         this.badge.text = `$(${data}) ${this._text}`;
+        this._icon = data;
     }
 
     public set tooltip(data: string) {
         this.badge.tooltip = data;
+        this._tooltip = data;
     }
 
     public set alignment(data: vscode.StatusBarAlignment) {

@@ -16,6 +16,33 @@
         "esbuild-base": "esbuild ./src/extension/extension.ts --bundle --outfile=./out/main.js --external:vscode --format=cjs --platform=node",
         "vite-build": "vite build ./src/web/"
     },
+    "contributes": {
+        "configuration": [
+            {
+                "title": "Mimjas Time Tracker 2",
+                "properties": {
+                    "mimjas-time-tracker.iconStyle": {
+                        "type": "string",
+                        "default": "circuit-board",
+                        "description": "Type in the default codicon ID for the icon you want.\nList of icons -> https://code.visualstudio.com/api/references/icons-in-labels#icon-listing"
+                    },
+                    "mimjas-time-tracker.labelPosition": {
+                        "type": "string",
+                        "enum": [
+                            "Left",
+                            "Right"
+                        ],
+                        "default": "Left",
+                        "description": "Defines the position on the time label."
+                    },
+                    "mimjas-time-tracker.labelPriority": {
+                        "type": "boolean",
+                        "description": "Will be more towards the center of the statues bar when on."
+                    }
+                }
+            }
+        ]
+    },
     "devDependencies": {
         "@types/cors": "^2.8.13",
         "@types/express": "^4.17.14",
