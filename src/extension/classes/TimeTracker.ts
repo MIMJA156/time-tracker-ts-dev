@@ -5,6 +5,8 @@ import { BadgeUtils } from './Utilities/BadgeUtils';
 import { StorageUtils } from './Utilities/StorageUtils';
 import { ServerManager } from './Utilities/ServerUtils';
 import { MillisecondsToSeconds, SecondsToHoursMinutesSeconds } from '../func/timeConverters';
+import mergeInOldTimeObject from '../func/mergeInOldTimeObject';
+import { SettingsManager } from './Utilities/SettingsUtils';
 
 export class TimeTracker {
     timeInterval: NodeJS.Timeout;
@@ -21,7 +23,7 @@ export class TimeTracker {
     storageUtils: StorageUtils;
     serverManager: ServerManager;
 
-    constructor({ sampleRate, storageUtils, badgeUtils, serverManager }: { sampleRate: number; storageUtils: StorageUtils; badgeUtils: BadgeUtils; serverManager: ServerManager }) {
+    constructor({ sampleRate, context, storageUtils, badgeUtils, serverManager, settingsManager }: { sampleRate: number; context: vscode.ExtensionContext; storageUtils: StorageUtils; badgeUtils: BadgeUtils; serverManager: ServerManager; settingsManager: SettingsManager }) {
         let savedInformation = this.sanitize(storageUtils.getLocalStoredTime());
 
         let currentDate = new Date();
@@ -67,6 +69,29 @@ export class TimeTracker {
             open(`http://localhost:${config.server.port}/dashboard`).then((r) => console.log(r));
         });
 
+        context.subscriptions.push(
+            vscode.commands.registerCommand('mimjas-time-tracker.importOldTimeData', () => {
+                let oldTime = storageUtils.getOldLocalStoredTime();
+
+                if (oldTime == null) {
+                    vscode.window.showErrorMessage("old time json file does not exist, can't continue import.");
+                    return;
+                }
+
+                let mergedObject = mergeInOldTimeObject(this.preExistingTimeData, oldTime);
+
+                this.stop();
+                let cleanMergedObject = this.sanitize({ time: mergedObject });
+                storageUtils.setLocalStoredTime(cleanMergedObject);
+
+                let currentDate = new Date();
+                this.totalTime = cleanMergedObject['time'][currentDate.getFullYear()][currentDate.getMonth() + 1][currentDate.getDate()].total;
+
+                this.preExistingTimeData = cleanMergedObject;
+                this.start();
+            }),
+        );
+
         this.storageUtils = storageUtils;
         this.serverManager = serverManager;
 
@@ -82,6 +107,8 @@ export class TimeTracker {
     public start() {
         let today = new Date();
         let todayDay = today.getDay();
+
+        this.serverManager.signal('UPDATE');
 
         this.timeInterval = setInterval(() => {
             let maybeToday = new Date();

@@ -17,9 +17,16 @@
         "vite-build": "vite build ./src/web/"
     },
     "contributes": {
+        "commands": [
+            {
+                "command": "mimjas-time-tracker.importOldTimeData",
+                "title": "Import Old Data",
+                "category": "Time Tracker"
+            }
+        ],
         "configuration": [
             {
-                "title": "Mimjas Time Tracker 2",
+                "title": "Mimjas Time Tracker",
                 "properties": {
                     "mimjas-time-tracker.iconStyle": {
                         "type": "string",

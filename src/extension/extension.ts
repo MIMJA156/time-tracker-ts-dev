@@ -12,18 +12,20 @@ let timeTracker: TimeTracker;
 export function activate(context: vscode.ExtensionContext) {
     console.log('Hello World from Time Tracker!');
 
+    const badgeUtils = new BadgeUtils(context);
     const storageUtils = new StorageUtils(context);
     const settingsManager = new SettingsManager(storageUtils);
-    const badgeUtils = new BadgeUtils(context);
     const serverManager = new ServerManager(config.server.port, storageUtils, settingsManager);
 
     serverManager.addMessageCallback('settings', (data: any, parent: ServerManager) => settingsManager.handler(data, parent));
 
     timeTracker = new TimeTracker({
         sampleRate: SecondsToMilliseconds(1),
+        context,
         badgeUtils,
         storageUtils,
         serverManager,
+        settingsManager,
     });
 
     timeTracker.start();

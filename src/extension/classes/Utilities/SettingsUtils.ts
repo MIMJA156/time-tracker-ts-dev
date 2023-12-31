@@ -11,6 +11,9 @@ export class SettingsManager {
 
         if (!this.load()) {
             this.settings = {
+                flags: {
+                    hasDoneMerge: false,
+                },
                 primary_settings_page: {
                     isPrimary: true,
                     actions: ['toggle'],
@@ -107,19 +110,6 @@ export class SettingsManager {
 
         this.settings = data;
         return true;
-    }
-
-    update(path: string) {
-        let items = path.split('/');
-        let currentDepth = {};
-
-        for (let i = 0; i < items.length; i++) {
-            const item = items[i];
-            let setting = this.settings[item];
-            if (setting) currentDepth = setting;
-        }
-
-        console.log(currentDepth);
     }
 
     handler(data: any, parent: ServerManager) {

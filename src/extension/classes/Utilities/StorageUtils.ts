@@ -10,6 +10,9 @@ export class StorageUtils {
     private settingsFileName = `settings.${file.suffix}.json`;
     private timeFileName = `local-time.${file.suffix}.json`;
 
+    private oldTimeDirectoryName = 'time-tracker-storage-mimja';
+    public oldTimeFileName = 'time.mim';
+
     constructor(context: vscode.ExtensionContext) {
         this.setStoragePaths(context);
     }
@@ -61,6 +64,18 @@ export class StorageUtils {
             writeFileSync(`${this._user_path}${this.settingsFileName}`, JSON.stringify(newValue, null, 4), 'utf-8');
         } else {
             writeFileSync(`${this._user_path}${this.settingsFileName}`, JSON.stringify(newValue), 'utf-8');
+        }
+    }
+
+    public getOldLocalStoredTime() {
+        if (!existsSync(`${__dirname}/../../${this.oldTimeDirectoryName}/${this.oldTimeFileName}.json`)) return null;
+
+        console.log(`${__dirname}/../../${this.oldTimeDirectoryName}/${this.oldTimeFileName}.json`);
+        let fileData = readFileSync(`${__dirname}/../../${this.oldTimeDirectoryName}/${this.oldTimeFileName}.json`, 'utf-8');
+        if (fileData) {
+            return JSON.parse(fileData);
+        } else {
+            return {};
         }
     }
 
