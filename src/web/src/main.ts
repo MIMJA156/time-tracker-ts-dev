@@ -66,7 +66,7 @@ function defineWebSocketListeners(socket: WebSocket) {
         }
 
         if (messageData.type == 'settings') {
-            currentSettingsData = messageData.payload;
+            currentSettingsData = messageData.payload['pages'];
             settingsTools.update(currentSettingsData);
         }
     });

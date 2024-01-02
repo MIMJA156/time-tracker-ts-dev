@@ -1,5 +1,6 @@
 import { ServerManager } from './ServerUtils';
 import { StorageUtils } from './StorageUtils';
+import settingsSkeleton from './../../settings.skeleton.json';
 
 export class SettingsManager {
     settings: object;
@@ -10,94 +11,10 @@ export class SettingsManager {
         this._storageUtils = storageUtils;
 
         if (!this.load()) {
-            this.settings = {
-                flags: {
-                    hasDoneMerge: false,
-                },
-                primary_settings_page: {
-                    isPrimary: true,
-                    actions: ['toggle'],
-                    items: [
-                        {
-                            type: 'navigation',
-                            title: 'Graph',
-                            destination: 'graph_general_page',
-                        },
-                    ],
-                },
-
-                graph_general_page: {
-                    title: 'Graph',
-                    actions: ['back', 'toggle'],
-                    items: [
-                        {
-                            id: 'graph_type_selector',
-                            type: 'dropdown',
-                            title: 'Type',
-                            current: 'bar',
-                            options: [
-                                { name: 'Bar', value: 'bar' },
-                                { name: 'Line', value: 'line' },
-                            ],
-                        },
-                        {
-                            type: 'navigation',
-                            title: 'Colors',
-                            destination: 'graph_color_page',
-                        },
-                    ],
-                },
-
-                graph_color_page: {
-                    title: 'Colors',
-                    actions: ['back', 'toggle'],
-                    items: [
-                        {
-                            id: 'graph_sunday_color',
-                            type: 'color',
-                            title: 'Sunday',
-                            current: '#9400D3',
-                        },
-                        {
-                            id: 'graph_monday_color',
-                            type: 'color',
-                            title: 'Monday',
-                            current: '#4B0082',
-                        },
-                        {
-                            id: 'graph_tuesday_color',
-                            type: 'color',
-                            title: 'Tuesday',
-                            current: '#0000FF',
-                        },
-                        {
-                            id: 'graph_wednesday_color',
-                            type: 'color',
-                            title: 'Wednesday',
-                            current: '#00FF00',
-                        },
-                        {
-                            id: 'graph_thursday_color',
-                            type: 'color',
-                            title: 'Thursday',
-                            current: '#FFFF00',
-                        },
-                        {
-                            id: 'graph_friday_color',
-                            type: 'color',
-                            title: 'Friday',
-                            current: '#FF7F00',
-                        },
-                        {
-                            id: 'graph_saturday_color',
-                            type: 'color',
-                            title: 'Saturday',
-                            current: '#FF0000',
-                        },
-                    ],
-                },
-            };
+            this.settings = SettingsManager.validate({});
         }
+
+        this.save();
     }
 
     save() {
@@ -108,7 +25,7 @@ export class SettingsManager {
         let data = this._storageUtils.getLocalStoredSettings();
         if (data.EMPTY === true) return false;
 
-        this.settings = data;
+        this.settings = SettingsManager.validate(data);
         return true;
     }
 
@@ -116,7 +33,7 @@ export class SettingsManager {
         let pageId = data.payload.page;
         let setting = data.payload.setting;
 
-        let page = this.settings[pageId];
+        let page = this.settings['pages'][pageId];
         if (page == null) return console.warn('bad page');
 
         for (let item of page.items) {
@@ -132,5 +49,39 @@ export class SettingsManager {
 
     get() {
         return this.settings;
+    }
+
+    set(newSettings: any) {
+        this.settings = SettingsManager.validate(newSettings);
+        this.save();
+    }
+
+    static validate(settings: any) {
+        function internal(layer: any, equivalent: any) {
+            let skeletonKeys = Object.keys(equivalent);
+
+            for (let key of skeletonKeys) {
+                let toEvaluate = {};
+
+                if (layer == undefined) {
+                    layer = equivalent;
+                    return layer;
+                }
+
+                if (layer[key] !== null) toEvaluate = layer[key];
+
+                if (typeof equivalent[key] === 'object') {
+                    layer[key] = internal(toEvaluate, equivalent[key]);
+                } else if (layer[key] == null) {
+                    layer[key] = equivalent[key];
+                }
+            }
+
+            return layer;
+        }
+
+        let copy = JSON.parse(JSON.stringify(settings));
+        let validatedSettings = internal(copy, settingsSkeleton);
+        return validatedSettings;
     }
 }

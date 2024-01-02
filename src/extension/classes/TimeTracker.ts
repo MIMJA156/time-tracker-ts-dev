@@ -71,6 +71,14 @@ export class TimeTracker {
 
         context.subscriptions.push(
             vscode.commands.registerCommand('mimjas-time-tracker.importOldTimeData', () => {
+                let settings = settingsManager.get();
+                let hasImported = settings['flags']['hasImported'];
+
+                if (hasImported) {
+                    vscode.window.showErrorMessage('you have already imported your time data, it is not recommend to import more than once.');
+                    return;
+                }
+
                 let oldTime = storageUtils.getOldLocalStoredTime();
 
                 if (oldTime == null) {
@@ -89,6 +97,9 @@ export class TimeTracker {
 
                 this.preExistingTimeData = cleanMergedObject;
                 this.start();
+
+                settings['flags']['hasImported'] = true;
+                settingsManager.set(settings);
             }),
         );
 

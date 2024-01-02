@@ -25,6 +25,7 @@ export class StorageUtils {
         return this._user_path;
     }
 
+    /* local time */
     public getLocalStoredTime(): { time: Object } {
         if (!existsSync(`${this._user_path}${this.timeFileName}`)) {
             writeFileSync(`${this._user_path}${this.timeFileName}`, '{}');
@@ -46,6 +47,7 @@ export class StorageUtils {
         }
     }
 
+    /* local settings */
     public getLocalStoredSettings(): any {
         if (!existsSync(`${this._user_path}${this.settingsFileName}`)) {
             writeFileSync(`${this._user_path}${this.settingsFileName}`, '{}');
@@ -67,6 +69,7 @@ export class StorageUtils {
         }
     }
 
+    /* old local time */
     public getOldLocalStoredTime() {
         if (!existsSync(`${__dirname}/../../${this.oldTimeDirectoryName}/${this.oldTimeFileName}.json`)) return null;
 
@@ -79,6 +82,7 @@ export class StorageUtils {
         }
     }
 
+    /* other */
     private setStoragePaths(context: vscode.ExtensionContext) {
         context.globalState.update('_', undefined);
         let isPortable = !!process.env.VSCODE_PORTABLE;
