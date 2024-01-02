@@ -26,6 +26,8 @@ export class TimeTracker {
     constructor({ sampleRate, context, storageUtils, badgeUtils, serverManager, settingsManager }: { sampleRate: number; context: vscode.ExtensionContext; storageUtils: StorageUtils; badgeUtils: BadgeUtils; serverManager: ServerManager; settingsManager: SettingsManager }) {
         let savedInformation = this.sanitize(storageUtils.getLocalStoredTime());
 
+        console.log(savedInformation);
+
         let currentDate = new Date();
         this.totalTime = savedInformation['time'][currentDate.getFullYear()][currentDate.getMonth() + 1][currentDate.getDate()].total;
 
@@ -75,7 +77,15 @@ export class TimeTracker {
                 let hasImported = settings['flags']['hasImported'];
 
                 if (hasImported) {
-                    vscode.window.showErrorMessage('you have already imported your time data, it is not recommend to import more than once.');
+                    vscode.window.showWarningMessage('you have already imported your time data, it is not recommend to import time data more than once.', 'import anyways').then((response) => {
+                        if (response === 'import anyways') {
+                            let _settings = settingsManager.get();
+                            _settings['flags']['hasImported'] = false;
+                            settingsManager.set(_settings);
+
+                            vscode.commands.executeCommand('mimjas-time-tracker.importOldTimeData');
+                        }
+                    });
                     return;
                 }
 
@@ -100,6 +110,8 @@ export class TimeTracker {
 
                 settings['flags']['hasImported'] = true;
                 settingsManager.set(settings);
+
+                vscode.window.showInformationMessage('successfully imported time data.');
             }),
         );
 
