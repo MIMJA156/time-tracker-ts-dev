@@ -59,7 +59,7 @@
         "@types/randomstring": "^1.1.8",
         "@types/vscode": "^1.72.0",
         "esbuild": "^0.15.10",
-        "vite": "^3.1.7"
+        "vite": "^3.2.8"
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^6.2.0",
