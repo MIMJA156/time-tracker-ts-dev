@@ -40,9 +40,14 @@ export class ServerManager {
         });
     }
 
-    public start() {
-        this.started = true;
-        this.httpServer.listen(this._port);
+    public start(): Promise<string> {
+        let promise = new Promise<string>((res, rej) => {
+            this.httpServer.listen(this._port, () => {
+                this.started = true;
+                res('started');
+            });
+        });
+        return promise;
     }
 
     public stop() {
@@ -95,7 +100,9 @@ export class ServerManager {
                             func(jsonMessage, this);
                         }
                     }
-                } catch (e) {}
+                } catch (e) {
+                    console.warn(e);
+                }
             });
         });
 

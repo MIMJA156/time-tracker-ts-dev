@@ -26,8 +26,6 @@ export class TimeTracker {
     constructor({ sampleRate, context, storageUtils, badgeUtils, serverManager, settingsManager }: { sampleRate: number; context: vscode.ExtensionContext; storageUtils: StorageUtils; badgeUtils: BadgeUtils; serverManager: ServerManager; settingsManager: SettingsManager }) {
         let savedInformation = this.sanitize(storageUtils.getLocalStoredTime());
 
-        console.log(savedInformation);
-
         let currentDate = new Date();
         this.totalTime = savedInformation['time'][currentDate.getFullYear()][currentDate.getMonth() + 1][currentDate.getDate()].total;
 
@@ -67,8 +65,9 @@ export class TimeTracker {
 
         badgeUtils.linkCommandToBadge(this.displayBadge, 'time-tracker-start-server', () => {
             stopServer.show(true);
-            serverManager.start();
-            open(`http://localhost:${config.server.port}/dashboard`).then((r) => console.log(r));
+            serverManager.start().then((_) => {
+                open(`http://localhost:${config.server.port}/dashboard`).then((r) => console.log(r));
+            });
         });
 
         context.subscriptions.push(
