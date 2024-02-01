@@ -56,24 +56,40 @@ export class SettingsManager {
         this.save();
     }
 
-    static validate(settings: any) {
-        function internal(layer: any, equivalent: any) {
+    static mergeArrays(array1: any[], array2: any[]) {
+        const mergedArray = [...array2];
+
+        for (const item1 of array1) if (!mergedArray.find((item2) => item2.id === item1.id)) mergedArray.push(item1);
+
+        mergedArray.sort((a, b) => array1.findIndex((item) => item.id === a.id) - array1.findIndex((item) => item.id === b.id));
+
+        return mergedArray;
+    }
+
+    static validate(settings: object) {
+        function internal(layer: object, equivalent: object) {
+            if (layer == undefined) {
+                layer = equivalent;
+                return layer;
+            }
+
             let skeletonKeys = Object.keys(equivalent);
 
             for (let key of skeletonKeys) {
                 let toEvaluate = {};
+                let layerItem = layer[key];
+                let equivalentItem = equivalent[key];
 
-                if (layer == undefined) {
-                    layer = equivalent;
-                    return layer;
-                }
+                if (layerItem !== null) toEvaluate = layerItem;
 
-                if (layer[key] !== null) toEvaluate = layer[key];
-
-                if (typeof equivalent[key] === 'object') {
-                    layer[key] = internal(toEvaluate, equivalent[key]);
-                } else if (layer[key] == null) {
-                    layer[key] = equivalent[key];
+                if (typeof equivalentItem === 'object') {
+                    if (Array.isArray(equivalentItem)) {
+                        layer[key] = SettingsManager.mergeArrays(equivalentItem, layerItem);
+                    } else {
+                        layer[key] = internal(toEvaluate, equivalentItem);
+                    }
+                } else if (layerItem == null) {
+                    layer[key] = equivalentItem;
                 }
             }
 
