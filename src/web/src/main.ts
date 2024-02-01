@@ -6,7 +6,6 @@ import { CalenderTools } from './ts/calender-tools';
 import { WeekGraphManager } from './ts/graph';
 import { SettingsTools } from './ts/settings-tools';
 import { hideConnectingScreen, showConnectingScreenWithText } from './ts/connecting';
-import { json } from 'stream/consumers';
 
 let currentSettingsData = {};
 

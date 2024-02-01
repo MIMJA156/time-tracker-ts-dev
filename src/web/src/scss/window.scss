@@ -13,6 +13,12 @@ div.window {
     left: 50%;
     transform: translate(-50%, -50%);
 
+    z-index: 999;
+
+    &.active {
+        z-index: 1000;
+    }
+
     &[data-type='calender'] {
         width: 400px;
         height: 500px;
@@ -44,10 +50,6 @@ div.window {
         i.disabled {
             pointer-events: none;
         }
-
-        // i:active {
-        //     transform: scale(0.8);
-        // }
 
         >div.header {
             cursor: move;

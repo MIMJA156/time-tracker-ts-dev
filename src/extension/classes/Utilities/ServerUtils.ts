@@ -40,11 +40,15 @@ export class ServerManager {
         });
     }
 
+    public isStarted() {
+        return this.started;
+    }
+
     public start(): Promise<string> {
         let promise = new Promise<string>((res, rej) => {
             this.httpServer.listen(this._port, () => {
                 this.started = true;
-                res('started');
+                res('');
             });
         });
         return promise;

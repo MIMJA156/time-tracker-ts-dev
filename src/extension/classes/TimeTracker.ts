@@ -58,12 +58,16 @@ export class TimeTracker {
         });
 
         badgeUtils.linkCommandToBadge(stopServer, 'time-tracker-stop-server', () => {
+            if (!this.serverManager.isStarted()) return;
+
             stopServer.show(false);
             serverManager.stop();
         });
         // <<< -- NOT PERMANENT CODE
 
         badgeUtils.linkCommandToBadge(this.displayBadge, 'time-tracker-start-server', () => {
+            if (this.serverManager.isStarted()) return;
+
             stopServer.show(true);
             serverManager.start().then((_) => {
                 open(`http://localhost:${config.server.port}/dashboard`).then((r) => console.log(r));

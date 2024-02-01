@@ -1,5 +1,7 @@
 import $ from 'jquery';
 
+let lastClickedParent;
+
 export function initiateWindow({ parent, child }: { parent: JQuery<HTMLElement>; child: JQuery<HTMLElement> }) {
     let htmlParent = parent[0];
     let htmlChild = child[0];
@@ -24,6 +26,10 @@ export function initiateWindow({ parent, child }: { parent: JQuery<HTMLElement>;
         document.addEventListener('mouseup', () => {
             document.removeEventListener('mousemove', update);
         });
+
+        if (lastClickedParent !== undefined) lastClickedParent.classList.remove('active');
+        htmlParent.classList.add('active');
+        lastClickedParent = htmlParent;
     });
 
     function update(ev: MouseEvent) {
