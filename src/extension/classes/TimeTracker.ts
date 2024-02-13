@@ -215,7 +215,5 @@ export class TimeTracker {
 
         if (priority) this.badgePriority = priority === vscode.StatusBarAlignment.Right ? Infinity : -Infinity;
         else this.badgePriority = priority === vscode.StatusBarAlignment.Right ? -Infinity : Infinity;
-
-        console.log(this.badgePriority);
     }
 }

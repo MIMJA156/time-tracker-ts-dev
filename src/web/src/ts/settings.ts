@@ -116,7 +116,7 @@ export function renderSettingsCells(settings: any, pageId: string) {
                 break;
 
             default:
-                console.log(`bad cell type -> ${cell.type}`);
+                console.warn(`bad cell type -> ${cell.type}`);
                 break;
         }
     }

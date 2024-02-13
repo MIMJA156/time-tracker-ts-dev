@@ -94,7 +94,7 @@ export class ServerManager {
             socket.send(JSON.stringify(this.getSettingsDataForSending()));
 
             socket.on('message', (sentData: RawData) => {
-                console.log(`Message ${new Date().toLocaleDateString()} -> ${sentData.toString()}`);
+                // console.log(`Message ${new Date().toLocaleDateString()} -> ${sentData.toString()}`);
 
                 try {
                     let jsonMessage = JSON.parse(sentData.toString());

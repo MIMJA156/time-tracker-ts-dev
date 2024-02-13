@@ -56,6 +56,34 @@ export class SettingsManager {
         this.save();
     }
 
+    resetItemsToDefault(pageId: String, itemIds: String[]) {
+        let pages = this.settings['pages'];
+        let skeltonPages = settingsSkeleton.pages;
+
+        // @ts-ignore
+        let skeletonPage = skeltonPages[pageId];
+        let page = pages[pageId];
+        if (page === undefined || skeletonPage === undefined) return console.warn('invalid page id');
+
+        for (let i = 0; i < itemIds.length; i++) {
+            const itemId = itemIds[i];
+
+            let skeletonSelectedSetting = SettingsManager.findItem(skeletonPage.items, (item: any) => itemId === item.id);
+            let selectedSetting = SettingsManager.findItem(page.items, (item: any) => itemId === item.id);
+
+            if (skeletonSelectedSetting === undefined || selectedSetting === undefined) {
+                console.warn('bad item id');
+                continue;
+            }
+
+            Object.assign(selectedSetting, skeletonSelectedSetting);
+        }
+    }
+
+    static findItem(array: any[], condition: any) {
+        return array.find(condition);
+    }
+
     static mergeArrays(array1: any[], array2: any[]) {
         const mergedArray = [...array2];
 

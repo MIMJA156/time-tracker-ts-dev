@@ -73,7 +73,6 @@ export class StorageUtils {
     public getOldLocalStoredTime() {
         if (!existsSync(`${__dirname}/../../${this.oldTimeDirectoryName}/${this.oldTimeFileName}.json`)) return null;
 
-        console.log(`${__dirname}/../../${this.oldTimeDirectoryName}/${this.oldTimeFileName}.json`);
         let fileData = readFileSync(`${__dirname}/../../${this.oldTimeDirectoryName}/${this.oldTimeFileName}.json`, 'utf-8');
         if (fileData) {
             return JSON.parse(fileData);
