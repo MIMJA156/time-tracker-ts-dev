@@ -15,13 +15,13 @@ Keep in mind I am a student so I won't be able to push out tons of updates but a
 
 Simply download the extension from the marketplace and enjoy!
 
-## Usage
+## Features
 
 There are a few main features to consider:
 
-- Cloud Storage for global time using gists
-- Web GUI
-- Basic Settings
+- [ ] Cloud Storage for global time using gists
+- [x] Web GUI
+- [x] Basic Settings
 
 ### Cloud Storage
 
