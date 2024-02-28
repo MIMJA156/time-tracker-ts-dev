@@ -17,7 +17,8 @@ export function activate(context: vscode.ExtensionContext) {
     const settingsManager = new SettingsManager(storageUtils);
     const serverManager = new ServerManager(config.server.port, storageUtils, settingsManager);
 
-    serverManager.addMessageCallback('settings', (data: any, parent: ServerManager) => settingsManager.handler(data, parent));
+    serverManager.addMessageCallback('settings', (data: any, parent: ServerManager) => settingsManager.settingChangedHandler(data, parent));
+    serverManager.addMessageCallback('settings:reset', (data: any, parent: ServerManager) => settingsManager.settingResetHandler(data, parent));
 
     timeTracker = new TimeTracker({
         sampleRate: SecondsToMilliseconds(1),

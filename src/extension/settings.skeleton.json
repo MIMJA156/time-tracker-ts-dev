@@ -42,42 +42,49 @@
                     "id": "graph_sunday_color",
                     "type": "color",
                     "title": "Sunday",
+                    "resettable": true,
                     "current": "#FF6384"
                 },
                 {
                     "id": "graph_monday_color",
                     "type": "color",
                     "title": "Monday",
+                    "resettable": true,
                     "current": "#FF9F40"
                 },
                 {
                     "id": "graph_tuesday_color",
                     "type": "color",
                     "title": "Tuesday",
+                    "resettable": true,
                     "current": "#FFCD56"
                 },
                 {
                     "id": "graph_wednesday_color",
                     "type": "color",
                     "title": "Wednesday",
+                    "resettable": true,
                     "current": "#4BC0C0"
                 },
                 {
                     "id": "graph_thursday_color",
                     "type": "color",
                     "title": "Thursday",
+                    "resettable": true,
                     "current": "#36A2EB"
                 },
                 {
                     "id": "graph_friday_color",
                     "type": "color",
                     "title": "Friday",
+                    "resettable": true,
                     "current": "#9966FF"
                 },
                 {
                     "id": "graph_saturday_color",
                     "type": "color",
                     "title": "Saturday",
+                    "resettable": true,
                     "current": "#C9CBCF"
                 }
             ]

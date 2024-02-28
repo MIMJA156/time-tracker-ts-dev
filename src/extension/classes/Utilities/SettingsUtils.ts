@@ -29,7 +29,7 @@ export class SettingsManager {
         return true;
     }
 
-    handler(data: any, parent: ServerManager) {
+    settingChangedHandler(data: any, parent: ServerManager) {
         let pageId = data.payload.page;
         let setting = data.payload.setting;
 
@@ -42,6 +42,19 @@ export class SettingsManager {
                 break;
             }
         }
+
+        parent.signal('SETTINGS');
+        this.save();
+    }
+
+    settingResetHandler(data: any, parent: ServerManager) {
+        let pageId = data.payload.page;
+        let setting = data.payload.setting;
+
+        let page = this.settings['pages'][pageId];
+        if (page == null) return console.warn('bad page');
+
+        this.resetItemsToDefault(pageId, [setting.id]);
 
         parent.signal('SETTINGS');
         this.save();
@@ -84,16 +97,6 @@ export class SettingsManager {
         return array.find(condition);
     }
 
-    static mergeArrays(array1: any[], array2: any[]) {
-        const mergedArray = [...array2];
-
-        for (const item1 of array1) if (!mergedArray.find((item2) => item2.id === item1.id)) mergedArray.push(item1);
-
-        mergedArray.sort((a, b) => array1.findIndex((item) => item.id === a.id) - array1.findIndex((item) => item.id === b.id));
-
-        return mergedArray;
-    }
-
     static validate(settings: object) {
         function internal(layer: object, equivalent: object) {
             if (layer == undefined) {
@@ -112,7 +115,18 @@ export class SettingsManager {
 
                 if (typeof equivalentItem === 'object') {
                     if (Array.isArray(equivalentItem)) {
-                        layer[key] = SettingsManager.mergeArrays(equivalentItem, layerItem);
+                        if (equivalentItem.length > 0 && typeof equivalentItem[0] == 'string') {
+                            layer[key] = equivalentItem;
+                        } else {
+                            let validatedItems = [];
+
+                            equivalentItem.forEach((val, ind) => {
+                                let selectedArrayItem = layerItem[ind];
+                                validatedItems.push(internal(selectedArrayItem, val));
+                            });
+
+                            layer[key] = validatedItems;
+                        }
                     } else {
                         layer[key] = internal(toEvaluate, equivalentItem);
                     }

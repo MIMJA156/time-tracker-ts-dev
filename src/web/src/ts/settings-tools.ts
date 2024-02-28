@@ -41,6 +41,15 @@ export class SettingsTools {
         this.ws.ws.send(JSON.stringify({ type: 'settings', payload: { page, setting } }));
     }
 
+    reset(element: HTMLElement, id: string) {
+        let page = this.path[this.path.length - 1];
+        let setting = this.settings[page].items.filter((item: any) => item.id === id)[0];
+        if (setting == null) throw Error('bad id');
+
+        evaluateSetting(setting, element);
+        this.ws.ws.send(JSON.stringify({ type: 'settings:reset', payload: { page, setting } }));
+    }
+
     stepIn(destination: string) {
         let page = this.settings[destination];
         if (page == null) throw Error('Bad destination');

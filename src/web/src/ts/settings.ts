@@ -57,12 +57,13 @@ export function settingsDropDownMenuCell(title: string, options: any[], current:
     </div>
     `;
 }
-export function settingsColorCell(title: string, current: string, id: string) {
+export function settingsColorCell(title: string, current: string, id: string, resettable: boolean) {
     return `
     <div class="item">
         <span class="title">${title}</span>
         <div class="content">
             <input type="color" onchange="SettingsTools.triggered(this, '${id}')" value="${current}"/>
+            ${resettable === true ? `<i class="fa-solid fa-rotate-left" onclick="SettingsTools.reset(this, '${id}')"></i>` : ''}
         </div>
     </div>
     `;
@@ -112,7 +113,7 @@ export function renderSettingsCells(settings: any, pageId: string) {
                 break;
 
             case 'color':
-                pageHtml += settingsColorCell(cell.title, cell.current, cell.id);
+                pageHtml += settingsColorCell(cell.title, cell.current, cell.id, cell.resettable);
                 break;
 
             default:
