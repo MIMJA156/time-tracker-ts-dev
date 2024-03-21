@@ -4,7 +4,7 @@ This VSCode extension tracks the amount of time you spend coding.
 
 ## ⚠️ IMPORTANT ⚠️
 
-I most likely wont be maintaining/updating this extension in the future, as it is an old project. I original used this as a way to learn how to make vscode extensions. Even so, I decided to finish a working version to finally give this project some closure.
+I most likely won't be maintaining/updating this extension in the future, as it is an old project. I originally used this as a way to learn how to make vscode extensions. Even so, I decided to finish a working version to finally give this project some closure.
 
 ### Progress - Not Done
 
