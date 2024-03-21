@@ -1,16 +1,24 @@
 {
+    "icon": "out/girl.png",
     "name": "time-tracker-ts-dev",
+    "displayName": "Mimjas Time Tracker v2",
     "description": "Simply tracks your time coding!",
-    "version": "1.0.0",
+    "version": "0.1.0",
+    "publisher": "MIMJA156",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/MIMJA156/time-tracker-ts-dev"
+    },
     "activationEvents": [
         "onStartupFinished"
     ],
     "engines": {
-        "vscode": "^1.63.0"
+        "vscode": "^1.72.0"
     },
     "main": "./out/main.js",
     "scripts": {
-        "build": "npm run vite-build && npm run esbuild-base -- --minify",
+        "vscode:prepublish": "copy girl.png out && npm run build",
+        "build": "vite build ./src/web/ && npm run esbuild-base -- --minify",
         "web-dev": "vite ./src/web/",
         "api-dev": "npm run esbuild-base",
         "web-build": "vite build ./src/web/",
@@ -19,8 +27,9 @@
     "contributes": {
         "commands": [
             {
-                "command": "mimjas-time-tracker.importOldTimeData",
-                "title": "Import Old Data",
+                "command": "mimjas-time-tracker-v2.importOldTimeData",
+                "shortTitle": "Import Old Data",
+                "title": "Import old time data from time tracker v1",
                 "category": "Time Tracker"
             }
         ],
@@ -28,12 +37,12 @@
             {
                 "title": "Mimjas Time Tracker",
                 "properties": {
-                    "mimjas-time-tracker.iconStyle": {
+                    "mimjas-time-tracker-v2.iconStyle": {
                         "type": "string",
                         "default": "circuit-board",
                         "description": "Type in the default codicon ID for the icon you want.\nList of icons -> https://code.visualstudio.com/api/references/icons-in-labels#icon-listing"
                     },
-                    "mimjas-time-tracker.labelPosition": {
+                    "mimjas-time-tracker-v2.labelPosition": {
                         "type": "string",
                         "enum": [
                             "Left",
@@ -42,7 +51,7 @@
                         "default": "Left",
                         "description": "Defines the position on the time label."
                     },
-                    "mimjas-time-tracker.labelPriority": {
+                    "mimjas-time-tracker-v2.labelPriority": {
                         "type": "boolean",
                         "description": "Will be more towards the center of the statues bar when on."
                     }

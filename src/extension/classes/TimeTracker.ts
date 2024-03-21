@@ -47,35 +47,35 @@ export class TimeTracker {
             true,
         );
 
-        // >>> -- NOT PERMANENT CODE
+        // <=//// unused as of now in production, mostly for easy testing
         let stopServer = badgeUtils.createBadge({
             icon: 'none',
-            text: 'Stop Web Server',
-            tooltip: 'Stops the current web server',
-            alignment: vscode.StatusBarAlignment.Right,
-            priority: 10,
+            text: 'Stop Time Tracker Web Server',
+            tooltip: 'Stops the current time tracker gui web server',
+            alignment: this.badgeAlignment == null ? vscode.StatusBarAlignment.Right : this.badgeAlignment,
+            priority: this.badgePriority == null ? 10 : this.badgePriority,
             command: null,
         });
 
-        badgeUtils.linkCommandToBadge(stopServer, 'time-tracker-stop-server', () => {
+        badgeUtils.linkCommandToBadge(stopServer, `${config['extension-id']}.time-tracker-stop-server`, () => {
             if (!this.serverManager.isStarted()) return;
 
             stopServer.show(false);
             serverManager.stop();
         });
-        // <<< -- NOT PERMANENT CODE
+        // <=////
 
-        badgeUtils.linkCommandToBadge(this.displayBadge, 'time-tracker-start-server', () => {
-            if (this.serverManager.isStarted()) return;
+        badgeUtils.linkCommandToBadge(this.displayBadge, `${config['extension-id']}.time-tracker-start-server`, () => {
+            if (this.serverManager.isStarted()) return open(`http://localhost:${config.server.port}/dashboard`).then((r) => console.log(r));
 
-            stopServer.show(true);
+            // stopServer.show(true);
             serverManager.start().then((_) => {
                 open(`http://localhost:${config.server.port}/dashboard`).then((r) => console.log(r));
             });
         });
 
         context.subscriptions.push(
-            vscode.commands.registerCommand('mimjas-time-tracker.importOldTimeData', () => {
+            vscode.commands.registerCommand(`${config['extension-id']}.importOldTimeData`, () => {
                 let settings = settingsManager.get();
                 let hasImported = settings['flags']['hasImported'];
 
@@ -86,7 +86,7 @@ export class TimeTracker {
                             _settings['flags']['hasImported'] = false;
                             settingsManager.set(_settings);
 
-                            vscode.commands.executeCommand('mimjas-time-tracker.importOldTimeData');
+                            vscode.commands.executeCommand(`${config['extension-id']}.importOldTimeData`);
                         }
                     });
                     return;
@@ -204,9 +204,9 @@ export class TimeTracker {
     private setInternalsBasedOnSettings() {
         let configuration = vscode.workspace.getConfiguration();
 
-        let icon = configuration.get('mimjas-time-tracker.iconStyle');
-        let alignment = configuration.get('mimjas-time-tracker.labelPosition');
-        let priority = configuration.get('mimjas-time-tracker.labelPriority');
+        let icon = configuration.get(`${config['extension-id']}.iconStyle`);
+        let alignment = configuration.get(`${config['extension-id']}.labelPosition`);
+        let priority = configuration.get(`${config['extension-id']}.labelPriority`);
 
         this.badgeIcon = icon as string;
 

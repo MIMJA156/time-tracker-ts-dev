@@ -26,7 +26,7 @@ export class BadgeUtils {
         try {
             this.context.subscriptions.push(vscode.commands.registerCommand(uri, callback));
         } finally {
-            badge.badge.command = uri;
+            badge.commandURI = uri;
         }
     }
 }
@@ -39,7 +39,7 @@ export class Badge {
     private _text: string;
     private _tooltip: string;
     private _icon: string;
-    private readonly command: string;
+    private _command: string;
 
     private isShowing: boolean;
 
@@ -49,7 +49,7 @@ export class Badge {
         this._text = text;
         this._tooltip = tooltip;
         this._icon = icon;
-        this.command = command;
+        this._command = command;
 
         this.createBadge();
     }
@@ -66,8 +66,8 @@ export class Badge {
         newBadge.text = `$(${this._icon}) ${this._text}`;
         newBadge.tooltip = this._tooltip;
 
-        if (this.command) {
-            newBadge.command = this.command;
+        if (this._command) {
+            newBadge.command = this._command;
         }
 
         if (this.isShowing) {
@@ -110,5 +110,10 @@ export class Badge {
     public set priority(data: number) {
         this._priority = data;
         this.createBadge();
+    }
+
+    public set commandURI(uri: string) {
+        this._command = uri;
+        this.badge.command = uri;
     }
 }

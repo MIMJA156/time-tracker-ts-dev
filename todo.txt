@@ -1,3 +1,0 @@
-TODO:
- 1) make a "timothy_" mode, it removes all css styling.
- 2) add quick jump button to calender navigation.

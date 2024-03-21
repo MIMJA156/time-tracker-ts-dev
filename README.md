@@ -2,40 +2,29 @@
 
 This VSCode extension tracks the amount of time you spend coding.
 
-## Progress
+## ⚠️ IMPORTANT ⚠️
 
-### Not Done
+I most likely wont be maintaining/updating this extension in the future, as it is an old project. I original used this as a way to learn how to make vscode extensions. Even so, I decided to finish a working version to finally give this project some closure.
 
-This extension is still in development so it is not current available to install.
-If you are looking for a Time Tracking extensions take a look at the [V1](https://github.com/MIMJA156/time-tracker) of this extension!
+### Progress - Not Done
 
-Keep in mind I am a student so I won't be able to push out tons of updates but as of now, pre release v0.1.0-1 is almost ready.
+This extension is still in development however version 0.1.0 (finally) is currently available.
+Keep in mind I am a student and have other projects so I am unable to work on this constantly.
 
 ## Installation
 
 Simply download the extension from the marketplace and enjoy!
 
-## Features
+[Marketplace Link](https://marketplace.visualstudio.com/items?itemName=MIMJA156.time-tracker-ts-dev)
 
-There are a few main features to consider:
+## Available Features
 
-- [ ] Cloud Storage for global time using gists
-- [x] Web GUI
-- [x] Basic Settings
+-   [ ] Cloud Storage for global time using gists
+-   [x] Web GUI
 
-### Cloud Storage
-
-To use this feature you need to link your github account account and allow gist read and write access. To do this run the VSCode command `Time Tracker: Link Github` or access it inside the options window on the web GUI.
+## About Available Features
 
 ### Web GUI
 
 To open the Web GUI click on the time badge or run the VSCode command `Time Tracker: Open Web GUI`
 This will open a new tab in the browser and display the GUI.
-
-### Basic Settings
-
-There are a few basic settings you can configure at the moment in VSCode,
-
-- Badge Priority
-- Badge Position
-- Badge Icon
